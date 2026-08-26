@@ -1,0 +1,66 @@
+[
+  {
+    "id": "sagar-thalavar",
+    "name": "Sagar R Thalavar",
+    "dob": "2004-05-14",
+    "gender": "Male",
+    "fatherName": "Ramesh Thalavar",
+    "motherName": "Shobha Thalavar",
+    "aadhaarNumber": "9823 4512 7890",
+    "phone": "9845012345",
+    "email": "sagar.thalavar@example.com",
+    "address": {
+      "line": "#42, 3rd Cross",
+      "taluk": "Bengaluru South",
+      "district": "Bengaluru Urban",
+      "state": "Karnataka",
+      "pincode": "560041"
+    },
+    "academic": {
+      "sslcRollNo": "20210849201",
+      "sslcBoard": "KSEEB Karnataka",
+      "sslcPassingYear": 2021,
+      "sslcMaxMarks": 625,
+      "sslcSecuredMarks": 570,
+      "sslcPercentage": 91.2,
+      "isRuralSchool": true,
+      "isKannadaMedium": false,
+      "diplomaUsn": "321CS21045",
+      "diplomaBoard": "DTE Karnataka",
+      "diplomaCollege": "S.J. Polytechnic, Bengaluru",
+      "diplomaDistrict": "Bengaluru Urban",
+      "diplomaBranch": "Computer Science & Engineering",
+      "diplomaPassingYear": 2024,
+      "semMarks": [85, 88, 89, 90, 88, 92],
+      "aggregatePercentage": 88.6,
+      "isFinalSemPending": false
+    },
+    "reservations": {
+      "casteCategory": "3AG",
+      "subCaste": "Vokkaliga",
+      "casteRdNumber": "RD0038472910",
+      "annualIncome": 250000,
+      "incomeRdNumber": "RD0038472911",
+      "isSnqEligible": true,
+      "isKalyanaKarnataka": false,
+      "isRuralQuota": true,
+      "isKannadaMediumQuota": false,
+      "isPwd": false,
+      "isNcc": false,
+      "isWorkingProfessional": false
+    },
+    "exam": {
+      "dcetRollNo": "DCET26-BLR-0842",
+      "dcetRank": 1250,
+      "examCenter": "Bengaluru Central",
+      "score": 86.5
+    },
+    "verification": {
+      "isVerified": true,
+      "secretKey": "K3A8-94F2-7B01-NC",
+      "verificationDate": "2026-08-18",
+      "helplineCenter": "KEA Bengaluru Central (101)",
+      "verifiedCodes": ["3AG", "3AR", "SNQ"]
+    }
+  }
+]

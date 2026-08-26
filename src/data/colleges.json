@@ -1,0 +1,655 @@
+[
+  {
+    "code": "E001",
+    "name": "R.V. College of Engineering",
+    "shortName": "RVCE Bengaluru",
+    "district": "Bengaluru Urban",
+    "city": "Bengaluru",
+    "type": "Private Autonomous",
+    "nirfRank": 89,
+    "naacGrade": "A+",
+    "establishedYear": 1963,
+    "website": "https://rvce.edu.in",
+    "hasCampusHostel": true,
+    "hostelAnnualFee": 115000,
+    "ratingOverall": 4.9,
+    "branches": [
+      {
+        "branchCode": "CS",
+        "branchName": "Computer Science & Engineering",
+        "eligibleDiplomaBranches": ["Computer Science & Engineering", "Information Science & Engineering", "Electronics & Communication Engineering"],
+        "intakeTotal": 240,
+        "lateralIntake": 24,
+        "cutoffs": {
+          "year2025": { "GM": 420, "3AG": 890, "3AHK": 1450, "3AR": 1120, "2AG": 1050, "2AR": 1380, "SCG": 2800, "SCHK": 3400, "SNQ": 310 },
+          "year2024": { "GM": 450, "3AG": 920, "3AHK": 1520, "3AR": 1180, "2AG": 1100, "2AR": 1420, "SCG": 2950, "SCHK": 3550, "SNQ": 340 },
+          "year2023": { "GM": 480, "3AG": 980, "3AHK": 1600, "3AR": 1250, "2AG": 1180, "2AR": 1500, "SCG": 3100, "SCHK": 3700, "SNQ": 360 }
+        },
+        "placements": {
+          "averageCtcLpa": 19.5,
+          "medianCtcLpa": 16.0,
+          "highestCtcLpa": 62.0,
+          "placedPercentage": 96,
+          "topRecruiters": ["Google", "Microsoft", "Amazon", "Cisco", "Adobe"]
+        },
+        "annualTuitionFee": 105000,
+        "snqAnnualFee": 8450
+      },
+      {
+        "branchCode": "EC",
+        "branchName": "Electronics & Communication Engineering",
+        "eligibleDiplomaBranches": ["Electronics & Communication Engineering", "Electrical & Electronics Engineering", "Telecommunication Engineering"],
+        "intakeTotal": 180,
+        "lateralIntake": 18,
+        "cutoffs": {
+          "year2025": { "GM": 850, "3AG": 1650, "3AHK": 2600, "3AR": 2100, "2AG": 1950, "2AR": 2450, "SCG": 4500, "SCHK": 5200, "SNQ": 680 },
+          "year2024": { "GM": 910, "3AG": 1720, "3AHK": 2750, "3AR": 2220, "2AG": 2080, "2AR": 2580, "SCG": 4750, "SCHK": 5450, "SNQ": 720 },
+          "year2023": { "GM": 980, "3AG": 1850, "3AHK": 2900, "3AR": 2380, "2AG": 2200, "2AR": 2720, "SCG": 5000, "SCHK": 5700, "SNQ": 790 }
+        },
+        "placements": {
+          "averageCtcLpa": 15.2,
+          "medianCtcLpa": 12.5,
+          "highestCtcLpa": 48.0,
+          "placedPercentage": 92,
+          "topRecruiters": ["Texas Instruments", "Qualcomm", "Intel", "Nvidia", "Samsung R&D"]
+        },
+        "annualTuitionFee": 105000,
+        "snqAnnualFee": 8450
+      },
+      {
+        "branchCode": "ME",
+        "branchName": "Mechanical Engineering",
+        "eligibleDiplomaBranches": ["Mechanical Engineering", "Automobile Engineering", "Tool & Die Making", "Mechatronics"],
+        "intakeTotal": 120,
+        "lateralIntake": 12,
+        "cutoffs": {
+          "year2025": { "GM": 2800, "3AG": 4600, "3AHK": 6500, "3AR": 5400, "2AG": 5100, "2AR": 6100, "SCG": 9200, "SCHK": 10800, "SNQ": 2200 },
+          "year2024": { "GM": 3000, "3AG": 4900, "3AHK": 6900, "3AR": 5700, "2AG": 5400, "2AR": 6400, "SCG": 9600, "SCHK": 11200, "SNQ": 2400 },
+          "year2023": { "GM": 3250, "3AG": 5200, "3AHK": 7300, "3AR": 6100, "2AG": 5800, "2AR": 6800, "SCG": 10200, "SCHK": 11900, "SNQ": 2650 }
+        },
+        "placements": {
+          "averageCtcLpa": 9.8,
+          "medianCtcLpa": 8.0,
+          "highestCtcLpa": 24.0,
+          "placedPercentage": 85,
+          "topRecruiters": ["Mercedes Benz", "Tata Motors", "Bosch", "Airbus", "L&T"]
+        },
+        "annualTuitionFee": 105000,
+        "snqAnnualFee": 8450
+      }
+    ]
+  },
+  {
+    "code": "E002",
+    "name": "B.M.S. College of Engineering",
+    "shortName": "BMSCE Bengaluru",
+    "district": "Bengaluru Urban",
+    "city": "Bengaluru",
+    "type": "Aided",
+    "nirfRank": 98,
+    "naacGrade": "A++",
+    "establishedYear": 1946,
+    "website": "https://bmsce.ac.in",
+    "hasCampusHostel": true,
+    "hostelAnnualFee": 95000,
+    "ratingOverall": 4.8,
+    "branches": [
+      {
+        "branchCode": "CS",
+        "branchName": "Computer Science & Engineering",
+        "eligibleDiplomaBranches": ["Computer Science & Engineering", "Information Science & Engineering", "Electronics & Communication Engineering"],
+        "intakeTotal": 240,
+        "lateralIntake": 24,
+        "cutoffs": {
+          "year2025": { "GM": 680, "3AG": 1350, "3AHK": 2100, "3AR": 1700, "2AG": 1580, "2AR": 2020, "SCG": 3900, "SCHK": 4700, "SNQ": 510 },
+          "year2024": { "GM": 720, "3AG": 1420, "3AHK": 2250, "3AR": 1800, "2AG": 1660, "2AR": 2150, "SCG": 4100, "SCHK": 4950, "SNQ": 550 },
+          "year2023": { "GM": 780, "3AG": 1510, "3AHK": 2400, "3AR": 1920, "2AG": 1780, "2AR": 2300, "SCG": 4350, "SCHK": 5200, "SNQ": 600 }
+        },
+        "placements": {
+          "averageCtcLpa": 16.8,
+          "medianCtcLpa": 13.5,
+          "highestCtcLpa": 50.0,
+          "placedPercentage": 94,
+          "topRecruiters": ["Oracle", "Dell", "SAP", "Morgan Stanley", "Intuit"]
+        },
+        "annualTuitionFee": 75000,
+        "snqAnnualFee": 7800
+      },
+      {
+        "branchCode": "EC",
+        "branchName": "Electronics & Communication Engineering",
+        "eligibleDiplomaBranches": ["Electronics & Communication Engineering", "Electrical & Electronics Engineering"],
+        "intakeTotal": 180,
+        "lateralIntake": 18,
+        "cutoffs": {
+          "year2025": { "GM": 1250, "3AG": 2400, "3AHK": 3600, "3AR": 3050, "2AG": 2850, "2AR": 3500, "SCG": 6100, "SCHK": 7100, "SNQ": 980 },
+          "year2024": { "GM": 1320, "3AG": 2520, "3AHK": 3780, "3AR": 3200, "2AG": 2990, "2AR": 3680, "SCG": 6400, "SCHK": 7450, "SNQ": 1050 },
+          "year2023": { "GM": 1410, "3AG": 2680, "3AHK": 4000, "3AR": 3400, "2AG": 3180, "2AR": 3900, "SCG": 6800, "SCHK": 7900, "SNQ": 1140 }
+        },
+        "placements": {
+          "averageCtcLpa": 13.0,
+          "medianCtcLpa": 10.5,
+          "highestCtcLpa": 38.0,
+          "placedPercentage": 90,
+          "topRecruiters": ["NXP Semiconductors", "Schneider Electric", "Bosch", "Infosys"]
+        },
+        "annualTuitionFee": 75000,
+        "snqAnnualFee": 7800
+      },
+      {
+        "branchCode": "ME",
+        "branchName": "Mechanical Engineering",
+        "eligibleDiplomaBranches": ["Mechanical Engineering", "Automobile Engineering", "Tool & Die Making"],
+        "intakeTotal": 120,
+        "lateralIntake": 12,
+        "cutoffs": {
+          "year2025": { "GM": 3900, "3AG": 6200, "3AHK": 8400, "3AR": 7300, "2AG": 6900, "2AR": 8100, "SCG": 11800, "SCHK": 13500, "SNQ": 3100 },
+          "year2024": { "GM": 4150, "3AG": 6550, "3AHK": 8800, "3AR": 7700, "2AG": 7300, "2AR": 8500, "SCG": 12400, "SCHK": 14100, "SNQ": 3350 },
+          "year2023": { "GM": 4450, "3AG": 7000, "3AHK": 9300, "3AR": 8200, "2AG": 7800, "2AR": 9050, "SCG": 13100, "SCHK": 14900, "SNQ": 3650 }
+        },
+        "placements": {
+          "averageCtcLpa": 8.5,
+          "medianCtcLpa": 7.0,
+          "highestCtcLpa": 18.0,
+          "placedPercentage": 82,
+          "topRecruiters": ["Toyota", "Mahindra", "Quest Global", "Collins Aerospace"]
+        },
+        "annualTuitionFee": 75000,
+        "snqAnnualFee": 7800
+      }
+    ]
+  },
+  {
+    "code": "E003",
+    "name": "Ramaiah Institute of Technology",
+    "shortName": "MSRIT Bengaluru",
+    "district": "Bengaluru Urban",
+    "city": "Bengaluru",
+    "type": "Private Autonomous",
+    "nirfRank": 78,
+    "naacGrade": "A+",
+    "establishedYear": 1962,
+    "website": "https://msrit.edu",
+    "hasCampusHostel": true,
+    "hostelAnnualFee": 105000,
+    "ratingOverall": 4.8,
+    "branches": [
+      {
+        "branchCode": "CS",
+        "branchName": "Computer Science & Engineering",
+        "eligibleDiplomaBranches": ["Computer Science & Engineering", "Information Science & Engineering"],
+        "intakeTotal": 240,
+        "lateralIntake": 24,
+        "cutoffs": {
+          "year2025": { "GM": 750, "3AG": 1480, "3AHK": 2300, "3AR": 1850, "2AG": 1720, "2AR": 2200, "SCG": 4200, "SCHK": 5100, "SNQ": 590 },
+          "year2024": { "GM": 800, "3AG": 1560, "3AHK": 2450, "3AR": 1960, "2AG": 1820, "2AR": 2340, "SCG": 4450, "SCHK": 5380, "SNQ": 630 },
+          "year2023": { "GM": 870, "3AG": 1680, "3AHK": 2620, "3AR": 2100, "2AG": 1950, "2AR": 2510, "SCG": 4750, "SCHK": 5700, "SNQ": 690 }
+        },
+        "placements": {
+          "averageCtcLpa": 15.6,
+          "medianCtcLpa": 12.8,
+          "highestCtcLpa": 50.0,
+          "placedPercentage": 93,
+          "topRecruiters": ["Goldman Sachs", "JP Morgan", "Akamai", "Target"]
+        },
+        "annualTuitionFee": 105000,
+        "snqAnnualFee": 8450
+      },
+      {
+        "branchCode": "EC",
+        "branchName": "Electronics & Communication Engineering",
+        "eligibleDiplomaBranches": ["Electronics & Communication Engineering", "Electrical & Electronics Engineering"],
+        "intakeTotal": 180,
+        "lateralIntake": 18,
+        "cutoffs": {
+          "year2025": { "GM": 1450, "3AG": 2700, "3AHK": 3950, "3AR": 3350, "2AG": 3150, "2AR": 3850, "SCG": 6600, "SCHK": 7650, "SNQ": 1150 },
+          "year2024": { "GM": 1540, "3AG": 2850, "3AHK": 4180, "3AR": 3520, "2AG": 3320, "2AR": 4050, "SCG": 6950, "SCHK": 8050, "SNQ": 1220 },
+          "year2023": { "GM": 1650, "3AG": 3020, "3AHK": 4420, "3AR": 3740, "2AG": 3520, "2AR": 4300, "SCG": 7400, "SCHK": 8550, "SNQ": 1310 }
+        },
+        "placements": {
+          "averageCtcLpa": 12.4,
+          "medianCtcLpa": 10.0,
+          "highestCtcLpa": 32.0,
+          "placedPercentage": 89,
+          "topRecruiters": ["Analog Devices", "Synopsys", "Cadence", "Continental"]
+        },
+        "annualTuitionFee": 105000,
+        "snqAnnualFee": 8450
+      }
+    ]
+  },
+  {
+    "code": "E004",
+    "name": "University Visvesvaraya College of Engineering",
+    "shortName": "UVCE Bengaluru",
+    "district": "Bengaluru Urban",
+    "city": "Bengaluru",
+    "type": "Government",
+    "nirfRank": 110,
+    "naacGrade": "A",
+    "establishedYear": 1917,
+    "website": "https://uvce.ac.in",
+    "hasCampusHostel": true,
+    "hostelAnnualFee": 42000,
+    "ratingOverall": 4.6,
+    "branches": [
+      {
+        "branchCode": "CS",
+        "branchName": "Computer Science & Engineering",
+        "eligibleDiplomaBranches": ["Computer Science & Engineering", "Information Science & Engineering"],
+        "intakeTotal": 120,
+        "lateralIntake": 12,
+        "cutoffs": {
+          "year2025": { "GM": 1100, "3AG": 2100, "3AHK": 3100, "3AR": 2600, "2AG": 2450, "2AR": 2980, "SCG": 5200, "SCHK": 6200, "SNQ": 850 },
+          "year2024": { "GM": 1180, "3AG": 2220, "3AHK": 3280, "3AR": 2750, "2AG": 2580, "2AR": 3150, "SCG": 5500, "SCHK": 6550, "SNQ": 910 },
+          "year2023": { "GM": 1280, "3AG": 2380, "3AHK": 3500, "3AR": 2940, "2AG": 2750, "2AR": 3350, "SCG": 5900, "SCHK": 7000, "SNQ": 990 }
+        },
+        "placements": {
+          "averageCtcLpa": 13.2,
+          "medianCtcLpa": 10.5,
+          "highestCtcLpa": 45.0,
+          "placedPercentage": 91,
+          "topRecruiters": ["Adobe", "Samsung", "Cisco", "Siemens", "TCS Digital"]
+        },
+        "annualTuitionFee": 38500,
+        "snqAnnualFee": 4200
+      },
+      {
+        "branchCode": "ME",
+        "branchName": "Mechanical Engineering",
+        "eligibleDiplomaBranches": ["Mechanical Engineering", "Automobile Engineering"],
+        "intakeTotal": 100,
+        "lateralIntake": 10,
+        "cutoffs": {
+          "year2025": { "GM": 4800, "3AG": 7400, "3AHK": 9800, "3AR": 8700, "2AG": 8200, "2AR": 9500, "SCG": 13800, "SCHK": 15600, "SNQ": 3800 },
+          "year2024": { "GM": 5100, "3AG": 7800, "3AHK": 10300, "3AR": 9150, "2AG": 8650, "2AR": 10000, "SCG": 14500, "SCHK": 16400, "SNQ": 4100 },
+          "year2023": { "GM": 5500, "3AG": 8350, "3AHK": 10950, "3AR": 9750, "2AG": 9250, "2AR": 10700, "SCG": 15400, "SCHK": 17300, "SNQ": 4450 }
+        },
+        "placements": {
+          "averageCtcLpa": 7.2,
+          "medianCtcLpa": 6.0,
+          "highestCtcLpa": 15.0,
+          "placedPercentage": 78,
+          "topRecruiters": ["HAL", "BEL", "BEML", "L&T Construction", "ISRO Vendor Partners"]
+        },
+        "annualTuitionFee": 38500,
+        "snqAnnualFee": 4200
+      }
+    ]
+  },
+  {
+    "code": "E005",
+    "name": "PES University (Ring Road Campus)",
+    "shortName": "PES University Bengaluru",
+    "district": "Bengaluru Urban",
+    "city": "Bengaluru",
+    "type": "State University",
+    "nirfRank": 102,
+    "naacGrade": "A+",
+    "establishedYear": 1972,
+    "website": "https://pes.edu",
+    "hasCampusHostel": true,
+    "hostelAnnualFee": 125000,
+    "ratingOverall": 4.7,
+    "branches": [
+      {
+        "branchCode": "CS",
+        "branchName": "Computer Science & Engineering",
+        "eligibleDiplomaBranches": ["Computer Science & Engineering", "Information Science & Engineering"],
+        "intakeTotal": 360,
+        "lateralIntake": 36,
+        "cutoffs": {
+          "year2025": { "GM": 920, "3AG": 1780, "3AHK": 2700, "3AR": 2250, "2AG": 2100, "2AR": 2650, "SCG": 4900, "SCHK": 5900, "SNQ": 740 },
+          "year2024": { "GM": 980, "3AG": 1890, "3AHK": 2880, "3AR": 2390, "2AG": 2230, "2AR": 2810, "SCG": 5200, "SCHK": 6250, "SNQ": 790 },
+          "year2023": { "GM": 1060, "3AG": 2040, "3AHK": 3090, "3AR": 2570, "2AG": 2400, "2AR": 3020, "SCG": 5600, "SCHK": 6700, "SNQ": 860 }
+        },
+        "placements": {
+          "averageCtcLpa": 17.2,
+          "medianCtcLpa": 13.8,
+          "highestCtcLpa": 55.0,
+          "placedPercentage": 95,
+          "topRecruiters": ["Microsoft", "Atlassian", "Morgan Stanley", "Flipkart"]
+        },
+        "annualTuitionFee": 140000,
+        "snqAnnualFee": 12500
+      },
+      {
+        "branchCode": "EC",
+        "branchName": "Electronics & Communication Engineering",
+        "eligibleDiplomaBranches": ["Electronics & Communication Engineering", "Electrical & Electronics Engineering"],
+        "intakeTotal": 180,
+        "lateralIntake": 18,
+        "cutoffs": {
+          "year2025": { "GM": 1800, "3AG": 3200, "3AHK": 4700, "3AR": 4050, "2AG": 3800, "2AR": 4550, "SCG": 7800, "SCHK": 8900, "SNQ": 1450 },
+          "year2024": { "GM": 1920, "3AG": 3390, "3AHK": 4980, "3AR": 4260, "2AG": 4010, "2AR": 4800, "SCG": 8250, "SCHK": 9400, "SNQ": 1540 },
+          "year2023": { "GM": 2080, "3AG": 3620, "3AHK": 5300, "3AR": 4550, "2AG": 4280, "2AR": 5120, "SCG": 8800, "SCHK": 10000, "SNQ": 1660 }
+        },
+        "placements": {
+          "averageCtcLpa": 11.5,
+          "medianCtcLpa": 9.5,
+          "highestCtcLpa": 28.0,
+          "placedPercentage": 88,
+          "topRecruiters": ["Lam Research", "Sony", "Texas Instruments", "Capgemini"]
+        },
+        "annualTuitionFee": 140000,
+        "snqAnnualFee": 12500
+      }
+    ]
+  },
+  {
+    "code": "E006",
+    "name": "Sri Jayachamarajendra College of Engineering (JSS STU)",
+    "shortName": "SJCE Mysuru",
+    "district": "Mysuru",
+    "city": "Mysuru",
+    "type": "Aided",
+    "nirfRank": 125,
+    "naacGrade": "A+",
+    "establishedYear": 1963,
+    "website": "https://jssstuniv.in",
+    "hasCampusHostel": true,
+    "hostelAnnualFee": 78000,
+    "ratingOverall": 4.7,
+    "branches": [
+      {
+        "branchCode": "CS",
+        "branchName": "Computer Science & Engineering",
+        "eligibleDiplomaBranches": ["Computer Science & Engineering", "Information Science & Engineering"],
+        "intakeTotal": 180,
+        "lateralIntake": 18,
+        "cutoffs": {
+          "year2025": { "GM": 1200, "3AG": 2300, "3AHK": 3400, "3AR": 2850, "2AG": 2700, "2AR": 3280, "SCG": 5600, "SCHK": 6650, "SNQ": 950 },
+          "year2024": { "GM": 1280, "3AG": 2440, "3AHK": 3600, "3AR": 3020, "2AG": 2860, "2AR": 3480, "SCG": 5950, "SCHK": 7050, "SNQ": 1020 },
+          "year2023": { "GM": 1390, "3AG": 2620, "3AHK": 3850, "3AR": 3240, "2AG": 3070, "2AR": 3720, "SCG": 6400, "SCHK": 7550, "SNQ": 1110 }
+        },
+        "placements": {
+          "averageCtcLpa": 14.2,
+          "medianCtcLpa": 11.5,
+          "highestCtcLpa": 44.0,
+          "placedPercentage": 92,
+          "topRecruiters": ["Cisco", "Mercedes Benz R&D", "HP", "Qualcomm"]
+        },
+        "annualTuitionFee": 75000,
+        "snqAnnualFee": 7800
+      },
+      {
+        "branchCode": "ME",
+        "branchName": "Mechanical Engineering",
+        "eligibleDiplomaBranches": ["Mechanical Engineering", "Automobile Engineering"],
+        "intakeTotal": 120,
+        "lateralIntake": 12,
+        "cutoffs": {
+          "year2025": { "GM": 4500, "3AG": 7100, "3AHK": 9400, "3AR": 8300, "2AG": 7800, "2AR": 9100, "SCG": 13200, "SCHK": 15000, "SNQ": 3600 },
+          "year2024": { "GM": 4800, "3AG": 7500, "3AHK": 9900, "3AR": 8750, "2AG": 8250, "2AR": 9600, "SCG": 13900, "SCHK": 15800, "SNQ": 3850 },
+          "year2023": { "GM": 5150, "3AG": 8000, "3AHK": 10500, "3AR": 9300, "2AG": 8800, "2AR": 10250, "SCG": 14750, "SCHK": 16700, "SNQ": 4180 }
+        },
+        "placements": {
+          "averageCtcLpa": 7.8,
+          "medianCtcLpa": 6.5,
+          "highestCtcLpa": 16.0,
+          "placedPercentage": 80,
+          "topRecruiters": ["TVS Motors", "Schneider Electric", "JK Tyre", "Bosch"]
+        },
+        "annualTuitionFee": 75000,
+        "snqAnnualFee": 7800
+      }
+    ]
+  },
+  {
+    "code": "E007",
+    "name": "The National Institute of Engineering",
+    "shortName": "NIE Mysuru",
+    "district": "Mysuru",
+    "city": "Mysuru",
+    "type": "Aided",
+    "nirfRank": 140,
+    "naacGrade": "A",
+    "establishedYear": 1946,
+    "website": "https://nie.ac.in",
+    "hasCampusHostel": true,
+    "hostelAnnualFee": 72000,
+    "ratingOverall": 4.6,
+    "branches": [
+      {
+        "branchCode": "CS",
+        "branchName": "Computer Science & Engineering",
+        "eligibleDiplomaBranches": ["Computer Science & Engineering", "Information Science & Engineering"],
+        "intakeTotal": 180,
+        "lateralIntake": 18,
+        "cutoffs": {
+          "year2025": { "GM": 1500, "3AG": 2800, "3AHK": 4100, "3AR": 3450, "2AG": 3250, "2AR": 3950, "SCG": 6800, "SCHK": 7900, "SNQ": 1200 },
+          "year2024": { "GM": 1600, "3AG": 2960, "3AHK": 4320, "3AR": 3650, "2AG": 3440, "2AR": 4180, "SCG": 7200, "SCHK": 8350, "SNQ": 1280 },
+          "year2023": { "GM": 1720, "3AG": 3150, "3AHK": 4600, "3AR": 3900, "2AG": 3680, "2AR": 4450, "SCG": 7700, "SCHK": 8900, "SNQ": 1390 }
+        },
+        "placements": {
+          "averageCtcLpa": 12.8,
+          "medianCtcLpa": 10.0,
+          "highestCtcLpa": 38.0,
+          "placedPercentage": 89,
+          "topRecruiters": ["ABB", "Infineon", "Siemens", "TCS", "Accenture"]
+        },
+        "annualTuitionFee": 75000,
+        "snqAnnualFee": 7800
+      },
+      {
+        "branchCode": "ME",
+        "branchName": "Mechanical Engineering",
+        "eligibleDiplomaBranches": ["Mechanical Engineering", "Automobile Engineering"],
+        "intakeTotal": 120,
+        "lateralIntake": 12,
+        "cutoffs": {
+          "year2025": { "GM": 5200, "3AG": 8100, "3AHK": 10600, "3AR": 9400, "2AG": 8900, "2AR": 10300, "SCG": 14600, "SCHK": 16500, "SNQ": 4200 },
+          "year2024": { "GM": 5500, "3AG": 8550, "3AHK": 11150, "3AR": 9900, "2AG": 9400, "2AR": 10850, "SCG": 15350, "SCHK": 17350, "SNQ": 4480 },
+          "year2023": { "GM": 5900, "3AG": 9100, "3AHK": 11800, "3AR": 10500, "2AG": 10000, "2AR": 11500, "SCG": 16250, "SCHK": 18300, "SNQ": 4820 }
+        },
+        "placements": {
+          "averageCtcLpa": 7.1,
+          "medianCtcLpa": 5.8,
+          "highestCtcLpa": 14.0,
+          "placedPercentage": 76,
+          "topRecruiters": ["Bharat Forge", "BHEL Vendor", "Toyota Kirloskar", "Wipro"]
+        },
+        "annualTuitionFee": 75000,
+        "snqAnnualFee": 7800
+      }
+    ]
+  },
+  {
+    "code": "E008",
+    "name": "Dayananda Sagar College of Engineering",
+    "shortName": "DSCE Bengaluru",
+    "district": "Bengaluru Urban",
+    "city": "Bengaluru",
+    "type": "Private Autonomous",
+    "nirfRank": 150,
+    "naacGrade": "A",
+    "establishedYear": 1979,
+    "website": "https://dayanandasagar.edu",
+    "hasCampusHostel": true,
+    "hostelAnnualFee": 110000,
+    "ratingOverall": 4.5,
+    "branches": [
+      {
+        "branchCode": "CS",
+        "branchName": "Computer Science & Engineering",
+        "eligibleDiplomaBranches": ["Computer Science & Engineering", "Information Science & Engineering"],
+        "intakeTotal": 240,
+        "lateralIntake": 24,
+        "cutoffs": {
+          "year2025": { "GM": 1850, "3AG": 3400, "3AHK": 4900, "3AR": 4200, "2AG": 3950, "2AR": 4750, "SCG": 8100, "SCHK": 9300, "SNQ": 1500 },
+          "year2024": { "GM": 1960, "3AG": 3600, "3AHK": 5180, "3AR": 4440, "2AG": 4180, "2AR": 5020, "SCG": 8550, "SCHK": 9800, "SNQ": 1590 },
+          "year2023": { "GM": 2100, "3AG": 3840, "3AHK": 5500, "3AR": 4720, "2AG": 4450, "2AR": 5350, "SCG": 9100, "SCHK": 10400, "SNQ": 1720 }
+        },
+        "placements": {
+          "averageCtcLpa": 11.2,
+          "medianCtcLpa": 9.0,
+          "highestCtcLpa": 36.0,
+          "placedPercentage": 88,
+          "topRecruiters": ["Cognizant", "Capgemini", "Accenture", "LTI Mindtree"]
+        },
+        "annualTuitionFee": 105000,
+        "snqAnnualFee": 8450
+      },
+      {
+        "branchCode": "EC",
+        "branchName": "Electronics & Communication Engineering",
+        "eligibleDiplomaBranches": ["Electronics & Communication Engineering", "Electrical & Electronics Engineering"],
+        "intakeTotal": 180,
+        "lateralIntake": 18,
+        "cutoffs": {
+          "year2025": { "GM": 2900, "3AG": 4900, "3AHK": 6800, "3AR": 5800, "2AG": 5500, "2AR": 6500, "SCG": 10200, "SCHK": 11600, "SNQ": 2350 },
+          "year2024": { "GM": 3100, "3AG": 5200, "3AHK": 7200, "3AR": 6120, "2AG": 5820, "2AR": 6850, "SCG": 10750, "SCHK": 12200, "SNQ": 2500 },
+          "year2023": { "GM": 3320, "3AG": 5550, "3AHK": 7650, "3AR": 6500, "2AG": 6200, "2AR": 7300, "SCG": 11400, "SCHK": 12900, "SNQ": 2680 }
+        },
+        "placements": {
+          "averageCtcLpa": 9.5,
+          "medianCtcLpa": 8.0,
+          "highestCtcLpa": 24.0,
+          "placedPercentage": 84,
+          "topRecruiters": ["Robert Bosch", "Microchip", "Ericsson", "Dell"]
+        },
+        "annualTuitionFee": 105000,
+        "snqAnnualFee": 8450
+      }
+    ]
+  },
+  {
+    "code": "E009",
+    "name": "Bangalore Institute of Technology",
+    "shortName": "BIT Bengaluru",
+    "district": "Bengaluru Urban",
+    "city": "Bengaluru",
+    "type": "Private Autonomous",
+    "nirfRank": 160,
+    "naacGrade": "A+",
+    "establishedYear": 1979,
+    "website": "https://bit-bangalore.edu.in",
+    "hasCampusHostel": true,
+    "hostelAnnualFee": 88000,
+    "ratingOverall": 4.5,
+    "branches": [
+      {
+        "branchCode": "CS",
+        "branchName": "Computer Science & Engineering",
+        "eligibleDiplomaBranches": ["Computer Science & Engineering", "Information Science & Engineering"],
+        "intakeTotal": 240,
+        "lateralIntake": 24,
+        "cutoffs": {
+          "year2025": { "GM": 2200, "3AG": 3900, "3AHK": 5600, "3AR": 4800, "2AG": 4500, "2AR": 5400, "SCG": 9200, "SCHK": 10500, "SNQ": 1780 },
+          "year2024": { "GM": 2350, "3AG": 4120, "3AHK": 5900, "3AR": 5080, "2AG": 4760, "2AR": 5700, "SCG": 9700, "SCHK": 11100, "SNQ": 1890 },
+          "year2023": { "GM": 2520, "3AG": 4400, "3AHK": 6280, "3AR": 5400, "2AG": 5080, "2AR": 6050, "SCG": 10300, "SCHK": 11800, "SNQ": 2040 }
+        },
+        "placements": {
+          "averageCtcLpa": 10.8,
+          "medianCtcLpa": 8.8,
+          "highestCtcLpa": 32.0,
+          "placedPercentage": 87,
+          "topRecruiters": ["Bosch", "Accenture", "Infosys", "Mindtree", "Oracle"]
+        },
+        "annualTuitionFee": 105000,
+        "snqAnnualFee": 8450
+      },
+      {
+        "branchCode": "ME",
+        "branchName": "Mechanical Engineering",
+        "eligibleDiplomaBranches": ["Mechanical Engineering", "Automobile Engineering"],
+        "intakeTotal": 120,
+        "lateralIntake": 12,
+        "cutoffs": {
+          "year2025": { "GM": 6200, "3AG": 9500, "3AHK": 12400, "3AR": 11000, "2AG": 10400, "2AR": 12000, "SCG": 16800, "SCHK": 18800, "SNQ": 5100 },
+          "year2024": { "GM": 6600, "3AG": 10000, "3AHK": 13050, "3AR": 11600, "2AG": 11000, "2AR": 12650, "SCG": 17650, "SCHK": 19750, "SNQ": 5450 },
+          "year2023": { "GM": 7050, "3AG": 10600, "3AHK": 13800, "3AR": 12300, "2AG": 11700, "2AR": 13400, "SCG": 18600, "SCHK": 20800, "SNQ": 5850 }
+        },
+        "placements": {
+          "averageCtcLpa": 6.8,
+          "medianCtcLpa": 5.5,
+          "highestCtcLpa": 12.0,
+          "placedPercentage": 74,
+          "topRecruiters": ["Toyota", "Federal Mogul", "TCS", "Kirloskar"]
+        },
+        "annualTuitionFee": 105000,
+        "snqAnnualFee": 8450
+      }
+    ]
+  },
+  {
+    "code": "E010",
+    "name": "KLE Technological University (BVBCET)",
+    "shortName": "KLE Tech (BVBCET) Hubballi",
+    "district": "Dharwad",
+    "city": "Hubballi",
+    "type": "State University",
+    "nirfRank": 135,
+    "naacGrade": "A",
+    "establishedYear": 1947,
+    "website": "https://kletech.ac.in",
+    "hasCampusHostel": true,
+    "hostelAnnualFee": 65000,
+    "ratingOverall": 4.6,
+    "branches": [
+      {
+        "branchCode": "CS",
+        "branchName": "Computer Science & Engineering",
+        "eligibleDiplomaBranches": ["Computer Science & Engineering", "Information Science & Engineering"],
+        "intakeTotal": 240,
+        "lateralIntake": 24,
+        "cutoffs": {
+          "year2025": { "GM": 2100, "3AG": 3800, "3AHK": 5400, "3AR": 4650, "2AG": 4350, "2AR": 5250, "SCG": 8900, "SCHK": 10200, "SNQ": 1700 },
+          "year2024": { "GM": 2250, "3AG": 4020, "3AHK": 5700, "3AR": 4920, "2AG": 4600, "2AR": 5540, "SCG": 9400, "SCHK": 10750, "SNQ": 1820 },
+          "year2023": { "GM": 2420, "3AG": 4280, "3AHK": 6050, "3AR": 5240, "2AG": 4900, "2AR": 5880, "SCG": 10000, "SCHK": 11450, "SNQ": 1960 }
+        },
+        "placements": {
+          "averageCtcLpa": 12.0,
+          "medianCtcLpa": 9.5,
+          "highestCtcLpa": 42.0,
+          "placedPercentage": 90,
+          "topRecruiters": ["Applied Materials", "Collins Aerospace", "Sony", "Mercedes Benz", "Robert Bosch"]
+        },
+        "annualTuitionFee": 95000,
+        "snqAnnualFee": 7800
+      },
+      {
+        "branchCode": "EC",
+        "branchName": "Electronics & Communication Engineering",
+        "eligibleDiplomaBranches": ["Electronics & Communication Engineering", "Electrical & Electronics Engineering"],
+        "intakeTotal": 180,
+        "lateralIntake": 18,
+        "cutoffs": {
+          "year2025": { "GM": 3200, "3AG": 5400, "3AHK": 7400, "3AR": 6400, "2AG": 6100, "2AR": 7100, "SCG": 11200, "SCHK": 12800, "SNQ": 2600 },
+          "year2024": { "GM": 3400, "3AG": 5720, "3AHK": 7850, "3AR": 6780, "2AG": 6450, "2AR": 7500, "SCG": 11800, "SCHK": 13500, "SNQ": 2780 },
+          "year2023": { "GM": 3650, "3AG": 6100, "3AHK": 8350, "3AR": 7200, "2AG": 6880, "2AR": 8000, "SCG": 12550, "SCHK": 14300, "SNQ": 2980 }
+        },
+        "placements": {
+          "averageCtcLpa": 9.8,
+          "medianCtcLpa": 8.0,
+          "highestCtcLpa": 26.0,
+          "placedPercentage": 86,
+          "topRecruiters": ["Tata Elxsi", "KPIT", "Continental", "Sankalp Semiconductor"]
+        },
+        "annualTuitionFee": 95000,
+        "snqAnnualFee": 7800
+      },
+      {
+        "branchCode": "ME",
+        "branchName": "Mechanical Engineering",
+        "eligibleDiplomaBranches": ["Mechanical Engineering", "Automobile Engineering"],
+        "intakeTotal": 120,
+        "lateralIntake": 12,
+        "cutoffs": {
+          "year2025": { "GM": 6800, "3AG": 10200, "3AHK": 13500, "3AR": 11900, "2AG": 11300, "2AR": 13000, "SCG": 17800, "SCHK": 19900, "SNQ": 5600 },
+          "year2024": { "GM": 7200, "3AG": 10800, "3AHK": 14200, "3AR": 12600, "2AG": 11950, "2AR": 13750, "SCG": 18700, "SCHK": 20900, "SNQ": 5980 },
+          "year2023": { "GM": 7700, "3AG": 11500, "3AHK": 15050, "3AR": 13350, "2AG": 12700, "2AR": 14600, "SCG": 19750, "SCHK": 22050, "SNQ": 6400 }
+        },
+        "placements": {
+          "averageCtcLpa": 6.5,
+          "medianCtcLpa": 5.4,
+          "highestCtcLpa": 14.0,
+          "placedPercentage": 75,
+          "topRecruiters": ["Tata Motors", "Kirloskar Ferrous", "Jindal Steel (JSW)", "Kalyani Forge"]
+        },
+        "annualTuitionFee": 95000,
+        "snqAnnualFee": 7800
+      }
+    ]
+  }
+]

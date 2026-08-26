@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-27T01:11:35.000Z",
+  "title": "Design System: KEA Next",
+  "extensions": {
+    "colorMeta": {
+      "authority-dark": {
+        "role": "primary",
+        "displayName": "Authority Dark",
+        "canonical": "#0f172a",
+        "tonalRamp": ["#020617", "#0f172a", "#1e293b", "#334155", "#475569", "#64748b", "#cbd5e1", "#f8fafc"]
+      },
+      "verified-primary": {
+        "role": "accent",
+        "displayName": "Verified Emerald",
+        "canonical": "#059669",
+        "tonalRamp": ["#064e3b", "#065f46", "#047857", "#059669", "#10b981", "#34d399", "#a7f3d0", "#ecfdf5"]
+      },
+      "target-primary": {
+        "role": "accent",
+        "displayName": "Target Amber",
+        "canonical": "#d97706",
+        "tonalRamp": ["#78350f", "#92400e", "#b45309", "#d97706", "#f59e0b", "#fbbf24", "#fde68a", "#fffbeb"]
+      },
+      "ambitious-primary": {
+        "role": "accent",
+        "displayName": "Ambitious Indigo",
+        "canonical": "#4f46e5",
+        "tonalRamp": ["#312e81", "#3730a3", "#4338ca", "#4f46e5", "#6366f1", "#818cf8", "#c7d2fe", "#eef2ff"]
+      },
+      "surface-canvas": {
+        "role": "neutral",
+        "displayName": "Canvas Slate",
+        "canonical": "#f8fafc",
+        "tonalRamp": ["#0f172a", "#1e293b", "#334155", "#64748b", "#94a3b8", "#cbd5e1", "#e2e8f0", "#f8fafc"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Stage titles and primary document headers." },
+      "headline": { "displayName": "Headline", "purpose": "College names and card headers." },
+      "title": { "displayName": "Title", "purpose": "Component section headings." },
+      "body": { "displayName": "Body", "purpose": "Interface copy, descriptions, and labels." },
+      "label": { "displayName": "Label", "purpose": "Secondary form labels, metadata headers, and category tags (11px)." },
+      "micro": { "displayName": "Micro", "purpose": "Statutory status tags, quota badges, and table sub-headers (10px)." },
+      "mono": { "displayName": "Monospace", "purpose": "Ranks, Secret Keys, RD Numbers, and Challan codes." }
+    },
+    "shadows": [
+      { "name": "resting-surface", "value": "0 1px 2px rgba(0,0,0,0.05)", "purpose": "Base card surface resting elevation." },
+      { "name": "action-footer", "value": "0 4px 6px -1px rgba(0,0,0,0.1)", "purpose": "Sticky decision action footers and modals." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing for tab transitions and button hover states." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Authority Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary action button with deep navy authority.",
+      "html": "<button class=\"ds-btn-authority\">EXPLORE CUTOFFS</button>",
+      "css": ".ds-btn-authority { background: #0f172a; color: #ffffff; padding: 8px 16px; font-size: 12px; font-weight: 700; border-radius: 6px; border: 1px solid #1e293b; cursor: pointer; transition: background 0.15s; font-family: sans-serif; } .ds-btn-authority:hover { background: #1e293b; }"
+    },
+    {
+      "name": "Verified Action Button",
+      "kind": "button",
+      "refersTo": "button-action",
+      "description": "High-confidence forward action button with emerald styling.",
+      "html": "<button class=\"ds-btn-verified\">SUBMIT OPTION LIST</button>",
+      "css": ".ds-btn-verified { background: #059669; color: #ffffff; padding: 10px 20px; font-size: 12px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; transition: background 0.15s; font-family: sans-serif; } .ds-btn-verified:hover { background: #047857; }"
+    },
+    {
+      "name": "Safe Probability Badge",
+      "kind": "chip",
+      "refersTo": "badge-safe",
+      "description": "High probability admission badge with verified green palette.",
+      "html": "<span class=\"ds-badge-safe\">Safe: 94% Probability</span>",
+      "css": ".ds-badge-safe { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; font-family: sans-serif; display: inline-block; }"
+    },
+    {
+      "name": "Monospace Identifier Token",
+      "kind": "custom",
+      "refersTo": "token-mono",
+      "description": "Secure code box for Secret Keys and Roll numbers.",
+      "html": "<div class=\"ds-token-mono\">K3A8-94F2-7B01-NC</div>",
+      "css": ".ds-token-mono { background: #1e293b; color: #ffffff; padding: 6px 12px; border-radius: 4px; font-family: monospace; font-size: 14px; font-weight: 700; letter-spacing: 0.1em; border: 1px solid #334155; display: inline-block; }"
+    },
+    {
+      "name": "Public Service Container Card",
+      "kind": "card",
+      "refersTo": "card-standard",
+      "description": "Base content container card with crisp 1px slate border.",
+      "html": "<div class=\"ds-card\"><h4 class=\"ds-card-title\">R.V. College of Engineering (E001)</h4><p class=\"ds-card-desc\">Computer Science & Engineering • Lateral Seats: 24</p></div>",
+      "css": ".ds-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; font-family: sans-serif; } .ds-card-title { margin: 0 0 4px 0; font-size: 14px; font-weight: 700; color: #0f172a; } .ds-card-desc { margin: 0; font-size: 12px; color: #64748b; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Sovereign Civic Gateway",
+    "overview": "KEA Next is an authoritative, calm, and dependable digital public instrument engineered for high-stakes engineering admissions in Karnataka. Its visual language replaces bureaucratic clutter, confusing marquees, and predatory commercial counseling aesthetics with crisp, respectful, and transparent software craft. The design emphasizes clarity, high information density without visual noise, instant data verification, and deterministic user guidance across all five stages of the lateral-entry admission journey.",
+    "keyCharacteristics": [
+      "Restrained, institutional palette prioritizing deep navy authority and calibrated semantic signals.",
+      "Clean structural grouping over gratuitous cards and decorative nesting.",
+      "High-contrast typography optimized for rapid scanning of scores, ranks, and cutoff figures.",
+      "Total absence of AI cliches (no purple gradients, no glowing neon effects, no decorative emojis)."
+    ],
+    "rules": [
+      { "name": "The Ten Percent Accent Rule", "body": "Colored probability badges (Emerald, Amber, Indigo) must never dominate the screen; they exist solely as precise, scannable data markers against a calm slate foundation.", "section": "colors" },
+      { "name": "The No-AI-Gradient Rule", "body": "Never use multi-stop purple-to-cyan linear gradients or glowing drop-shadows anywhere on public service surfaces.", "section": "colors" },
+      { "name": "The Tabular Data Rule", "body": "All entrance exam ranks, monetary fees, and verification keys must use monospace or tabular numerical alignment to ensure error-free comparison.", "section": "typography" },
+      { "name": "The Structural Border Rule", "body": "Visual grouping must be achieved through 1px borders (border-slate-200) and soft background fills (bg-slate-50) rather than elevation lifting.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do display fees with transparent breakdown of standard tuition versus SNQ subsidized concessions.",
+      "Do format all dates in standard Indian official format (YYYY-MM-DD or DD Month YYYY).",
+      "Do pair every probability badge with its exact numerical cutoff baseline and applicable quota category.",
+      "Do warn candidates before submitting option lists that lack safe backup choices.",
+      "Do ensure all mobile touch controls meet the minimum 44px hit area standard."
+    ],
+    "donts": [
+      "Don't use decorative emojis in official public service views; use professional functional Lucide SVG icons.",
+      "Don't use em-dashes in user-facing copy or technical summaries.",
+      "Don't bury critical reservation codes (HK 371J, SNQ, Rural) inside nested unsearchable menus.",
+      "Don't allow candidates to pick engineering branches incompatible with their diploma discipline."
+    ]
+  }
+}
