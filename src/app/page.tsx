@@ -41,15 +41,15 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FCFBF9] text-zinc-950">
+    <div className="min-h-screen flex flex-col bg-[#FFC700] text-black">
       
-      {/* Clean Navbar */}
+      {/* Top Header */}
       <Navbar currentStep={currentStep} onStepClick={setCurrentStep} />
 
       {/* Main Container */}
-      <main className="max-w-4xl mx-auto w-full px-4 py-8 flex-1">
+      <main className="max-w-4xl mx-auto w-full px-4 py-6 flex-1">
         
-        {/* Step 1: Student Verification (Click Me) */}
+        {/* Step 1: Student Verification */}
         {currentStep === 1 && (
           <IdentifierInputSection
             student={selectedStudent}

@@ -27,34 +27,32 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
   return (
     <div className="max-w-4xl mx-auto space-y-3">
       
-      {/* Priority List (College Name Only + Up/Down/Delete) */}
-      <div className="space-y-2.5">
+      {/* Priority List of Floating White Cards (Matching Template Design) */}
+      <div className="space-y-3">
         {optionChoices.map((choice, idx) => {
-          const isYellow = idx % 2 === 0;
-
           return (
             <div
               key={`${choice.collegeCode}-${choice.branchCode}`}
-              className={`${isYellow ? 'card-yellow' : 'card-white'} rounded-2xl p-4 flex items-center justify-between gap-3 shadow-xs`}
+              className="template-card p-4 sm:p-5 flex items-center justify-between gap-3 shadow-md"
             >
               {/* Priority Number & College Name Only */}
               <div className="flex items-center space-x-3.5 min-w-0">
-                <div className="w-9 h-9 rounded-full bg-zinc-950 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-sm tabular-nums">
+                <div className="w-10 h-10 rounded-2xl bg-black text-white font-black text-sm flex items-center justify-center shrink-0 shadow-sm tabular-nums">
                   #{choice.priority}
                 </div>
 
-                <div className="font-black text-sm text-zinc-950 truncate">
+                <div className="font-black text-base text-black truncate">
                   {choice.collegeName}
                 </div>
               </div>
 
-              {/* Up, Down, Delete Controls */}
-              <div className="flex items-center space-x-1 shrink-0">
+              {/* Up, Down, Delete Dual Action Controls */}
+              <div className="flex items-center space-x-1.5 shrink-0">
                 <button
                   onClick={() => moveItem(idx, idx - 1)}
                   disabled={idx === 0}
                   aria-label="Move Up"
-                  className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full bg-white hover:bg-zinc-100 text-zinc-950 disabled:opacity-30 transition-colors shadow-xs border border-zinc-300"
+                  className="w-10 h-10 flex items-center justify-center rounded-xl bg-zinc-100 hover:bg-zinc-200 text-black disabled:opacity-30 transition-all border border-zinc-200"
                 >
                   <ArrowUp className="w-4 h-4" />
                 </button>
@@ -63,7 +61,7 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
                   onClick={() => moveItem(idx, idx + 1)}
                   disabled={idx === optionChoices.length - 1}
                   aria-label="Move Down"
-                  className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full bg-white hover:bg-zinc-100 text-zinc-950 disabled:opacity-30 transition-colors shadow-xs border border-zinc-300"
+                  className="w-10 h-10 flex items-center justify-center rounded-xl bg-zinc-100 hover:bg-zinc-200 text-black disabled:opacity-30 transition-all border border-zinc-200"
                 >
                   <ArrowDown className="w-4 h-4" />
                 </button>
@@ -71,7 +69,7 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
                 <button
                   onClick={() => onRemoveChoice(idx)}
                   aria-label="Remove"
-                  className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full bg-zinc-950 hover:bg-zinc-800 text-white transition-colors shadow-xs"
+                  className="w-10 h-10 flex items-center justify-center rounded-xl bg-black hover:bg-zinc-800 text-white transition-all shadow-xs"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

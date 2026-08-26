@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { StudentProfile } from '@/types';
-import { ArrowRight, Loader2, Check } from 'lucide-react';
+import { ArrowRight, Loader2, Check, CreditCard, GraduationCap, FileCheck2, Award } from 'lucide-react';
 
 interface IdentifierInputSectionProps {
   student: StudentProfile;
@@ -82,259 +82,239 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
   const isAllResolved = step1Done && step2Done && step3Done && step4Done;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-5">
+    <div className="max-w-4xl mx-auto space-y-6">
       
-      {/* Top Single Button Header */}
-      <div className="flex items-center justify-between pb-2 border-b border-zinc-200">
-        <h2 className="text-base font-black text-zinc-950">
-          Candidate: {student.name}
-        </h2>
+      {/* Top Action Bar */}
+      <div className="flex items-center justify-between">
+        <span className="template-badge-black">
+          Zero-Form Identity Resolution
+        </span>
 
         <button
           onClick={handleClickMe}
-          className="pill-btn-yellow px-6 py-2 text-xs font-black shadow-xs border border-yellow-400"
+          className="template-btn-black text-xs font-black shadow-lg"
         >
           Click Me
         </button>
       </div>
 
-      {/* 4 Cards (Yellow & White) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* 4 White Floating Cards (Matching Template Image) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         
-        {/* Box 1: Aadhaar */}
-        <div className="card-yellow rounded-3xl p-5 flex flex-col justify-between min-h-[260px] shadow-sm">
+        {/* Card 1: Aadhaar */}
+        <div className="template-card p-6 flex flex-col justify-between min-h-[270px]">
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="badge-tag font-bold">1. Identity</span>
+            <div className="flex items-center justify-between mb-3">
+              <div className="template-icon-box">
+                <CreditCard className="w-5 h-5 text-black" />
+              </div>
               {step1Done && (
-                <span className="bg-zinc-950 text-white text-[11px] font-bold px-3 py-0.5 rounded-full flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5 text-yellow-300" /> Verified
+                <span className="template-badge-black text-[10px]">
+                  <Check className="w-3 h-3 text-[#FFC700] mr-1" /> Verified
                 </span>
               )}
             </div>
 
-            <h3 className="text-base font-black text-zinc-950">Aadhaar Card</h3>
+            <h3 className="text-xl font-black text-black">Aadhaar Card</h3>
 
-            <div className="mt-2">
+            <div className="mt-3">
               <input
                 type="text"
                 value={aadhaarInput}
                 onChange={(e) => setAadhaarInput(e.target.value)}
-                className="w-full bg-white border-2 border-yellow-500/60 rounded-xl px-3 py-2 text-xs font-mono font-bold text-zinc-950 focus:outline-none"
+                className="w-full bg-zinc-50 border-2 border-zinc-200 rounded-xl px-3.5 py-2 text-xs font-mono font-bold text-black focus:outline-none focus:border-black"
               />
             </div>
 
             {step1Done && (
-              <div className="mt-2.5 bg-white rounded-xl p-2.5 text-xs text-zinc-950 border border-yellow-500/40 space-y-0.5 font-medium shadow-xs">
-                <div className="font-black text-zinc-950">{student.name}</div>
-                <div className="text-zinc-700">{student.dob} | {student.gender}</div>
-                <div className="text-zinc-700">{student.address.district}</div>
+              <div className="mt-3 bg-zinc-50 rounded-2xl p-3 text-xs text-black border border-zinc-200 space-y-0.5 font-medium">
+                <div className="font-black text-black text-sm">{student.name}</div>
+                <div className="text-zinc-600">{student.dob} | {student.gender}</div>
+                <div className="text-zinc-600">{student.address.district}</div>
               </div>
             )}
           </div>
 
-          <div className="mt-3">
+          <div className="mt-4 pt-1 flex gap-2">
             <button
               onClick={handleFetch1}
               disabled={step1Loading || step1Done}
-              className={`w-full py-2.5 px-4 text-xs flex items-center justify-center gap-1.5 font-bold ${
-                step1Done
-                  ? 'bg-zinc-950 text-white rounded-full cursor-default'
-                  : 'bg-zinc-950 hover:bg-zinc-800 text-white rounded-full'
-              }`}
+              className={`w-full ${step1Done ? 'template-btn-white opacity-80 cursor-default' : 'template-btn-black'} text-xs`}
             >
               {step1Loading ? (
-                <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  <span>Loading...</span>
-                </>
+                <Loader2 className="w-4 h-4 animate-spin mx-auto" />
               ) : step1Done ? (
-                <span>Verified</span>
+                'Verified'
               ) : (
-                <span>Fetch Aadhaar</span>
+                'Fetch Aadhaar'
               )}
             </button>
           </div>
         </div>
 
-        {/* Box 2: USN & SSLC */}
-        <div className={`card-white rounded-3xl p-5 flex flex-col justify-between min-h-[260px] shadow-sm ${
-          !step1Done ? 'opacity-40 pointer-events-none' : 'opacity-100'
+        {/* Card 2: Academic */}
+        <div className={`template-card p-6 flex flex-col justify-between min-h-[270px] ${
+          !step1Done ? 'opacity-50 pointer-events-none' : 'opacity-100'
         }`}>
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="badge-tag-yellow font-bold">2. Academic</span>
+            <div className="flex items-center justify-between mb-3">
+              <div className="template-icon-box">
+                <GraduationCap className="w-5 h-5 text-black" />
+              </div>
               {step2Done && (
-                <span className="bg-zinc-950 text-white text-[11px] font-bold px-3 py-0.5 rounded-full flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5 text-yellow-300" /> Verified
+                <span className="template-badge-black text-[10px]">
+                  <Check className="w-3 h-3 text-[#FFC700] mr-1" /> Verified
                 </span>
               )}
             </div>
 
-            <h3 className="text-base font-black text-zinc-950">Diploma USN & SSLC</h3>
+            <h3 className="text-xl font-black text-black">Diploma USN & SSLC</h3>
 
-            <div className="grid grid-cols-2 gap-2 mt-2">
+            <div className="grid grid-cols-2 gap-2 mt-3">
               <input
                 type="text"
                 value={usnInput}
                 onChange={(e) => setUsnInput(e.target.value)}
-                className="w-full bg-zinc-50 border-2 border-zinc-300 rounded-xl px-3 py-1.5 text-xs font-mono font-bold text-zinc-950 focus:outline-none"
+                className="w-full bg-zinc-50 border-2 border-zinc-200 rounded-xl px-3 py-2 text-xs font-mono font-bold text-black focus:outline-none focus:border-black"
               />
               <input
                 type="text"
                 value={sslcInput}
                 onChange={(e) => setSslcInput(e.target.value)}
-                className="w-full bg-zinc-50 border-2 border-zinc-300 rounded-xl px-3 py-1.5 text-xs font-mono font-bold text-zinc-950 focus:outline-none"
+                className="w-full bg-zinc-50 border-2 border-zinc-200 rounded-xl px-3 py-2 text-xs font-mono font-bold text-black focus:outline-none focus:border-black"
               />
             </div>
 
             {step2Done && (
-              <div className="mt-2.5 bg-zinc-50 rounded-xl p-2.5 text-xs text-zinc-950 border border-zinc-200 space-y-0.5 font-medium">
-                <div className="font-black text-zinc-950">{student.academic.diplomaBranch}</div>
-                <div className="text-zinc-700">Aggregate: <strong className="text-zinc-950">{student.academic.aggregatePercentage}%</strong></div>
+              <div className="mt-3 bg-zinc-50 rounded-2xl p-3 text-xs text-black border border-zinc-200 space-y-0.5 font-medium">
+                <div className="font-black text-black">{student.academic.diplomaBranch}</div>
+                <div className="text-zinc-600">Aggregate: <strong className="text-black">{student.academic.aggregatePercentage}%</strong></div>
               </div>
             )}
           </div>
 
-          <div className="mt-3">
+          <div className="mt-4 pt-1 flex gap-2">
             <button
               onClick={handleFetch2}
               disabled={step2Loading || step2Done}
-              className={`w-full py-2.5 px-4 text-xs flex items-center justify-center gap-1.5 font-bold ${
-                step2Done
-                  ? 'bg-zinc-950 text-white rounded-full cursor-default'
-                  : 'bg-zinc-950 hover:bg-zinc-800 text-white rounded-full'
-              }`}
+              className={`w-full ${step2Done ? 'template-btn-white opacity-80 cursor-default' : 'template-btn-black'} text-xs`}
             >
               {step2Loading ? (
-                <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  <span>Loading...</span>
-                </>
+                <Loader2 className="w-4 h-4 animate-spin mx-auto" />
               ) : step2Done ? (
-                <span>Linked</span>
+                'Linked'
               ) : (
-                <span>Fetch Academic</span>
+                'Fetch Academic'
               )}
             </button>
           </div>
         </div>
 
-        {/* Box 3: RD Numbers */}
-        <div className={`card-white rounded-3xl p-5 flex flex-col justify-between min-h-[260px] shadow-sm ${
-          !step2Done ? 'opacity-40 pointer-events-none' : 'opacity-100'
+        {/* Card 3: RD Numbers */}
+        <div className={`template-card p-6 flex flex-col justify-between min-h-[270px] ${
+          !step2Done ? 'opacity-50 pointer-events-none' : 'opacity-100'
         }`}>
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="badge-tag-yellow font-bold">3. Reservations</span>
+            <div className="flex items-center justify-between mb-3">
+              <div className="template-icon-box">
+                <FileCheck2 className="w-5 h-5 text-black" />
+              </div>
               {step3Done && (
-                <span className="bg-zinc-950 text-white text-[11px] font-bold px-3 py-0.5 rounded-full flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5 text-yellow-300" /> Verified
+                <span className="template-badge-black text-[10px]">
+                  <Check className="w-3 h-3 text-[#FFC700] mr-1" /> Verified
                 </span>
               )}
             </div>
 
-            <h3 className="text-base font-black text-zinc-950">Nadakacheri RD Numbers</h3>
+            <h3 className="text-xl font-black text-black">Nadakacheri RD Numbers</h3>
 
-            <div className="grid grid-cols-2 gap-2 mt-2">
+            <div className="grid grid-cols-2 gap-2 mt-3">
               <input
                 type="text"
                 value={casteRdInput}
                 onChange={(e) => setCasteRdInput(e.target.value)}
-                className="w-full bg-zinc-50 border-2 border-zinc-300 rounded-xl px-3 py-1.5 text-xs font-mono font-bold text-zinc-950 focus:outline-none"
+                className="w-full bg-zinc-50 border-2 border-zinc-200 rounded-xl px-3 py-2 text-xs font-mono font-bold text-black focus:outline-none focus:border-black"
               />
               <input
                 type="text"
                 value={incomeRdInput}
                 onChange={(e) => setIncomeRdInput(e.target.value)}
-                className="w-full bg-zinc-50 border-2 border-zinc-300 rounded-xl px-3 py-1.5 text-xs font-mono font-bold text-zinc-950 focus:outline-none"
+                className="w-full bg-zinc-50 border-2 border-zinc-200 rounded-xl px-3 py-2 text-xs font-mono font-bold text-black focus:outline-none focus:border-black"
               />
             </div>
 
             {step3Done && (
-              <div className="mt-2.5 bg-zinc-50 rounded-xl p-2.5 text-xs text-zinc-950 border border-zinc-200 space-y-0.5 font-medium">
-                <div className="font-black text-zinc-950">Category: {student.reservations.casteCategory}</div>
-                <div className="text-zinc-700">Income: ₹{student.reservations.annualIncome.toLocaleString()}/yr</div>
+              <div className="mt-3 bg-zinc-50 rounded-2xl p-3 text-xs text-black border border-zinc-200 space-y-0.5 font-medium">
+                <div className="font-black text-black">Category: {student.reservations.casteCategory}</div>
+                <div className="text-zinc-600">Income: ₹{student.reservations.annualIncome.toLocaleString()}/yr</div>
               </div>
             )}
           </div>
 
-          <div className="mt-3">
+          <div className="mt-4 pt-1 flex gap-2">
             <button
               onClick={handleFetch3}
               disabled={step3Loading || step3Done}
-              className={`w-full py-2.5 px-4 text-xs flex items-center justify-center gap-1.5 font-bold ${
-                step3Done
-                  ? 'bg-zinc-950 text-white rounded-full cursor-default'
-                  : 'bg-zinc-950 hover:bg-zinc-800 text-white rounded-full'
-              }`}
+              className={`w-full ${step3Done ? 'template-btn-white opacity-80 cursor-default' : 'template-btn-black'} text-xs`}
             >
               {step3Loading ? (
-                <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  <span>Loading...</span>
-                </>
+                <Loader2 className="w-4 h-4 animate-spin mx-auto" />
               ) : step3Done ? (
-                <span>Verified</span>
+                'Verified'
               ) : (
-                <span>Verify Certificates</span>
+                'Verify Certificates'
               )}
             </button>
           </div>
         </div>
 
-        {/* Box 4: DCET Rank */}
-        <div className={`card-yellow rounded-3xl p-5 flex flex-col justify-between min-h-[260px] shadow-sm ${
-          !step3Done ? 'opacity-40 pointer-events-none' : 'opacity-100'
+        {/* Card 4: DCET Rank */}
+        <div className={`template-card p-6 flex flex-col justify-between min-h-[270px] ${
+          !step3Done ? 'opacity-50 pointer-events-none' : 'opacity-100'
         }`}>
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="badge-tag font-bold">4. Merit Rank</span>
+            <div className="flex items-center justify-between mb-3">
+              <div className="template-icon-box">
+                <Award className="w-5 h-5 text-black" />
+              </div>
               {step4Done && (
-                <span className="bg-zinc-950 text-white text-[11px] font-bold px-3 py-0.5 rounded-full flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5 text-yellow-300" /> Linked
+                <span className="template-badge-black text-[10px]">
+                  <Check className="w-3 h-3 text-[#FFC700] mr-1" /> Linked
                 </span>
               )}
             </div>
 
-            <h3 className="text-base font-black text-zinc-950">DCET Rank</h3>
+            <h3 className="text-xl font-black text-black">DCET-2026 Rank</h3>
 
-            <div className="mt-2">
+            <div className="mt-3">
               <input
                 type="text"
                 value={rankInput}
                 onChange={(e) => setRankInput(e.target.value)}
-                className="w-full bg-white border-2 border-yellow-500/60 rounded-xl px-3 py-2 text-sm font-mono font-black text-zinc-950 focus:outline-none"
+                className="w-full bg-zinc-50 border-2 border-zinc-200 rounded-xl px-3.5 py-2 text-sm font-mono font-black text-black focus:outline-none focus:border-black"
               />
             </div>
 
             {step4Done && (
-              <div className="mt-2.5 bg-white rounded-xl p-2.5 text-xs text-zinc-950 border border-yellow-500/40 space-y-0.5 font-medium shadow-xs">
-                <div className="font-black text-sm text-zinc-950">Rank #{student.exam.dcetRank.toLocaleString()}</div>
-                <div className="text-zinc-700">Roll: {student.exam.dcetRollNo}</div>
+              <div className="mt-3 bg-zinc-50 rounded-2xl p-3 text-xs text-black border border-zinc-200 space-y-0.5 font-medium">
+                <div className="font-black text-black">Rank #{student.exam.dcetRank.toLocaleString()}</div>
+                <div className="text-zinc-600">Roll: {student.exam.dcetRollNo}</div>
               </div>
             )}
           </div>
 
-          <div className="mt-3">
+          <div className="mt-4 pt-1 flex gap-2">
             <button
               onClick={handleFetch4}
               disabled={step4Loading || step4Done}
-              className={`w-full py-2.5 px-4 text-xs flex items-center justify-center gap-1.5 font-bold ${
-                step4Done
-                  ? 'bg-zinc-950 text-white rounded-full cursor-default'
-                  : 'bg-zinc-950 hover:bg-zinc-800 text-white rounded-full'
-              }`}
+              className={`w-full ${step4Done ? 'template-btn-white opacity-80 cursor-default' : 'template-btn-black'} text-xs`}
             >
               {step4Loading ? (
-                <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  <span>Loading...</span>
-                </>
+                <Loader2 className="w-4 h-4 animate-spin mx-auto" />
               ) : step4Done ? (
-                <span>Linked</span>
+                'Linked'
               ) : (
-                <span>Lock Rank</span>
+                'Lock Rank'
               )}
             </button>
           </div>
@@ -342,12 +322,19 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
 
       </div>
 
-      {/* Direct Proceed Button */}
+      {/* Floating Success Bottom Bar */}
       {isAllResolved && (
-        <div className="pt-2 flex justify-end">
+        <div className="template-card p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+          <div>
+            <span className="font-black text-base block text-black">All 4 Identifiers Resolved</span>
+            <span className="text-xs text-zinc-600">
+              Secret Key: <strong className="font-mono text-black">{student.verification.secretKey}</strong>
+            </span>
+          </div>
+
           <button
             onClick={onProceed}
-            className="pill-btn-yellow px-8 py-3 text-xs font-black flex items-center gap-2 shadow-md border border-yellow-400"
+            className="template-btn-black flex items-center gap-2 text-xs font-black shadow-md"
           >
             <span>Proceed to Priority List</span>
             <ArrowRight className="w-4 h-4" />

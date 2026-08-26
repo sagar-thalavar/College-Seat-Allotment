@@ -9,32 +9,41 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ currentStep, onStepClick }) => {
   return (
-    <header className="bg-zinc-950 text-white sticky top-0 z-50 shadow-md">
-      <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+    <header className="py-6 px-4">
+      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         
-        {/* Simple Clean Title */}
-        <h1 className="text-lg font-black tracking-tight text-white">
-          College Seat Allotment
-        </h1>
+        {/* Giant Bold Black Typography Matching Reference Template */}
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-black leading-none">
+              College Seat Allotment
+            </h1>
+          </div>
+          <div className="mt-2.5">
+            <span className="template-badge-black">
+              Candidate: Sagar R Thalavar
+            </span>
+          </div>
+        </div>
 
-        {/* 2-Step Navigation */}
-        <div className="flex items-center space-x-2">
+        {/* 2-Step Navigation Capsule */}
+        <div className="bg-black p-1.5 rounded-2xl flex items-center space-x-1 shrink-0">
           <button
             onClick={() => onStepClick(1)}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+            className={`px-5 py-2 rounded-xl text-xs font-black transition-all ${
               currentStep === 1
-                ? 'pill-btn-yellow text-black'
-                : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                ? 'bg-[#FFC700] text-black shadow-sm'
+                : 'text-white/70 hover:text-white'
             }`}
           >
             1. Identity
           </button>
           <button
             onClick={() => onStepClick(2)}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+            className={`px-5 py-2 rounded-xl text-xs font-black transition-all ${
               currentStep === 2
-                ? 'pill-btn-yellow text-black'
-                : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                ? 'bg-[#FFC700] text-black shadow-sm'
+                : 'text-white/70 hover:text-white'
             }`}
           >
             2. Priority List
