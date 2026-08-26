@@ -1,80 +1,170 @@
 @import "tailwindcss";
 
+/* ============================================================
+   KEA Next — "The Verified Record"
+   A document surface, not a dashboard. Structure comes from
+   rules and density; colour is spent only where it carries
+   meaning. Two hues total: oxide (weight) and pine (verified).
+   ============================================================ */
+
+@theme {
+  /* --- Ground: true off-white, tinted toward the brand hue.
+         Not cream, not paper, not sand. --- */
+  --color-ground:      oklch(0.985 0.002 25);
+  --color-panel:       oklch(0.968 0.004 25);
+  --color-sunken:      oklch(0.945 0.005 25);
+
+  /* --- Rules. Structure lives here, not in shadows. --- */
+  --color-hairline:    oklch(0.905 0.007 25);
+  --color-rule:        oklch(0.840 0.010 25);
+  --color-field:       oklch(0.640 0.012 25);  /* 3.24:1 — interactive boundary */
+
+  /* --- Ink. All verified >= 4.5:1 on ground, panel and sunken. --- */
+  --color-ink:         oklch(0.190 0.012 25);  /* 17.7:1 */
+  --color-ink-soft:    oklch(0.380 0.012 25);  /*  9.6:1 */
+  --color-ink-muted:   oklch(0.500 0.012 25);  /*  5.8:1 */
+  --color-ink-hover:   oklch(0.280 0.014 25);
+  --color-ink-off:     oklch(0.620 0.010 25);  /* disabled only */
+
+  /* --- Oxide: identity and gravity. Ledger ink, file-cover red.
+         Marks weight and consequence. Never a decoration. --- */
+  --color-oxide:       oklch(0.460 0.145 27);  /* 7.35:1 on ground */
+  --color-oxide-deep:  oklch(0.390 0.135 27);
+  --color-oxide-wash:  oklch(0.955 0.020 27);
+  --color-oxide-edge:  oklch(0.860 0.055 27);
+
+  /* --- Pine: verified. The seal green of a revenue record,
+         not the SaaS emerald. --- */
+  --color-pine:        oklch(0.460 0.075 165); /* 6.55:1 on ground */
+  --color-pine-wash:   oklch(0.960 0.018 165);
+  --color-pine-edge:   oklch(0.870 0.045 165);
+
+  /* --- Radius. Documents have corners. --- */
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+
+  /* --- Type: one grotesque, one mono. Contrast on the axis
+         that matters, never two similar sans. --- */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-mono-data), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --text-micro:   0.6875rem;  /* 11 — legend, unit */
+  --text-label:   0.75rem;    /* 12 — field label */
+  --text-sm:      0.8125rem;  /* 13 — dense data */
+  --text-base:    0.875rem;   /* 14 — body */
+  --text-lg:      1rem;       /* 16 — prose, row title */
+  --text-xl:      1.125rem;   /* 18 — section */
+  --text-2xl:     1.375rem;   /* 22 — stage title */
+  --text-3xl:     1.75rem;    /* 28 — masthead */
+
+  /* --- Motion: state, not choreography. --- */
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* --- Semantic z-scale. No 9999 anywhere. --- */
 :root {
-  --background: #ffc700;
-  --foreground: #000000;
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-dropdown: 20;
+  --z-overlay: 30;
+  --z-dialog: 40;
+  --z-toast: 50;
+
+  --dur-fast: 140ms;
+  --dur-base: 180ms;
+  --dur-slow: 240ms;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+/* Element defaults live in @layer base so Tailwind utilities can override them.
+   Unlayered CSS beats layered utilities regardless of specificity — with these
+   rules unlayered, `text-wrap` (a white-space longhand) silently reset
+   `white-space: nowrap`, which made `truncate` a no-op on every <p> and heading
+   in the project. Layering them is the fix; do not move them back out. */
+@layer base {
+  html {
+    background-color: var(--color-ground);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv05" 1, "ss03" 1;
+  }
+
+  ::selection {
+    background-color: var(--color-oxide);
+    color: var(--color-ground);
+  }
+
+  /* Every number in this product is compared to another number.
+     Tabular figures are not optional. */
+  .tnum, table, input, output, time, [data-numeric] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Headings set their own measure; prose never runs past 68ch. */
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+  .measure { max-width: 68ch; }
 }
 
-::selection {
-  background-color: #000000;
-  color: #ffc700;
+/* Focus is deliberately unlayered: one treatment across the whole surface,
+   and no utility should be able to remove it by accident. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-oxide);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
 }
 
-body {
-  background-color: #ffc700;
-  color: #000000;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
+/* --- The seal. Used once per document artifact, never as decor. --- */
+@keyframes seal-press {
+  0%   { opacity: 0; transform: rotate(-14deg) scale(1.5); }
+  55%  { opacity: 1; transform: rotate(-7deg) scale(0.94); }
+  100% { opacity: 1; transform: rotate(-6deg) scale(1); }
 }
 
-/* Template Cards & Popups (Matching User's Reference Image) */
-.template-card {
-  background-color: #ffffff;
-  border-radius: 1.5rem;
-  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  color: #000000;
+@keyframes rule-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
 
-.template-btn-black {
-  background-color: #000000;
-  color: #ffffff;
-  border-radius: 0.75rem;
-  font-weight: 800;
-  padding: 0.625rem 1.25rem;
-  transition: all 0.15s ease-in-out;
-}
-.template-btn-black:hover {
-  background-color: #1f1f1f;
-  transform: translateY(-1px);
+/* The only animated thing on an empty record: a slow oxide ring breathing
+   around the one action that has to happen first. Opacity only — a ring that
+   scaled would read as a notification ping, and this student is anxious
+   enough. It dwells near invisible and blooms, rather than flashing.
+   Under reduced motion the global rule snaps it to its 100% frame (opacity 0),
+   so it simply never appears. */
+@keyframes record-breathe {
+  0%, 100% { opacity: 0; }
+  50%      { opacity: 0.75; }
 }
 
-.template-btn-white {
-  background-color: #ffffff;
-  color: #000000;
-  border: 1.5px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.75rem;
-  font-weight: 800;
-  padding: 0.625rem 1.25rem;
-  transition: all 0.15s ease-in-out;
-}
-.template-btn-white:hover {
-  background-color: #f4f4f5;
-  transform: translateY(-1px);
+@keyframes row-settle {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
 }
 
-.template-badge-black {
-  background-color: #000000;
-  color: #ffffff;
-  border-radius: 9999px;
-  font-weight: 800;
-  font-size: 0.75rem;
-  padding: 0.35rem 0.875rem;
-  display: inline-flex;
-  align-items: center;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
-.template-icon-box {
-  background-color: #fef08a;
-  border-radius: 1rem;
-  padding: 0.75rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #000000;
+/* Print: the slip and the allotment letter are real documents. */
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .print-sheet { border: 1px solid #000; break-inside: avoid; }
 }

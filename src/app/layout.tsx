@@ -1,9 +1,24 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Inter, JetBrains_Mono } from 'next/font/google';
+import './globals.css';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono-data',
+  weight: ['400', '500', '600'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: "KEA Next | Modernized Karnataka DCET Engineering Admission Portal",
-  description: "Zero-form digital authentication, multi-year cutoff analyzer, and intelligent option entry counseling platform for Karnataka engineering admissions.",
+  title: 'KEA Next — Lateral Entry Seat Allotment',
+  description:
+    'Verify your record from four identifiers, read three years of real cutoffs against your rank, and order your college options before the round locks.',
 };
 
 export default function RootLayout({
@@ -12,10 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full bg-slate-50 antialiased">
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 font-sans">
-        {children}
-      </body>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+      <body className="min-h-dvh bg-ground text-ink">{children}</body>
     </html>
   );
 }

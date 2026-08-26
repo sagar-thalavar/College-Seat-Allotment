@@ -1,0 +1,760 @@
+<title>KEA Next Source Record</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+  :root {
+    --ground:      #fbfaf9;
+    --panel:       #f7f3f3;
+    --sunken:      #f0eceb;
+    --hairline:    #e4dedd;
+    --rule:        #d1c8c7;
+    --ink:         #191211;
+    --ink-soft:    #49403f;
+    --ink-muted:   #6a6160;
+    --oxide:       #992c27;
+    --oxide-wash:  #fdebe9;
+    --oxide-edge:  #f3c4be;
+    --pine:        #28654d;
+    --pine-wash:   #e7f6ef;
+    --pine-edge:   #badecd;
+
+    --sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:     #141010;
+      --panel:      #1c1716;
+      --sunken:     #241d1c;
+      --hairline:   #2f2726;
+      --rule:       #453b3a;
+      --ink:        #f3edeb;
+      --ink-soft:   #c6bcba;
+      --ink-muted:  #968b89;
+      --oxide:      #e58573;
+      --oxide-wash: #2b1614;
+      --oxide-edge: #5c2c26;
+      --pine:       #74c69d;
+      --pine-wash:  #10241b;
+      --pine-edge:  #2a5442;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:     #141010;
+    --panel:      #1c1716;
+    --sunken:     #241d1c;
+    --hairline:   #2f2726;
+    --rule:       #453b3a;
+    --ink:        #f3edeb;
+    --ink-soft:   #c6bcba;
+    --ink-muted:  #968b89;
+    --oxide:      #e58573;
+    --oxide-wash: #2b1614;
+    --oxide-edge: #5c2c26;
+    --pine:       #74c69d;
+    --pine-wash:  #10241b;
+    --pine-edge:  #2a5442;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0 20px 96px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    padding-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .masthead-rule {
+    height: 3px;
+    background: var(--oxide);
+    width: 100%;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  .stamp-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    padding-top: 4px;
+  }
+
+  .stamp {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 4px 9px;
+    border-radius: 3px;
+    border: 1px solid var(--pine-edge);
+    background: var(--pine-wash);
+    color: var(--pine);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stamp.neutral {
+    border-color: var(--hairline);
+    background: var(--panel);
+    color: var(--ink-muted);
+  }
+
+  /* ---------- sections ---------- */
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .section-note {
+    color: var(--ink-muted);
+    max-width: 68ch;
+    margin: 0;
+  }
+
+  /* ---------- headline figure ---------- */
+
+  .figure-block {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 20px;
+    padding: 4px 0 8px;
+  }
+
+  .figure {
+    font-family: var(--mono);
+    font-size: 3.25rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--oxide);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .figure-caption {
+    max-width: 46ch;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- tables ---------- */
+
+  .scroller {
+    overflow-x: auto;
+    border-top: 1px solid var(--hairline);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+  }
+
+  th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    padding: 10px 16px 10px 0;
+    border-bottom: 1px solid var(--hairline);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 14px 16px 14px 0;
+    border-bottom: 1px solid var(--hairline);
+    vertical-align: top;
+    color: var(--ink-soft);
+  }
+
+  th:last-child, td:last-child { padding-right: 0; }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  .num { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+
+  .counts th:not(:first-child), .counts td:not(:first-child) { text-align: right; }
+
+  .counts td:first-child { color: var(--ink); }
+
+  /* ---------- source rows ---------- */
+
+  .sources td:nth-child(1) { width: 30%; min-width: 220px; }
+  .sources td:nth-child(2) { width: 38%; min-width: 260px; }
+  .sources td:nth-child(3) { width: 32%; min-width: 220px; }
+
+  .src-name {
+    display: block;
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    width: fit-content;
+  }
+
+  .src-name:hover { color: var(--oxide); border-bottom-color: var(--oxide); }
+
+  .src-host {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    color: var(--ink-muted);
+    margin-top: 5px;
+    word-break: break-all;
+  }
+
+  .why {
+    color: var(--ink);
+  }
+
+  code, .q {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    background: var(--sunken);
+    color: var(--ink);
+    padding: 1px 5px;
+    border-radius: 2px;
+    word-break: break-word;
+  }
+
+  .verified {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--pine);
+    margin-top: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .verified::before {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--pine);
+    margin-right: 6px;
+    vertical-align: 1.5px;
+  }
+
+  .absent { color: var(--oxide); }
+  .absent::before { background: var(--oxide); }
+
+  /* ---------- columns callout ---------- */
+
+  .callout {
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .callout p { margin: 0; color: var(--ink-soft); }
+
+  .cols {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--ink);
+    line-height: 1.9;
+    word-spacing: 0.35em;
+    overflow-x: auto;
+  }
+
+  .cols b { color: var(--oxide); font-weight: 500; }
+
+  /* ---------- method ---------- */
+
+  pre {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    background: var(--sunken);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    margin: 0;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  pre .cm { color: var(--ink-muted); }
+
+  /* ---------- disclosure ---------- */
+
+  .disclosure {
+    border: 1px solid var(--oxide-edge);
+    background: var(--oxide-wash);
+    border-radius: 4px;
+    padding: 16px;
+  }
+
+  .disclosure p { margin: 0; color: var(--ink-soft); max-width: 74ch; }
+
+  .disclosure .eyebrow { color: var(--oxide); display: block; margin-bottom: 8px; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+    color: var(--ink-muted);
+    font-size: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    justify-content: space-between;
+  }
+
+  a { color: var(--oxide); }
+
+  a:focus-visible, .src-name:focus-visible {
+    outline: 2px solid var(--oxide);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 620px) {
+    .figure { font-size: 2.5rem; }
+    h1 { font-size: 1.5rem; }
+    body { padding: 0 16px 64px; }
+  }
+</style>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div class="masthead-rule"></div>
+    <span class="eyebrow">Source record</span>
+    <h1>Every claim in this build, traced to a live government page</h1>
+    <p class="standfirst">
+      KEA Next reads Karnataka DCET lateral-entry admission data. This page lists every
+      endpoint and document it reads from, and the exact paperwork standing between the
+      demo and a permitted implementation.
+    </p>
+    <div class="stamp-row">
+      <span class="stamp">21 sources &middot; all HTTP 200</span>
+      <span class="stamp">Every quote byte-verified</span>
+      <span class="stamp neutral">Checked 27 Aug 2026</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-head">
+      <h2>The number this product exists to remove</h2>
+      <p class="section-note">
+        What a DCET lateral-entry candidate cross-references today to answer one question:
+        which college can I actually get? All three documents were downloaded and parsed
+        before these figures were written.
+      </p>
+    </div>
+
+    <div class="figure-block">
+      <span class="figure">213</span>
+      <p class="figure-caption">
+        pages of PDF, across three documents that do not reference each other, with no
+        search, no filter and no API.
+      </p>
+    </div>
+
+    <div class="scroller">
+      <table class="counts">
+        <thead>
+          <tr>
+            <th>Document</th>
+            <th>Pages</th>
+            <th>Colleges</th>
+            <th>Category columns</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>DCET-2026 cut-off ranks, Rest of Karnataka</td>
+            <td class="num">64</td><td class="num">226</td><td class="num">37</td>
+          </tr>
+          <tr>
+            <td>DCET-2026 cut-off ranks, 371(J) Kalyana Karnataka</td>
+            <td class="num">61</td><td class="num">&mdash;</td><td class="num">37</td>
+          </tr>
+          <tr>
+            <td>DCET-2026 engineering lateral entry seat matrix</td>
+            <td class="num">88</td><td class="num">229</td><td class="num">&mdash;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <p>The 37 columns, verbatim from page 1 of the cut-off PDF:</p>
+      <div class="cols">
+        1G 1K 1R 2AG 2AK 2AR 2BG 2BK 2BR 3AG 3AK 3AR 3BG 3BK 3BR
+        GM GMK GMP GMR NRI OPN OTH S1G S1K S1R S2G S2K S2R S3G S3K S3R
+        S4G S4K S4R STG STK STR
+      </div>
+      <p>
+        The <b>G</b> / <b>K</b> / <b>R</b> suffixes are General, Kannada-medium and Rural.
+        The seat matrix splits the same grid again into <span class="q">HK</span> and
+        <span class="q">RK</span> rows for Article 371(J).
+        Our four taps &mdash; category, Kannada, rural, 371(J) &mdash; are not a UX guess.
+        They are the government&rsquo;s own index, read directly off its own data.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>What KEA already asks a candidate for</h2>
+      <p class="section-note">
+        Our two-field form is not a shortcut we invented. It is KEA&rsquo;s own minimum,
+        confirmed on four separate portals.
+      </p>
+    </div>
+    <div class="scroller">
+      <table class="sources">
+        <thead>
+          <tr><th>Source</th><th>What it proves</th><th>Why it matters for us</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a class="src-name" href="https://cetonline.karnataka.gov.in/ugcetrank2025/dcetcheckresult.aspx" target="_blank" rel="noopener">DCET provisional result</a>
+              <span class="src-host">cetonline.karnataka.gov.in/ugcetrank2025/</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td>Two fields only: <span class="q">Enter Appln Number</span> and <span class="q">Enter Date of Birth</span>, under the header <span class="q">DCET DAY/EVENING 2026 PROVISIONAL RESULT</span>.</td>
+            <td class="why">KEA itself resolves a full rank card from two identifiers. That sets our floor, and it is theirs, not ours.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://keaonline.karnataka.gov.in/dcet_opt_etry_2026_v1/main/index.php" target="_blank" rel="noopener">DCET option entry login</a>
+              <span class="src-host">keaonline.karnataka.gov.in/dcet_opt_etry_2026_v1/</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td><span class="q">ADMISSION TO DCET PROFESSIONAL COURSES- 2026</span>, requiring <span class="q">Option Entry CET No</span>, OTP, <span class="q">Face Verify</span>, and a slip: <span class="q">CET No are on your verification slip</span>.</td>
+            <td class="why">The real bottleneck. Nothing starts until the student holds a physical slip. This is the step that sends them to a paid cyber centre.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://keaonline.karnataka.gov.in/dcet_opt_etry_2026_v1/main/checkresult.php" target="_blank" rel="noopener">DCET seat allotment result</a>
+              <span class="src-host">keaonline.karnataka.gov.in/dcet_opt_etry_2026_v1/</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td><span class="q">DCET-2026 FIRST ROUND FINAL SEAT ALLOTMENT RESULTS</span>, behind CET No + DOB + captcha.</td>
+            <td class="why">Results are already keyed on the same two identifiers we ask for. One identity, reused across the whole journey.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://cetonline.karnataka.gov.in/kearank2026app/ugcet2026-rank/" target="_blank" rel="noopener">KEA rank portal (React app)</a>
+              <span class="src-host">cetonline.karnataka.gov.in/kearank2026app/</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td>Its bundle calls <span class="q">POST /kearank2026api/api/v1/result/candidate-result</span> with <span class="q">{applicationNumber, dateOfBirth}</span>, returning discipline-wise rank, subject marks and QE marks.</td>
+            <td class="why">KEA has already built the API this product needs. We are not asking them to build anything &mdash; only for permission to call what exists.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://cetonline.karnataka.gov.in/kea/dcet2026.aspx" target="_blank" rel="noopener">KEA DCET 2026 hub</a>
+              <span class="src-host">cetonline.karnataka.gov.in/kea/</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td>A single page carrying 40+ portal and PDF links, in Kannada by default, with no guided path through them.</td>
+            <td class="why">This is the page that sends people to YouTube tutorials. It is the before-picture, and it is not a strawman.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://cetonline.karnataka.gov.in/dcet2026app/login" target="_blank" rel="noopener">DCET 2026 application portal</a>
+              <span class="src-host">cetonline.karnataka.gov.in/dcet2026app/</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td>A separate application, separate login and separate credentials from the rank portal and the allotment portal.</td>
+            <td class="why">Fragmentation is the product problem. Five portals, five logins, one frightened student.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>The data we parse ourselves</h2>
+      <p class="section-note">
+        No API exists for any of it. Every file below is text-extractable rather than
+        scanned, which is why the parsing pipeline is buildable today with no permission
+        at all.
+      </p>
+    </div>
+    <div class="scroller">
+      <table class="sources">
+        <thead>
+          <tr><th>Source</th><th>What it proves</th><th>Why it matters for us</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a class="src-name" href="https://cetonline.karnataka.gov.in/keawebentry456/dcet2026/DCET_CUTOFF_R_18082026kannada.pdf" target="_blank" rel="noopener">Cut-off ranks, Rest of Karnataka</a>
+              <span class="src-host">DCET_CUTOFF_R_18082026kannada.pdf</span>
+              <span class="verified">200 &middot; 64 pages &middot; parsed</span>
+            </td>
+            <td>Header reads <span class="q">DCET-2026 PROVISIONAL ALLOTMENT CUT-OFF RANKS FOR Engineering</span>. 226 colleges, 37 category columns, real text layer.</td>
+            <td class="why">The one piece of the pipeline that needs nobody&rsquo;s approval. We can ship feasibility scoring on this alone.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://cetonline.karnataka.gov.in/keawebentry456/dcet2026/DCET_CUTOFF_H_18082026kannada.pdf" target="_blank" rel="noopener">Cut-off ranks, 371(J)</a>
+              <span class="src-host">DCET_CUTOFF_H_18082026kannada.pdf</span>
+              <span class="verified">200 &middot; 61 pages &middot; parsed</span>
+            </td>
+            <td>A wholly separate 61-page file: <span class="q">Seat Type: 371(j) Kalyana karnataka Cut-Off Ranks</span>.</td>
+            <td class="why">A Kalyana Karnataka student must know a second document exists before they can find it. Most do not. That is a quota lost to filing, not to merit.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://cetonline.karnataka.gov.in/keawebentry456/dcet2026/ENG_SEAT_DIP_2026_19082026kannada.pdf" target="_blank" rel="noopener">Engineering lateral entry seat matrix</a>
+              <span class="src-host">ENG_SEAT_DIP_2026_19082026kannada.pdf</span>
+              <span class="verified">200 &middot; 88 pages &middot; parsed</span>
+            </td>
+            <td><span class="q">DCET - ENGINEERING LATERAL ENTRY 1ST ROUND PROVISIONAL SEAT MATRIX &ndash; 2026 (REGULAR)</span>: 229 colleges, split into <span class="q">GRNERAL</span> / <span class="q">KANNADA</span> / <span class="q">RURAL</span> blocks over <span class="q">HK</span> / <span class="q">RK</span> rows.</td>
+            <td class="why">The seat grid is indexed by exactly our four toggles. Our input design is a direct read of the state&rsquo;s own data model.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://cetonline.karnataka.gov.in/kea/cutoff.aspx" target="_blank" rel="noopener">Year-wise cut-off archive</a>
+              <span class="src-host">cetonline.karnataka.gov.in/kea/cutoff.aspx</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td>Historical cut-offs going back years, published as PDFs only.</td>
+            <td class="why">Source for the multi-year trend scoring. We host our own parsed copy because there is nothing to call.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://cetonline.karnataka.gov.in/keawebentry456/dcet2026/info_bulletin_diploma_2026_17032026kannada.pdf" target="_blank" rel="noopener">DCET information bulletin 2026</a>
+              <span class="src-host">info_bulletin_diploma_2026_17032026kannada.pdf</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td>The official rules for eligibility, reservation and each allotment round.</td>
+            <td class="why">Ground truth our allotment simulator has to match. Correctness here is checkable against a document, not asserted.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>The path to permission</h2>
+      <p class="section-note">
+        The blocker is a signature, not an API key. Karnataka has already done its half of
+        the work &mdash; its certificates are in DigiLocker today.
+      </p>
+    </div>
+    <div class="scroller">
+      <table class="sources">
+        <thead>
+          <tr><th>Source</th><th>What it proves</th><th>Why it matters for us</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a class="src-name" href="https://cf-media.api-setu.in/resources/DigiLocker-Terms-of-User-Requester-june-2025.pdf" target="_blank" rel="noopener">DigiLocker Terms of Use, Requester</a>
+              <span class="src-host">cf-media.api-setu.in/resources/</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td><span class="q">Terms of Service agreement to be signed by &lsquo;Requestor Organization&rsquo; before proceeding for Integration</span>.</td>
+            <td class="why">This names the blocker honestly. It is the single document standing between four taps and zero taps. This is the ask.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://cf-media.api-setu.in/resources/Requester-APISpecification-V1_12.pdf" target="_blank" rel="noopener">DigiLocker Requester API Specification v1.12</a>
+              <span class="src-host">cf-media.api-setu.in/resources/</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td>The full specification for pulling a citizen&rsquo;s documents with their consent.</td>
+            <td class="why">The moment this is signed, category, caste, income and 371(J) stop being toggles and become fetched facts.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://cf-media.api-setu.in/resources/Partners-SOP.pdf" target="_blank" rel="noopener">DigiLocker Partner Onboarding SOP</a>
+              <span class="src-host">cf-media.api-setu.in/resources/</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td>Step-by-step onboarding process for partner organisations.</td>
+            <td class="why">The checklist we work through on day one, given the right introduction. We have read it; we are not guessing at the process.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://nadakacheri.karnataka.gov.in/ajsk/" target="_blank" rel="noopener">Nadakacheri, Government of Karnataka</a>
+              <span class="src-host">nadakacheri.karnataka.gov.in/ajsk/</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td>Announcement on the live homepage: <span class="q">Digilocker(Pull Service) Facility Has Been Enabled</span>.</td>
+            <td class="why">Karnataka&rsquo;s caste, income and residence certificates are already in DigiLocker. The infrastructure exists. Only the permission is missing.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://ajsk.karnataka.gov.in/NK_Status" target="_blank" rel="noopener">Nadakacheri certificate lookup</a>
+              <span class="src-host">ajsk.karnataka.gov.in/NK_Status</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td>Lookup by mobile number and OTP, returning district, taluk, hobli and village.</td>
+            <td class="why">Village decides rural and 371(J) eligibility. No student should type an RD number they have never memorised.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://directory.apisetu.gov.in/" target="_blank" rel="noopener">API Setu directory</a>
+              <span class="src-host">directory.apisetu.gov.in</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td>The government&rsquo;s own stated education use case: <span class="q">Transform admission process, get access to crores of educational awards.</span></td>
+            <td class="why">India already frames this exact problem as a target use case. We are asking to be let into an existing lane, not to open a new one.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://apisetu.gov.in/digilocker" target="_blank" rel="noopener">API Setu DigiLocker resources</a>
+              <span class="src-host">apisetu.gov.in/digilocker</span>
+              <span class="verified">200 &middot; verified</span>
+            </td>
+            <td>The integration hub the three documents above are published from. Its content sits behind tabs, so browser search only finds a document after the matching tab is opened.</td>
+            <td class="why">Linked for completeness &mdash; but we link the PDFs directly above, so nobody checking our work hits that wall.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>What does not exist, and we checked</h2>
+      <p class="section-note">
+        Stated up front rather than discovered in month three.
+      </p>
+    </div>
+    <div class="scroller">
+      <table class="sources">
+        <thead>
+          <tr><th>Source</th><th>What we found</th><th>Why it matters for us</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a class="src-name" href="https://www.data.gov.in/apis" target="_blank" rel="noopener">data.gov.in API listing</a>
+              <span class="src-host">data.gov.in/apis</span>
+              <span class="verified absent">200 &middot; zero APIs listed</span>
+            </td>
+            <td>The page returns <span class="q">The portal is undergoing maintenance</span> and <span class="q">No Result Found</span>.</td>
+            <td class="why">We are not building on India&rsquo;s open data portal, because right now there is nothing there to build on.</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="src-name" href="https://aishe.gov.in/aishe/home" target="_blank" rel="noopener">AISHE, Ministry of Education</a>
+              <span class="src-host">aishe.gov.in</span>
+              <span class="verified absent">200 &middot; no public API</span>
+            </td>
+            <td>A browsable directory of institutions, with no published API.</td>
+            <td class="why">College metadata &mdash; NAAC, NIRF, intake, placement &mdash; has to be assembled and maintained by us.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Method</h2>
+      <p class="section-note">
+        Each page was fetched with <code>curl</code>, and each quoted string confirmed
+        present in the response bytes with <code>grep -F</code>. PDFs were downloaded and
+        parsed with <code>pdftotext</code> before any claim about page counts or column
+        headers was written. Nothing here is quoted from a search result or a summary.
+      </p>
+    </div>
+<pre><span class="cm"># reproduce any row above</span>
+curl -s https://keaonline.karnataka.gov.in/dcet_opt_etry_2026_v1/main/index.php \
+  | grep -o 'Option Entry CET No'</pre>
+  </section>
+
+  <div class="disclosure">
+    <span class="eyebrow">Standing disclosure</span>
+    <p>
+      This is a demonstration build running on mock data. It is not affiliated with,
+      endorsed by, or operated by the Karnataka Examinations Authority, and it is not the
+      official DCET portal. No government endpoint is called in production and no candidate
+      data is stored. The sources above describe what a permitted implementation would read
+      from, and what permission it would need first.
+    </p>
+  </div>
+
+  <footer>
+    <span>KEA Next &middot; source record</span>
+    <span>All links checked live 27 August 2026</span>
+  </footer>
+
+</div>

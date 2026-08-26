@@ -1,217 +1,219 @@
 ---
 name: KEA Next
-description: Modernized Lateral-Entry Engineering Admission & Option Entry System
+description: Lateral-entry engineering seat verification, cutoff feasibility and option entry for Karnataka
 colors:
-  authority-dark: "#0f172a"
-  authority-black: "#020617"
-  authority-surface: "#1e293b"
-  verified-primary: "#059669"
-  verified-surface: "#ecfdf5"
-  verified-border: "#a7f3d0"
-  target-primary: "#d97706"
-  target-surface: "#fffbeb"
-  target-border: "#fde68a"
-  ambitious-primary: "#4f46e5"
-  ambitious-surface: "#eef2ff"
-  ambitious-border: "#c7d2fe"
-  danger-primary: "#e11d48"
-  danger-surface: "#fff1f2"
-  surface-canvas: "#f8fafc"
-  surface-card: "#ffffff"
-  surface-muted: "#f1f5f9"
-  border-subtle: "#e2e8f0"
-  border-strong: "#cbd5e1"
-  text-heading: "#0f172a"
-  text-body: "#334155"
-  text-muted: "#64748b"
+  ground: "#fbfaf9"
+  panel: "#f7f3f3"
+  sunken: "#f0eceb"
+  hairline: "#e4dedd"
+  rule: "#d1c8c7"
+  field: "#938988"
+  ink: "#191211"
+  ink-soft: "#49403f"
+  ink-muted: "#6a6160"
+  ink-off: "#9b9291"
+  oxide: "#992c27"
+  oxide-deep: "#7e1a18"
+  oxide-wash: "#fdebe9"
+  oxide-edge: "#f3c4be"
+  pine: "#28654d"
+  pine-wash: "#e7f6ef"
+  pine-edge: "#badecd"
 typography:
-  display:
-    fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-    fontSize: "1.25rem"
-    fontWeight: 700
-    lineHeight: "1.2"
-    letterSpacing: "-0.02em"
-  headline:
-    fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-    fontSize: "1rem"
-    fontWeight: 700
-    lineHeight: "1.3"
-    letterSpacing: "-0.01em"
-  title:
-    fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-    fontSize: "0.875rem"
+  masthead:
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.75rem"
     fontWeight: 600
-    lineHeight: "1.4"
+    lineHeight: "1.15"
+    letterSpacing: "-0.02em"
+  stage:
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.375rem"
+    fontWeight: 600
+    lineHeight: "1.25"
+    letterSpacing: "-0.015em"
+  section:
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.125rem"
+    fontWeight: 600
+    lineHeight: "1.35"
   body:
-    fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-    fontSize: "0.75rem"
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.875rem"
     fontWeight: 400
     lineHeight: "1.5"
   label:
-    fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-    fontSize: "0.6875rem"
-    fontWeight: 600
-    lineHeight: "1.3"
-    letterSpacing: "0.04em"
-  micro:
-    fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-    fontSize: "0.625rem"
-    fontWeight: 700
-    lineHeight: "1.2"
-    letterSpacing: "0.05em"
-  mono:
-    fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.75rem"
-    fontWeight: 600
+    fontWeight: 500
+    lineHeight: "1.4"
+  record:
+    fontFamily: "JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace"
+    fontSize: "0.8125rem"
+    fontWeight: 500
+    letterSpacing: "-0.01em"
 rounded:
-  sm: "4px"
-  md: "6px"
-  lg: "8px"
-  full: "9999px"
+  xs: "2px"
+  sm: "3px"
+  md: "4px"
+  lg: "6px"
 spacing:
   xs: "4px"
   sm: "8px"
   md: "12px"
   lg: "16px"
   xl: "24px"
+  xxl: "40px"
 components:
   button-primary:
-    backgroundColor: "{colors.authority-dark}"
-    textColor: "{colors.surface-card}"
-    rounded: "{rounded.md}"
-    padding: "8px 16px"
-  button-action:
-    backgroundColor: "{colors.verified-primary}"
-    textColor: "{colors.surface-card}"
-    rounded: "{rounded.md}"
-    padding: "10px 20px"
-  card-standard:
-    backgroundColor: "{colors.surface-card}"
-    rounded: "{rounded.lg}"
-    padding: "16px"
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.ground}"
+    rounded: "{rounded.sm}"
+    padding: "0 16px"
+  button-grave:
+    backgroundColor: "{colors.oxide}"
+    textColor: "{colors.ground}"
+    rounded: "{rounded.sm}"
+    padding: "0 16px"
+  panel:
+    backgroundColor: "{colors.ground}"
+    borderColor: "{colors.hairline}"
+    rounded: "{rounded.sm}"
 ---
 
 # Design System: KEA Next
 
-## Overview
+## North star — "The Verified Record"
 
-**Creative North Star: "The Sovereign Civic Gateway"**
+A 19-year-old polytechnic graduate sits in a bright room in Kalaburagi in June, phone at
+40% brightness, comparing a college's 2025 cutoff to their own DCET rank while a parent
+reads over their shoulder. They get one shot, and they are frightened of ordering their
+options wrong and losing a seat they earned.
 
-KEA Next is an authoritative, calm, and dependable digital public instrument engineered for high-stakes engineering admissions in Karnataka. Its visual language replaces bureaucratic clutter, confusing marquees, and predatory commercial counseling aesthetics with crisp, respectful, and transparent software craft.
+Every decision below falls out of that sentence. The product is not a dashboard and not a
+SaaS app. It is **a public record that happens to be interactive** — calm, exact, and
+unexcited, at a moment when the person reading it is none of those things.
 
-The design emphasizes clarity, high information density without visual noise, instant data verification, and deterministic user guidance across all five stages of the lateral-entry admission journey.
+## Colours
 
-**Key Characteristics:**
-- Restrained, institutional palette prioritizing deep navy authority and calibrated semantic signals.
-- Clean structural grouping over gratuitous cards and decorative nesting.
-- High-contrast typography optimized for rapid scanning of scores, ranks, and cutoff figures.
-- Total absence of AI cliches (no purple gradients, no glowing neon effects, no decorative emojis).
+Two hues carry the entire product. Everything else is ink on an off-white ground.
 
-## Colors
+### The governing rule
 
-The color palette is strictly functional, distinguishing administrative authority from statistical probability tiers and verification states.
+**Ink does the work; oxide marks consequence.**
 
-### Primary (Civic Authority)
-- **Authority Dark** (`#0f172a`): Used for portal navigation headers, primary decision containers, and official verification badges.
-- **Authority Black** (`#020617`): Used for top state administrative bars and high-contrast anchors.
-- **Authority Surface** (`#1e293b`): Used for nested interactive blocks inside dark headers and secondary dark buttons.
+Primary actions are ink, because a state instrument's default action should be sober.
+Oxide appears only on the masthead rule, the current stage marker, verification seals, and
+irreversible actions — locking an option list, surrendering a seat. Past roughly 10% of a
+screen, oxide is wrong.
 
-### Semantic Accents (Probability & Verification)
-- **Verified / Safe Emerald** (`#059669`): Denotes verified identity records, approved SNQ fee waivers, and safe admission probability ($\ge$ 85%).
-- **Target / Moderate Amber** (`#d97706`): Denotes realistic target choices requiring careful multi-round monitoring (55% to 80% feasibility).
-- **Ambitious Indigo** (`#4f46e5`): Denotes stretch dream choices suitable for top priority slots (< 50% probability).
-- **Danger Rose** (`#e11d48`): Used exclusively for irreversible actions, seat surrenders, and error states.
+### Identity — Oxide (`#992c27`)
 
-### Neutral (Surfaces & Structural Borders)
-- **Canvas Neutral** (`#f8fafc`): The foundational canvas providing soft, glare-free readability.
-- **Card Surface** (`#ffffff`): The primary content plane for forms, tables, and admission cards.
-- **Subtle Border** (`#e2e8f0`): Standard 1px boundary separating information chunks.
-- **Strong Border** (`#cbd5e1`): Interactive field borders and active selection frames.
+Deep madder red: Karnataka ledger ink and government file-cover red. It is neither the
+navy-and-saffron reflex that every Indian government portal reaches for first, nor the
+black-and-yellow neobrutalism that a designer avoiding that reflex reaches for second.
+It reads as a stamped record, which is exactly what this product is.
 
-### Named Rules
-**The Ten Percent Accent Rule.** Colored probability badges (Emerald, Amber, Indigo) must never dominate the screen; they exist solely as precise, scannable data markers against a calm slate foundation.
-**The No-AI-Gradient Rule.** Never use multi-stop purple-to-cyan linear gradients or glowing drop-shadows anywhere on public service surfaces.
+### Verified — Pine (`#28654d`)
+
+The seal green of a revenue document, not the SaaS emerald. Deep and desaturated
+(L 0.46 / C 0.075). Used only for a verified state — a resolved register, a confirmed
+category code, an option already added. Never for "good", never for "safe".
+
+### Ground
+
+A true off-white at `oklch(0.985 0.002 25)` — chroma tinted toward the brand's own hue
+rather than defaulted toward warmth. It is deliberately **not** the cream/sand/paper band
+that reads as generated the moment you see it.
+
+`panel` is the second neutral layer for headers, toolbars and footers; `sunken` is for
+inset wells, disabled fills and meter tracks.
+
+### Contrast — measured, not assumed
+
+| Pair | Ratio |
+|---|---|
+| `ink` on `ground` | 17.7:1 |
+| `ink-soft` on `ground` | 9.6:1 |
+| `ink-muted` on `ground` | 5.8:1 |
+| `oxide` on `ground` | 7.4:1 |
+| `pine` on `ground` | 6.6:1 |
+| `ground` on `ink` | 17.7:1 |
+| `field` border on `ground` | 3.2:1 |
+
+`ink-muted` is the lightest text that exists. There is no lighter grey to reach for.
+
+### Named rules
+
+**Probability is never colour-coded.** No green/amber/red tiers. A red "Ambitious" badge
+tells a frightened student that their dream college is an error — it is not, it is a
+stretch. Probability is a magnitude, so it is drawn as one: a filled proportion with
+ticks on the real tier boundaries (52 / 86), which makes the scale self-explaining and
+removes the need for a legend.
+
+**Structure comes from rules, not shadows.** Content never floats. Box-shadow exists on
+exactly one component, `Dialog`, because an overlay genuinely sits above the page.
+
+**Documents have corners.** Maximum radius is 6px. The old build's `rounded-2xl` on every
+surface is what made it read as a template.
 
 ## Typography
 
-**Display & Body Font:** Inter, system sans-serif fallback  
-**Data & Code Font:** System Monospace (`ui-monospace, SFMono-Regular, Menlo, Consolas`)
+**Inter** for everything on screen; **JetBrains Mono** for records only — Aadhaar, USN,
+RD numbers, secret keys, ranks, cutoffs, rupees, percentages. Sans and mono is a real
+contrast axis; two similar sans-serifs would not be.
 
-**Character:** Clean, highly legible municipal typography with crisp tabular numbers for cutoffs, ranks, and monetary figures.
+Fixed rem scale (11 / 12 / 13 / 14 / 16 / 18 / 22 / 28), not fluid — users view product
+UI at consistent DPI, and a heading that shrinks inside a panel looks worse, not better.
 
-### Hierarchy
-- **Display** (Bold, `1.25rem` / 20px, line-height 1.2): Used for primary stage titles and document headings.
-- **Headline** (Bold, `1rem` / 16px, line-height 1.3): Used for college names, card headers, and verification slip sections.
-- **Title** (Semi-bold, `0.875rem` / 14px, line-height 1.4): Used for component groups and section headers.
-- **Body** (Regular, `0.75rem` / 12px, line-height 1.5): The core interface text for labels, descriptions, and rules.
-- **Label** (Semi-bold, `0.6875rem` / 11px, line-height 1.3, tracking 0.04em): Used for secondary form labels, metadata headers, and category tags.
-- **Micro** (Bold, `0.625rem` / 10px, uppercase, tracking 0.05em): Used for statutory status tags, quota badges, and table sub-headers.
-- **Monospace Token** (Bold, `0.75rem` / 12px): Used for Roll numbers, Secret Keys, RD certificate numbers, and Challan codes.
+Weights stop at `font-semibold`. The old build used `font-black` on every string, which
+is the same as using it on none.
 
-### Named Rules
-**The Tabular Data Rule.** All entrance exam ranks, monetary fees, and verification keys must use monospace or tabular numerical alignment to ensure error-free comparison.
+Every figure that gets compared to another figure carries `tabular-nums`. In a product
+whose entire content is ranks against cutoffs, proportional digits are a defect.
 
-## Layout
+## Motion
 
-The spatial model employs a linear 5-step horizontal progression anchoring the entire user workflow.
+140ms / 180ms / 240ms on `ease-out-quart`. Motion conveys state — a value arriving, a row
+moving, a panel opening — and never choreographs a page load.
 
-- **Container:** Maximum content width capped at `1280px` (`max-w-7xl`) centered with responsive horizontal padding (`16px` on mobile, `24px` on desktop).
-- **Rhythm:** Standard 4px baseline grid with primary component vertical rhythm of 12px to 24px (`space-y-3` to `space-y-6`).
-- **Responsive Behavior:** 
-  - Desktop: 4-column metric grids and side-by-side verification panels.
-  - Tablet / Mobile: Stacks gracefully into single-column cards with horizontally scrolling filter chips and sticky action footers.
+Three keyframes are defined, each with one sanctioned use:
 
-## Elevation & Depth
+- `seal-press` — the oxide verification seal pressing onto the slip and the allotment
+  order. Once per document. It is what a government office physically does to a verified
+  record, which is why it earns its place where confetti would not.
+- `rule-draw` — the masthead rule, once.
+- `row-settle` — registers landing as they resolve, and rows settling after a reorder.
 
-KEA Next follows a **Flat-and-Layered** architectural philosophy. Depth is conveyed primarily through 1px crisp slate borders and soft tonal shifts rather than heavy floating drop shadows.
+Reduced motion is handled globally and must not be defeated inline.
 
-### Shadow Vocabulary
-- **Resting Surface** (`shadow-xs` / `0 1px 2px rgba(0, 0, 0, 0.05)`): Standard elevation for white content cards.
-- **Action Footers & Modals** (`shadow-md` / `0 4px 6px -1px rgba(0, 0, 0, 0.1)`): Used for sticky decision bars and dialog drawers.
+## One CSS trap this project already hit
 
-### Named Rules
-**The Structural Border Rule.** Visual grouping must be achieved through 1px borders (`border-slate-200`) and soft background fills (`bg-slate-50`) rather than elevation lifting.
+Element defaults in `globals.css` live inside `@layer base`. They must stay there.
 
-## Shapes
-
-- **Base Radius:** 6px (`rounded-md`) for buttons and interactive controls; 8px (`rounded-lg`) for surface cards and containers.
-- **Pill Badges:** Fully rounded (`rounded-full`) reserved exclusively for verified state pills and step numbering indicators.
-- **Form Controls:** 4px to 6px radius with crisp 1px neutral strokes.
+Unlayered CSS beats Tailwind's layered utilities regardless of specificity. While
+`p { text-wrap: pretty }` and `h1,h2,h3 { text-wrap: balance }` sat unlayered, they reset
+the `white-space` longhand and silently made `truncate` a no-op on every paragraph and
+heading in the project — text wrapped to four lines where a single ellipsised line was
+intended, with no error anywhere. Layering them fixed it. Do not move them back out.
 
 ## Components
 
-### Buttons
-- **Primary Action (Authority Dark):** Solid `#0f172a` fill, white bold text, 6px radius, padding 8px 16px.
-- **Action CTA (Verified Emerald):** Solid `#059669` fill, white bold text, 6px radius, padding 10px 20px, subtle hover transition.
-- **Secondary / Utility:** White background, 1px `#cbd5e1` border, slate-700 text, hover `#f1f5f9`.
-- **Mobile Touch Minimum:** Interactive reorder/delete controls maintain $\ge 44\text{px} \times 44\text{px}$ touch targets on mobile viewports.
+`src/components/ui/` holds the shared primitives: `Button`, `Panel`, `Badge`, `Field`,
+`DataRow`, `Dialog`, `ProbabilityBar`. `Panel` is a ruled section, not a card — cards are
+the lazy answer and nested cards are always wrong.
 
-### Chips & Badges
-- **Safe Tier:** Background `#d1fae5` (Emerald 100), Text `#065f46` (Emerald 900), 1px border `#a7f3d0`.
-- **Target Tier:** Background `#fef3c7` (Amber 100), Text `#78350f` (Amber 900), 1px border `#fde68a`.
-- **Ambitious Tier:** Background `#e0e7ff` (Indigo 100), Text `#3730a3` (Indigo 900), 1px border `#c7d2fe`.
+Every interactive component ships default, hover, focus-visible, active, disabled and
+loading. Disabled uses real tokens (`bg-sunken` / `text-ink-off` / `border-hairline`);
+`opacity-50` over a coloured ground destroys contrast and is banned.
 
-### Cards & Form Containers
-- **Background:** Pure white (`#ffffff`).
-- **Border:** 1px solid `#e2e8f0` (hover `#cbd5e1`).
-- **Internal Padding:** 16px to 24px.
-- **Header Section:** Bottom border divider with uppercase micro-labeling.
+Anything reorderable by mouse is reorderable by keyboard, with the result announced in a
+polite live region. Touch targets are at least 44px.
 
-### Input Fields
-- **Read-Only / Auto-Populated:** Soft slate fill (`#f8fafc`), `#cbd5e1` stroke, monospace text color `#1e293b`.
-- **Active Interactive:** White fill, `#0f172a` focus ring (1px).
+## Copy
 
-## Do's and Don'ts
+Load-bearing words, grounded in what actually happens. A probability is never stated
+without what it is measured against: "92%" is noise, "92% — your rank 1,250 sits well
+inside last year's 3AG cutoff of 2,340" is a fact.
 
-### Do:
-- **Do** display fees with transparent breakdown of standard tuition versus SNQ subsidized concessions.
-- **Do** format all dates in standard Indian official format (YYYY-MM-DD or DD Month YYYY).
-- **Do** pair every probability badge with its exact numerical cutoff baseline and applicable quota category.
-- **Do** warn candidates before submitting option lists that lack safe backup choices.
-- **Do** ensure all mobile touch controls meet the minimum 44px hit area standard.
-
-### Don't:
-- **Don't** use decorative emojis in official public service views; use professional functional Lucide SVG icons.
-- **Don't** use em-dashes in user-facing copy or technical summaries.
-- **Don't** bury critical reservation codes (HK 371J, SNQ, Rural) inside nested unsearchable menus.
-- **Don't** allow candidates to pick engineering branches incompatible with their diploma discipline.
+Rupees use Indian grouping (₹1,26,000). Ranks are grouped (1,250). Dates are unambiguous.

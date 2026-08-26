@@ -1,4 +1,4 @@
-import { College, BranchCutoff, StudentProfile, RecommendationResult, ProbabilityTier } from '@/types';
+import { College, StudentProfile, RecommendationResult, ProbabilityTier } from '@/types';
 
 export function calculateCollegeRecommendations(
   student: StudentProfile,
