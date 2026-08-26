@@ -2,13 +2,13 @@
   {
     "id": "sagar-thalavar",
     "name": "Sagar R Thalavar",
-    "dob": "2004-05-14",
+    "dob": "2004-01-01",
     "gender": "Male",
-    "fatherName": "Ramesh Thalavar",
-    "motherName": "Shobha Thalavar",
-    "aadhaarNumber": "9823 4512 7890",
-    "phone": "9845012345",
-    "email": "sagar.thalavar@example.com",
+    "fatherName": "Raju",
+    "motherName": "Lakshmi",
+    "aadhaarNumber": "1234 4444 2222",
+    "phone": "1234567890",
+    "email": "xyz@gmail.com",
     "address": {
       "line": "#42, 3rd Cross",
       "taluk": "Bengaluru South",
@@ -17,7 +17,7 @@
       "pincode": "560041"
     },
     "academic": {
-      "sslcRollNo": "20210849201",
+      "sslcRollNo": "2021123123",
       "sslcBoard": "KSEEB Karnataka",
       "sslcPassingYear": 2021,
       "sslcMaxMarks": 625,
@@ -50,9 +50,9 @@
       "isWorkingProfessional": false
     },
     "exam": {
-      "dcetRollNo": "DCET26-BLR-0842",
+      "dcetRollNo": "A5555",
       "dcetRank": 1250,
-      "examCenter": "Bengaluru Central",
+      "examCenter": "Bengaluru Central Silk Board",
       "score": 86.5
     },
     "verification": {
