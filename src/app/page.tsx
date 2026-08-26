@@ -19,7 +19,11 @@ export default function Home() {
 
   useEffect(() => {
     const recs = calculateCollegeRecommendations(selectedStudent, colleges);
-    const initialChoices: OptionChoice[] = recs.slice(0, 10).map((r, idx) => ({
+    
+    // Sort from Top Best Colleges (lowest cutoff / lowest probability) to Safe Backup Colleges (high cutoff / high probability)
+    const sortedDreamToSafe = [...recs].sort((a, b) => a.effectiveCutoff - b.effectiveCutoff);
+
+    const initialChoices: OptionChoice[] = sortedDreamToSafe.slice(0, 10).map((r, idx) => ({
       priority: idx + 1,
       collegeCode: r.college.code,
       collegeName: r.college.name,

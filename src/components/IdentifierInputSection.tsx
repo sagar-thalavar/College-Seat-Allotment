@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { StudentProfile } from '@/types';
-import { ArrowRight, Loader2, Check, CreditCard, GraduationCap, FileCheck2, Award } from 'lucide-react';
+import { ArrowRight, Loader2, Check, CreditCard, GraduationCap, FileCheck2, Award, ChevronRight, X } from 'lucide-react';
 
 interface IdentifierInputSectionProps {
   student: StudentProfile;
@@ -31,6 +31,9 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
   const [step4Loading, setStep4Loading] = useState<boolean>(false);
   const [rankInput, setRankInput] = useState<string>(student.exam.dcetRank.toString());
 
+  // Dynamic Detail Modal state for each of the 4 sections
+  const [activeDetailSection, setActiveDetailSection] = useState<number | null>(null);
+
   useEffect(() => {
     setAadhaarInput(student.aadhaarNumber);
     setUsnInput(student.academic.diplomaUsn);
@@ -45,7 +48,7 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
     setTimeout(() => {
       setStep1Loading(false);
       setStep1Done(true);
-    }, 350);
+    }, 300);
   };
 
   const handleFetch2 = () => {
@@ -53,7 +56,7 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
     setTimeout(() => {
       setStep2Loading(false);
       setStep2Done(true);
-    }, 350);
+    }, 300);
   };
 
   const handleFetch3 = () => {
@@ -61,7 +64,7 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
     setTimeout(() => {
       setStep3Loading(false);
       setStep3Done(true);
-    }, 350);
+    }, 300);
   };
 
   const handleFetch4 = () => {
@@ -69,7 +72,7 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
     setTimeout(() => {
       setStep4Loading(false);
       setStep4Done(true);
-    }, 350);
+    }, 300);
   };
 
   const handleClickMe = () => {
@@ -84,12 +87,8 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       
-      {/* Top Action Bar */}
-      <div className="flex items-center justify-between">
-        <span className="template-badge-black">
-          Zero-Form Identity Resolution
-        </span>
-
+      {/* Top Header - Removed "Zero-Form Identity Resolution" */}
+      <div className="flex items-center justify-end">
         <button
           onClick={handleClickMe}
           className="template-btn-black text-xs font-black shadow-lg"
@@ -98,7 +97,7 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
         </button>
       </div>
 
-      {/* 4 White Floating Cards (Matching Template Image) */}
+      {/* 4 White Floating Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         
         {/* Card 1: Aadhaar */}
@@ -127,10 +126,21 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
             </div>
 
             {step1Done && (
-              <div className="mt-3 bg-zinc-50 rounded-2xl p-3 text-xs text-black border border-zinc-200 space-y-0.5 font-medium">
-                <div className="font-black text-black text-sm">{student.name}</div>
-                <div className="text-zinc-600">{student.dob} | {student.gender}</div>
-                <div className="text-zinc-600">{student.address.district}</div>
+              <div className="mt-3 bg-zinc-50 rounded-2xl p-3 text-xs text-black border border-zinc-200 flex items-center justify-between">
+                <div>
+                  <div className="font-black text-black text-sm">{student.name}</div>
+                  <div className="text-zinc-600">{student.dob} | {student.gender}</div>
+                  <div className="text-zinc-600">{student.address.district}</div>
+                </div>
+
+                {/* Arrow Button to open Dynamic Detail Card */}
+                <button
+                  onClick={() => setActiveDetailSection(1)}
+                  className="w-8 h-8 rounded-full bg-black hover:bg-zinc-800 text-white flex items-center justify-center transition-all shadow-xs shrink-0 ml-2"
+                  title="View More Details"
+                >
+                  <ChevronRight className="w-4 h-4 text-[#FFC700]" />
+                </button>
               </div>
             )}
           </div>
@@ -186,9 +196,20 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
             </div>
 
             {step2Done && (
-              <div className="mt-3 bg-zinc-50 rounded-2xl p-3 text-xs text-black border border-zinc-200 space-y-0.5 font-medium">
-                <div className="font-black text-black">{student.academic.diplomaBranch}</div>
-                <div className="text-zinc-600">Aggregate: <strong className="text-black">{student.academic.aggregatePercentage}%</strong></div>
+              <div className="mt-3 bg-zinc-50 rounded-2xl p-3 text-xs text-black border border-zinc-200 flex items-center justify-between">
+                <div>
+                  <div className="font-black text-black">{student.academic.diplomaBranch}</div>
+                  <div className="text-zinc-600">Aggregate: <strong className="text-black">{student.academic.aggregatePercentage}%</strong></div>
+                </div>
+
+                {/* Arrow Button to open Dynamic Detail Card */}
+                <button
+                  onClick={() => setActiveDetailSection(2)}
+                  className="w-8 h-8 rounded-full bg-black hover:bg-zinc-800 text-white flex items-center justify-center transition-all shadow-xs shrink-0 ml-2"
+                  title="View More Details"
+                >
+                  <ChevronRight className="w-4 h-4 text-[#FFC700]" />
+                </button>
               </div>
             )}
           </div>
@@ -244,9 +265,20 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
             </div>
 
             {step3Done && (
-              <div className="mt-3 bg-zinc-50 rounded-2xl p-3 text-xs text-black border border-zinc-200 space-y-0.5 font-medium">
-                <div className="font-black text-black">Category: {student.reservations.casteCategory}</div>
-                <div className="text-zinc-600">Income: ₹{student.reservations.annualIncome.toLocaleString()}/yr</div>
+              <div className="mt-3 bg-zinc-50 rounded-2xl p-3 text-xs text-black border border-zinc-200 flex items-center justify-between">
+                <div>
+                  <div className="font-black text-black">Category: {student.reservations.casteCategory}</div>
+                  <div className="text-zinc-600">Income: ₹{student.reservations.annualIncome.toLocaleString()}/yr</div>
+                </div>
+
+                {/* Arrow Button to open Dynamic Detail Card */}
+                <button
+                  onClick={() => setActiveDetailSection(3)}
+                  className="w-8 h-8 rounded-full bg-black hover:bg-zinc-800 text-white flex items-center justify-center transition-all shadow-xs shrink-0 ml-2"
+                  title="View More Details"
+                >
+                  <ChevronRight className="w-4 h-4 text-[#FFC700]" />
+                </button>
               </div>
             )}
           </div>
@@ -296,9 +328,20 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
             </div>
 
             {step4Done && (
-              <div className="mt-3 bg-zinc-50 rounded-2xl p-3 text-xs text-black border border-zinc-200 space-y-0.5 font-medium">
-                <div className="font-black text-black">Rank #{student.exam.dcetRank.toLocaleString()}</div>
-                <div className="text-zinc-600">Roll: {student.exam.dcetRollNo}</div>
+              <div className="mt-3 bg-zinc-50 rounded-2xl p-3 text-xs text-black border border-zinc-200 flex items-center justify-between">
+                <div>
+                  <div className="font-black text-black">Rank #{student.exam.dcetRank.toLocaleString()}</div>
+                  <div className="text-zinc-600">Roll: {student.exam.dcetRollNo}</div>
+                </div>
+
+                {/* Arrow Button to open Dynamic Detail Card */}
+                <button
+                  onClick={() => setActiveDetailSection(4)}
+                  className="w-8 h-8 rounded-full bg-black hover:bg-zinc-800 text-white flex items-center justify-center transition-all shadow-xs shrink-0 ml-2"
+                  title="View More Details"
+                >
+                  <ChevronRight className="w-4 h-4 text-[#FFC700]" />
+                </button>
               </div>
             )}
           </div>
@@ -339,6 +382,160 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
             <span>Proceed to Priority List</span>
             <ArrowRight className="w-4 h-4" />
           </button>
+        </div>
+      )}
+
+      {/* Dynamic Detail Modal for Section 1, 2, 3, or 4 */}
+      {activeDetailSection !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+          <div className="template-card max-w-lg w-full p-6 shadow-2xl space-y-4 animate-in fade-in duration-150">
+            
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-zinc-200 pb-3">
+              <h3 className="text-lg font-black text-black">
+                {activeDetailSection === 1 && 'Aadhaar & Personal Details'}
+                {activeDetailSection === 2 && 'Academic & Polytechnic Records'}
+                {activeDetailSection === 3 && 'Reservations & RD Certificates'}
+                {activeDetailSection === 4 && 'Entrance Exam & Verification'}
+              </h3>
+              <button
+                onClick={() => setActiveDetailSection(null)}
+                className="w-8 h-8 rounded-full bg-zinc-100 hover:bg-zinc-200 text-black flex items-center justify-center"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="space-y-2.5 text-xs text-zinc-800 font-medium">
+              
+              {/* Detail Section 1: Aadhaar */}
+              {activeDetailSection === 1 && (
+                <div className="space-y-2 bg-zinc-50 p-4 rounded-2xl border border-zinc-200">
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Legal Full Name:</span>
+                    <span className="font-black text-black">{student.name}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Date of Birth & Gender:</span>
+                    <span className="font-bold text-black">{student.dob} | {student.gender}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Father's Name:</span>
+                    <span className="font-bold text-black">{student.fatherName}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Mother's Name:</span>
+                    <span className="font-bold text-black">{student.motherName}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Phone & Email:</span>
+                    <span className="font-mono text-black">{student.phone} | {student.email}</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span className="text-zinc-500">Permanent Address:</span>
+                    <span className="font-bold text-black text-right">{student.address.line}, {student.address.taluk}, {student.address.district}, {student.address.pincode}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Detail Section 2: Academic */}
+              {activeDetailSection === 2 && (
+                <div className="space-y-2 bg-zinc-50 p-4 rounded-2xl border border-zinc-200">
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">SSLC Registration No:</span>
+                    <span className="font-mono font-black text-black">{student.academic.sslcRollNo}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">10th Board & Percentage:</span>
+                    <span className="font-bold text-black">{student.academic.sslcPercentage}% ({student.academic.sslcBoard})</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Diploma USN:</span>
+                    <span className="font-mono font-black text-black">{student.academic.diplomaUsn}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Polytechnic College:</span>
+                    <span className="font-bold text-black">{student.academic.diplomaCollege}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Diploma Discipline:</span>
+                    <span className="font-black text-black">{student.academic.diplomaBranch}</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span className="text-zinc-500">6-Semester Aggregate:</span>
+                    <span className="font-black text-black text-sm">{student.academic.aggregatePercentage}%</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Detail Section 3: Reservations */}
+              {activeDetailSection === 3 && (
+                <div className="space-y-2 bg-zinc-50 p-4 rounded-2xl border border-zinc-200">
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Caste Category:</span>
+                    <span className="font-black text-black">{student.reservations.casteCategory} ({student.reservations.subCaste})</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Caste RD Certificate No:</span>
+                    <span className="font-mono font-bold text-black">{student.reservations.casteRdNumber}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Income RD Certificate No:</span>
+                    <span className="font-mono font-bold text-black">{student.reservations.incomeRdNumber}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Annual Family Income:</span>
+                    <span className="font-bold text-black">₹{student.reservations.annualIncome.toLocaleString()} / year</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span className="text-zinc-500">SNQ Subsidized Fee Status:</span>
+                    <span className="bg-black text-[#FFC700] px-2 py-0.5 rounded-full font-black text-[10px]">
+                      {student.reservations.isSnqEligible ? 'APPROVED' : 'NOT ELIGIBLE'}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Detail Section 4: Rank */}
+              {activeDetailSection === 4 && (
+                <div className="space-y-2 bg-zinc-50 p-4 rounded-2xl border border-zinc-200">
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">DCET Roll Number:</span>
+                    <span className="font-mono font-black text-black">{student.exam.dcetRollNo}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">State Lateral Entry Rank:</span>
+                    <span className="font-mono font-black text-base text-black">#{student.exam.dcetRank.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Exam Center:</span>
+                    <span className="font-bold text-black">{student.exam.examCenter}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-zinc-200/60">
+                    <span className="text-zinc-500">Candidate Secret Key:</span>
+                    <span className="font-mono font-black text-black">{student.verification.secretKey}</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span className="text-zinc-500">Verification Helpline:</span>
+                    <span className="font-bold text-black">{student.verification.helplineCenter}</span>
+                  </div>
+                </div>
+              )}
+
+            </div>
+
+            {/* Modal Close Button */}
+            <div className="pt-2">
+              <button
+                onClick={() => setActiveDetailSection(null)}
+                className="template-btn-black w-full text-xs font-black"
+              >
+                Close Details
+              </button>
+            </div>
+
+          </div>
         </div>
       )}
 
