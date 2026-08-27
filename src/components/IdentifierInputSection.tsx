@@ -1,35 +1,18 @@
 'use client';
 
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Check } from 'lucide-react';
 import collegesData from '@/data/colleges.json';
 import { College, StudentProfile } from '@/types';
-import { Badge, Button, DataRow, Field, Panel } from '@/components/ui';
+import { Badge, Button, DataRow, Panel } from '@/components/ui';
 
 interface IdentifierInputSectionProps {
   student: StudentProfile;
   onProceed: () => void;
 }
 
-/* ------------------------------------------------------------------ *
- * The record
- *
- * Four state registers hold one record. They are not four features and
- * they are not four cards: they are four sections of a single document
- * the student is about to sign. Everything below is driven off one
- * descriptor list and one reducer, so a fifth register would be a new
- * entry in an array, not a fifth copy of the same state quadruplet.
- * ------------------------------------------------------------------ */
-
 type RegisterId = 'identity' | 'academics' | 'entitlements' | 'rank';
 type RegisterStatus = 'empty' | 'waiting' | 'reading' | 'verified';
-
-interface RegisterField {
-  key: string;
-  label: string;
-  hint: string;
-  read: (student: StudentProfile) => string;
-}
 
 interface RecordRow {
   label: string;
@@ -42,17 +25,13 @@ interface RegisterDescriptor {
   id: RegisterId;
   title: string;
   note: string;
-  /** Named in the live region as each register answers. */
   spokenName: string;
-  fields: RegisterField[];
   rows: (student: StudentProfile) => RecordRow[];
   extra?: (student: StudentProfile) => React.ReactNode;
 }
 
 const SNQ_INCOME_CEILING = 800000;
 const REGISTER_STEP_MS = 300;
-
-/* --- Formatting. Rupees and ranks use Indian grouping. --- */
 
 const INDIAN_NUMBER = new Intl.NumberFormat('en-IN');
 
@@ -69,15 +48,12 @@ function formatRank(rank: number): string {
   return INDIAN_NUMBER.format(rank);
 }
 
-/** ISO date to "1 January 2004". Parsed by hand so no timezone shifts it. */
 function formatDate(iso: string): string {
   const [year, month, day] = iso.split('-').map(Number);
   const name = MONTHS[month - 1];
   if (!year || !name || !day) return iso;
   return `${day} ${name} ${year}`;
 }
-
-/* --- What the fee waiver is actually worth, read off this year's list. --- */
 
 function readFeeSpread() {
   const branches = (collegesData as College[]).flatMap((college) => college.branches);
@@ -96,8 +72,6 @@ function readFeeSpread() {
 }
 
 const FEE_SPREAD = readFeeSpread();
-
-/* --- Quotas, explained in one plain line each. --- */
 
 interface QuotaNote {
   code: string;
@@ -118,364 +92,191 @@ function describeQuota(code: string, student: StudentProfile): QuotaNote {
     };
   }
 
-  if (code === casteCategory) {
+  if (code === '3AR') {
     return {
       code,
-      title: `Category ${code} — you are ranked against your own category`,
-      meaning: `Seats kept for ${code} are filled from ${code} candidates only. Your rank is measured against them, not against every candidate in the state.`,
-    };
-  }
-
-  if (code.endsWith('R')) {
-    return {
-      code,
-      title: `Rural quota — ${code}`,
-      meaning: 'You studied 1st to 10th in a rural school, so the rural cutoff for your category also applies. Whichever of the two is easier to reach is the one used.',
+      title: '3A Rural quota',
+      meaning: '15% of government and government-quota seats are reserved for candidates who studied 1st to 10th standard in rural Karnataka schools.',
     };
   }
 
   return {
     code,
-    title: `${code} — claimed on your verified certificates`,
-    meaning: 'KEA has accepted this code against your record.',
+    title: `Category ${casteCategory}`,
+    meaning: 'State-wide reservation pool for your caste group.',
   };
 }
-
-/* --- The four registers. --- */
 
 const REGISTERS: RegisterDescriptor[] = [
   {
     id: 'identity',
     title: 'Identity',
     note: 'Aadhaar record, read from DigiLocker.',
-    spokenName: 'Identity, from DigiLocker',
-    fields: [
+    spokenName: 'DigiLocker identity',
+    rows: (s) => [
+      { label: 'Aadhaar number', value: `XXXX XXXX ${s.aadhaarNumber.replace(/\s/g, '').slice(-4)}`, mono: true },
+      { label: 'Full name', value: s.name },
+      { label: 'Date of birth', value: formatDate(s.dob) },
+      { label: 'Gender', value: s.gender },
+      { label: "Father's name", value: s.fatherName },
+      { label: "Mother's name", value: s.motherName },
       {
-        key: 'aadhaarNumber',
-        label: 'Aadhaar number',
-        hint: 'As printed on your card.',
-        read: (student) => student.aadhaarNumber,
+        label: 'Permanent address',
+        value: `${s.address.line}, ${s.address.taluk}, ${s.address.district}, ${s.address.state} — ${s.address.pincode}`,
       },
-    ],
-    rows: (student) => [
-      { label: 'Name', value: student.name },
-      { label: 'Date of birth', value: formatDate(student.dob) },
-      { label: 'Gender', value: student.gender },
-      { label: "Father's name", value: student.fatherName },
-      { label: "Mother's name", value: student.motherName },
-      {
-        label: 'Address',
-        value: `${student.address.line}, ${student.address.taluk}, ${student.address.district} ${student.address.pincode}`,
-        source: student.address.state,
-      },
-      { label: 'Mobile', value: student.phone, mono: true },
-      { label: 'Email', value: student.email },
     ],
   },
   {
     id: 'academics',
-    title: 'Academics',
-    note: 'Diploma marks from DTE Karnataka, SSLC marks from the KSEEB board.',
-    spokenName: 'Academics, from DTE Karnataka and KSEEB',
-    fields: [
-      {
-        key: 'diplomaUsn',
-        label: 'Diploma USN',
-        hint: 'On your polytechnic marks card.',
-        read: (student) => student.academic.diplomaUsn,
-      },
-      {
-        key: 'sslcRollNo',
-        label: 'SSLC register number',
-        hint: 'On your 10th marks card.',
-        read: (student) => student.academic.sslcRollNo,
-      },
-    ],
-    rows: (student) => [
-      { label: 'Diploma branch', value: student.academic.diplomaBranch },
-      {
-        label: 'Polytechnic',
-        value: student.academic.diplomaCollege,
-        source: `${student.academic.diplomaDistrict} · ${student.academic.diplomaBoard}`,
-      },
+    title: 'Academic record',
+    note: 'Diploma and SSLC records from DTE and KSEEB.',
+    spokenName: 'DTE and KSEEB academic record',
+    rows: (s) => [
+      { label: 'Diploma college', value: s.academic.diplomaCollege },
+      { label: 'Diploma branch', value: s.academic.diplomaBranch },
+      { label: 'Diploma USN', value: s.academic.diplomaUsn, mono: true },
       {
         label: 'Diploma aggregate',
-        value: `${student.academic.aggregatePercentage}%`,
+        value: `${s.academic.aggregatePercentage}%`,
         mono: true,
-        source: `Six semesters averaged · passed ${student.academic.diplomaPassingYear}`,
+        source: `Passed ${s.academic.diplomaPassingYear}`,
       },
       {
-        label: 'SSLC percentage',
-        value: `${student.academic.sslcPercentage}%`,
+        label: 'SSLC marks',
+        value: `${s.academic.sslcSecuredMarks} / ${s.academic.sslcMaxMarks} (${s.academic.sslcPercentage}%)`,
         mono: true,
-        source: `${student.academic.sslcSecuredMarks} of ${student.academic.sslcMaxMarks} marks · ${student.academic.sslcBoard} ${student.academic.sslcPassingYear}`,
+        source: `Roll ${s.academic.sslcRollNo}, passed ${s.academic.sslcPassingYear}`,
       },
       {
-        label: 'Result status',
-        value: student.academic.isFinalSemPending
-          ? 'Sixth semester result awaited'
-          : 'All six semesters declared',
-      },
-      {
-        label: 'School',
-        value: student.academic.isRuralSchool ? 'Rural, 1st to 10th' : 'Urban',
-        source: student.academic.isRuralSchool
-          ? 'This is what earns you the rural quota'
-          : 'Rural quota does not apply',
-      },
-      {
-        label: 'Kannada medium',
-        value: student.academic.isKannadaMedium ? 'Yes' : 'No',
-        source: student.academic.isKannadaMedium
-          ? 'Kannada-medium quota applies'
-          : 'Kannada-medium quota does not apply',
+        label: 'SSLC school area',
+        value: s.academic.isRuralSchool ? 'Rural' : 'Urban',
+        source: s.reservations.isRuralQuota ? 'Qualifies for rural quota' : undefined,
       },
     ],
-    extra: (student) => <SemesterMarks marks={student.academic.semMarks} />,
   },
   {
     id: 'entitlements',
-    title: 'Category and income',
-    note: 'Caste and income certificates from Nadakacheri, matched on their RD numbers.',
-    spokenName: 'Category and income, from Nadakacheri',
-    fields: [
+    title: 'Caste, income & reservations',
+    note: 'Certificates verified against Nadakacheri.',
+    spokenName: 'Nadakacheri reservation certificates',
+    rows: (s) => [
       {
-        key: 'casteRdNumber',
-        label: 'Caste certificate RD number',
-        hint: 'Printed at the top of the certificate.',
-        read: (student) => student.reservations.casteRdNumber,
-      },
-      {
-        key: 'incomeRdNumber',
-        label: 'Income certificate RD number',
-        hint: 'A separate number from the caste one.',
-        read: (student) => student.reservations.incomeRdNumber,
-      },
-    ],
-    rows: (student) => [
-      {
-        label: 'Category',
-        value: student.reservations.casteCategory,
-        mono: true,
-        source: `${student.reservations.subCaste} · certified by Nadakacheri`,
+        label: 'Caste category',
+        value: `${s.reservations.casteCategory} (${s.reservations.subCaste})`,
+        source: `RD ${s.reservations.casteRdNumber}`,
       },
       {
         label: 'Annual family income',
-        value: formatRupees(student.reservations.annualIncome),
+        value: formatRupees(s.reservations.annualIncome),
         mono: true,
-        source: `The fee-waiver ceiling is ${formatRupees(SNQ_INCOME_CEILING)}`,
+        source: `RD ${s.reservations.incomeRdNumber}`,
       },
       {
-        label: 'Kalyana-Karnataka',
-        value: student.reservations.isKalyanaKarnataka ? 'Yes' : 'No',
-        source: student.reservations.isKalyanaKarnataka
-          ? 'Article 371J regional reservation applies'
-          : 'Article 371J does not cover your district',
+        label: 'Rural quota',
+        value: s.reservations.isRuralQuota ? 'Verified' : 'Not claimed',
+      },
+      {
+        label: 'Kannada medium quota',
+        value: s.reservations.isKannadaMediumQuota ? 'Verified' : 'Not claimed',
+      },
+      {
+        label: 'Article 371J (Kalyana-Karnataka)',
+        value: s.reservations.isKalyanaKarnataka ? 'Verified' : 'Not applicable',
       },
     ],
-    extra: (student) => <QuotaList student={student} />,
+    extra: (s) => (
+      <div className="mt-4 border-t border-hairline pt-3">
+        <h4 className="text-label font-medium text-ink-soft">Verified seat pools</h4>
+        <ul className="mt-2 space-y-2">
+          {s.verification.verifiedCodes.map((code) => {
+            const quota = describeQuota(code, s);
+            return (
+              <li key={code} className="flex gap-2.5 items-baseline">
+                <Badge mono className="shrink-0">{code}</Badge>
+                <div className="text-sm text-ink-soft">
+                  <span className="font-medium text-ink">{quota.title}</span> — {quota.meaning}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    ),
   },
   {
     id: 'rank',
-    title: 'DCET 2026 rank',
-    note: 'Rank, score and centre from the Karnataka Examinations Authority.',
-    spokenName: 'DCET rank, from KEA',
-    fields: [
-      {
-        key: 'dcetRollNo',
-        label: 'DCET roll number',
-        hint: 'On your admission ticket.',
-        read: (student) => student.exam.dcetRollNo,
-      },
-      {
-        key: 'dcetRank',
-        label: 'DCET rank',
-        hint: 'As published by KEA.',
-        read: (student) => String(student.exam.dcetRank),
-      },
-    ],
-    rows: (student) => [
-      {
-        label: 'Rank',
-        value: formatRank(student.exam.dcetRank),
-        mono: true,
-        source: 'Karnataka lateral-entry rank list',
-      },
-      { label: 'Score', value: `${student.exam.score} / 100`, mono: true },
-      { label: 'Exam centre', value: student.exam.examCenter },
-      {
-        label: 'Verified at',
-        value: student.verification.helplineCenter,
-        source: `Checked on ${formatDate(student.verification.verificationDate)}`,
-      },
+    title: 'DCET-2026 examination',
+    note: 'Official merit rank from Karnataka Examinations Authority.',
+    spokenName: 'KEA DCET rank',
+    rows: (s) => [
+      { label: 'DCET roll number', value: s.exam.dcetRollNo, mono: true },
+      { label: 'State-wide rank', value: `Rank ${formatRank(s.exam.dcetRank)}`, mono: true },
+      { label: 'DCET score', value: `${s.exam.score} / 100`, mono: true },
+      { label: 'Exam centre', value: s.exam.examCenter },
     ],
   },
 ];
 
-/* ------------------------------------------------------------------ *
- * One reducer for the whole record.
- * ------------------------------------------------------------------ */
-
-type Phase = 'empty' | 'pulling' | 'pulled';
-
 interface RecordState {
-  phase: Phase;
-  /** Register ids in the order they answered. */
+  phase: 'empty' | 'pulling' | 'pulled';
   answered: RegisterId[];
-  /** Every editable identifier on the screen, keyed by field key. */
-  values: Record<string, string>;
-  /** Read out by the polite live region. */
-  notice: string;
 }
 
 type RecordAction =
   | { type: 'pull' }
-  | { type: 'answer'; registerId: RegisterId; values: Record<string, string> }
-  | { type: 'edit'; key: string; value: string }
+  | { type: 'answer'; registerId: RegisterId }
   | { type: 'clear' };
-
-const EMPTY_RECORD: RecordState = { phase: 'empty', answered: [], values: {}, notice: '' };
 
 function reduceRecord(state: RecordState, action: RecordAction): RecordState {
   switch (action.type) {
     case 'pull':
-      return { ...EMPTY_RECORD, phase: 'pulling', notice: 'Reading four registers.' };
-
+      return { phase: 'pulling', answered: [] };
     case 'answer': {
-      if (state.phase !== 'pulling') return state;
       const answered = [...state.answered, action.registerId];
-      const register = REGISTERS.find((item) => item.id === action.registerId);
-      const isComplete = answered.length === REGISTERS.length;
-      return {
-        phase: isComplete ? 'pulled' : 'pulling',
-        answered,
-        values: { ...state.values, ...action.values },
-        notice: isComplete
-          ? 'All four registers verified. Continue to your verification slip.'
-          : `${register?.spokenName ?? 'Register'} verified. ${answered.length} of ${REGISTERS.length}.`,
-      };
+      const phase = answered.length === REGISTERS.length ? 'pulled' : 'pulling';
+      return { phase, answered };
     }
-
-    case 'edit':
-      return { ...state, values: { ...state.values, [action.key]: action.value } };
-
     case 'clear':
-      return { ...EMPTY_RECORD, notice: 'Record cleared. The four registers are empty again.' };
+      return { phase: 'empty', answered: [] };
   }
 }
-
-function readRegister(
-  register: RegisterDescriptor,
-  student: StudentProfile,
-): Record<string, string> {
-  return Object.fromEntries(
-    register.fields.map((field) => [field.key, field.read(student)]),
-  );
-}
-
-/* ------------------------------------------------------------------ *
- * Pieces
- * ------------------------------------------------------------------ */
-
-const STATUS_LABEL: Record<RegisterStatus, string> = {
-  empty: 'Not read',
-  waiting: 'Waiting',
-  reading: 'Reading…',
-  verified: 'Verified',
-};
 
 const RegisterStatusBadge: React.FC<{ status: RegisterStatus }> = ({ status }) => {
   if (status === 'verified') {
     return (
-      <Badge tone="verified">
+      <span className="inline-flex items-center gap-1 text-micro font-medium text-pine">
         <Check aria-hidden className="size-3" />
-        {STATUS_LABEL.verified}
-      </Badge>
+        Verified
+      </span>
     );
   }
-  return (
-    <Badge tone={status === 'empty' ? 'outline' : 'neutral'}>{STATUS_LABEL[status]}</Badge>
-  );
+  if (status === 'reading') {
+    return (
+      <span className="inline-flex items-center gap-1 font-mono text-micro text-oxide">
+        <span aria-hidden className="size-1.5 rounded-full bg-oxide animate-ping" />
+        Reading…
+      </span>
+    );
+  }
+  return <span className="font-mono text-micro text-ink-off">Not read</span>;
 };
 
-const SKELETON_WIDTHS = ['w-40', 'w-28', 'w-36', 'w-24', 'w-32'];
-
-/** Skeletons in the final layout — same rule, same rhythm, same row count. */
 const SkeletonRows: React.FC<{ count: number }> = ({ count }) => (
-  <div aria-hidden className="animate-pulse">
-    {Array.from({ length: count }).map((_, index) => (
-      <div
-        key={index}
-        className="flex items-center justify-between gap-4 border-b border-hairline py-2.5 last:border-b-0"
-      >
-        <span className="block h-2.5 w-20 rounded-xs bg-sunken" />
-        <span
-          className={`block h-2.5 rounded-xs bg-sunken ${SKELETON_WIDTHS[index % SKELETON_WIDTHS.length]}`}
-        />
+  <div className="space-y-2.5 py-1">
+    {Array.from({ length: count }).map((_, i) => (
+      <div key={i} className="flex justify-between items-center py-1.5 border-b border-hairline/60">
+        <div className="h-3 w-28 rounded-xs bg-hairline animate-pulse" />
+        <div className="h-3.5 w-44 rounded-xs bg-hairline animate-pulse" />
       </div>
     ))}
   </div>
 );
 
-const SemesterMarks: React.FC<{ marks: number[] }> = ({ marks }) => (
-  <div className="mt-4 border-t border-hairline pt-3">
-    <h4 className="text-label font-medium text-ink-soft">Semester by semester</h4>
-    <ol className="mt-2 grid grid-cols-3 gap-px overflow-hidden rounded-sm border border-hairline bg-hairline sm:grid-cols-6">
-      {marks.map((mark, index) => (
-        <li key={index} className="bg-ground px-2 py-2 text-center">
-          <span className="block text-micro text-ink-muted">Sem {index + 1}</span>
-          <span className="block font-mono text-sm tabular-nums text-ink" data-numeric>
-            {mark}
-          </span>
-        </li>
-      ))}
-    </ol>
-  </div>
-);
-
-const QuotaList: React.FC<{ student: StudentProfile }> = ({ student }) => {
-  const quotas = student.verification.verifiedCodes.map((code) => describeQuota(code, student));
-
-  return (
-    <div className="mt-4 border-t border-hairline pt-3">
-      <h4 className="text-label font-medium text-ink-soft">What these certificates are worth</h4>
-      <ul className="mt-2 space-y-3">
-        {quotas.map((quota) => (
-          <li key={quota.code} className="flex gap-3">
-            <Badge mono className="mt-0.5 shrink-0">
-              {quota.code}
-            </Badge>
-            <div className="min-w-0">
-              <p className="text-sm text-ink">{quota.title}</p>
-              <p className="measure mt-0.5 text-label text-ink-muted">{quota.meaning}</p>
-              {quota.figure && (
-                <p className="measure mt-1 font-mono text-label tabular-nums text-ink-soft" data-numeric>
-                  {quota.figure}
-                </p>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-interface RegisterSectionProps {
+const RegisterSection: React.FC<{
   register: RegisterDescriptor;
   student: StudentProfile;
   status: RegisterStatus;
-  values: Record<string, string>;
-  onEdit: (key: string, value: string) => void;
-}
-
-const RegisterSection: React.FC<RegisterSectionProps> = ({
-  register,
-  student,
-  status,
-  values,
-  onEdit,
-}) => {
+}> = ({ register, student, status }) => {
   const rows = register.rows(student);
   const isVerified = status === 'verified';
   const isPending = status === 'reading' || status === 'waiting';
@@ -487,69 +288,60 @@ const RegisterSection: React.FC<RegisterSectionProps> = ({
       note={register.note}
       aside={<RegisterStatusBadge status={status} />}
     >
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,14rem)_minmax(0,1fr)] lg:gap-8">
-        <div className="max-w-sm space-y-3 lg:max-w-none">
-          {register.fields.map((field) => (
-            <Field
-              key={field.key}
-              label={field.label}
-              hint={field.hint}
-              value={values[field.key] ?? ''}
-              disabled={!isVerified}
-              autoComplete="off"
-              spellCheck={false}
-              onChange={(event) => onEdit(field.key, event.target.value)}
-            />
-          ))}
-        </div>
+      <div>
+        {isPending && <SkeletonRows count={rows.length} />}
 
-        <div>
-          {isPending && <SkeletonRows count={rows.length} />}
+        {status === 'empty' && (
+          <dl>
+            {rows.map((row) => (
+              <DataRow
+                key={row.label}
+                label={row.label}
+                value={<span className="text-ink-off">—</span>}
+              />
+            ))}
+          </dl>
+        )}
 
-          {status === 'empty' && (
+        {isVerified && (
+          <div style={{ animation: 'row-settle var(--dur-slow) var(--ease-out-quart) both' }}>
             <dl>
               {rows.map((row) => (
                 <DataRow
                   key={row.label}
                   label={row.label}
-                  value={<span className="text-ink-off">—</span>}
+                  value={row.value}
+                  mono={row.mono}
+                  source={row.source}
+                  className="break-words"
                 />
               ))}
             </dl>
-          )}
-
-          {isVerified && (
-            <div style={{ animation: 'row-settle var(--dur-slow) var(--ease-out-quart) both' }}>
-              <dl>
-                {rows.map((row) => (
-                  <DataRow
-                    key={row.label}
-                    label={row.label}
-                    value={row.value}
-                    mono={row.mono}
-                    source={row.source}
-                    className="break-words"
-                  />
-                ))}
-              </dl>
-              {register.extra?.(student)}
-            </div>
-          )}
-        </div>
+            {register.extra?.(student)}
+          </div>
+        )}
       </div>
     </Panel>
   );
 };
 
-/* ------------------------------------------------------------------ *
- * Stage 1 — Record
- * ------------------------------------------------------------------ */
-
 export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
   student,
   onProceed,
 }) => {
-  const [record, dispatch] = useReducer(reduceRecord, EMPTY_RECORD);
+  const [record, dispatch] = useReducer(reduceRecord, { phase: 'empty', answered: [] });
+
+  const [shimmerKey, setShimmerKey] = useState<number>(0);
+
+  useEffect(() => {
+    // Initial gentle shimmer on arrival
+    setShimmerKey(1);
+    // Second gentle shimmer at 5 seconds
+    const timer = window.setTimeout(() => {
+      setShimmerKey(2);
+    }, 5000);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (record.phase !== 'pulling') return;
@@ -560,14 +352,13 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
           dispatch({
             type: 'answer',
             registerId: register.id,
-            values: readRegister(register, student),
           }),
         (index + 1) * REGISTER_STEP_MS,
       ),
     );
 
     return () => timers.forEach((timer) => window.clearTimeout(timer));
-  }, [record.phase, student]);
+  }, [record.phase]);
 
   const statusOf = (index: number): RegisterStatus => {
     if (index < record.answered.length) return 'verified';
@@ -583,10 +374,99 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
         <h2 className="text-2xl font-semibold tracking-[-0.015em] text-ink">Your record</h2>
       </header>
 
-      {/* The instrument. One primary action, and the sentence that explains it. */}
-      <div className="rounded-sm border border-hairline bg-panel px-4 py-4 sm:px-5">
-        {record.phase === 'pulled' ? (
-          <>
+      {/* Candidate Verification Gate — Non-editable Pre-filled Credentials */}
+      <div className="rounded-sm border border-hairline bg-panel p-4 sm:p-5 space-y-4">
+        <div>
+          <h3 className="text-base font-semibold text-ink">Candidate Verification Gate</h3>
+          <p className="mt-0.5 text-label text-ink-muted">
+            Enter your 4 primary identifiers to automatically pull your complete dossier from DigiLocker, DTE, KSEEB, and Nadakacheri.
+          </p>
+        </div>
+
+        {/* The 4 Non-Editable Pre-filled Input Bars */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+          {/* 1. Application No */}
+          <div>
+            <label className="block text-label font-medium text-ink mb-1">
+              Application No / DCET No
+            </label>
+            <input
+              type="text"
+              readOnly
+              disabled
+              value={student.exam.dcetRollNo}
+              className="w-full h-9 rounded-sm border border-field/70 bg-sunken px-2.5 font-mono text-sm text-ink opacity-90 cursor-not-allowed"
+            />
+          </div>
+
+          {/* 2. Date of Birth */}
+          <div>
+            <label className="block text-label font-medium text-ink mb-1">
+              Date of Birth (DOB)
+            </label>
+            <input
+              type="text"
+              readOnly
+              disabled
+              value={student.dob}
+              className="w-full h-9 rounded-sm border border-field/70 bg-sunken px-2.5 font-mono text-sm text-ink opacity-90 cursor-not-allowed"
+            />
+          </div>
+
+          {/* 3. Category */}
+          <div>
+            <label className="block text-label font-medium text-ink mb-1">
+              Caste Category
+            </label>
+            <input
+              type="text"
+              readOnly
+              disabled
+              value={`Category ${student.reservations.casteCategory.replace(/G$/, '')}`}
+              className="w-full h-9 rounded-sm border border-field/70 bg-sunken px-2.5 text-sm text-ink opacity-90 cursor-not-allowed"
+            />
+          </div>
+
+          {/* 4. Special Quotas */}
+          <div>
+            <label className="block text-label font-medium text-ink mb-1">
+              Special Quotas
+            </label>
+            <div className="flex flex-wrap gap-x-3 gap-y-1 pt-1.5 opacity-90">
+              <label className="inline-flex items-center gap-1.5 text-label text-ink cursor-not-allowed">
+                <input
+                  type="checkbox"
+                  disabled
+                  checked={student.reservations.isRuralQuota}
+                  className="size-3.5 accent-ink cursor-not-allowed"
+                />
+                Rural
+              </label>
+              <label className="inline-flex items-center gap-1.5 text-label text-ink cursor-not-allowed">
+                <input
+                  type="checkbox"
+                  disabled
+                  checked={student.reservations.isKannadaMediumQuota}
+                  className="size-3.5 accent-ink cursor-not-allowed"
+                />
+                Kannada
+              </label>
+              <label className="inline-flex items-center gap-1.5 text-label text-ink cursor-not-allowed">
+                <input
+                  type="checkbox"
+                  disabled
+                  checked={student.reservations.isKalyanaKarnataka}
+                  className="size-3.5 accent-ink cursor-not-allowed"
+                />
+                371J
+              </label>
+            </div>
+          </div>
+        </div>
+
+        {/* Primary CTA and resolution status */}
+        <div className="border-t border-hairline pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          {record.phase === 'pulled' ? (
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <Button variant="primary" size="lg" onClick={onProceed} className="w-full sm:w-auto">
                 Continue to verification slip
@@ -600,57 +480,49 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
                 Clear and start over
               </Button>
             </div>
-            <p className="measure mt-2.5 text-label text-ink-muted">
-              All four registers answered. If anything below is wrong — an RD number, your rank —
-              correct it in the record itself. Your slip is built from these values.
-            </p>
-          </>
-        ) : (
-          <>
-            <span className="relative inline-flex w-full sm:w-auto">
-              {record.phase === 'empty' && (
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute -inset-1.5 rounded-md border border-oxide opacity-0"
-                  style={{ animation: 'record-breathe 2400ms var(--ease-out-quart) infinite' }}
-                />
-              )}
-              <Button
-                variant="primary"
-                size="lg"
-                className="w-full sm:w-auto"
-                isLoading={record.phase === 'pulling'}
-                loadingLabel="Reading registers"
+          ) : (
+            <div className="flex items-center">
+              <button
+                type="button"
+                disabled={record.phase === 'pulling'}
                 onClick={() => dispatch({ type: 'pull' })}
+                className="group relative overflow-hidden inline-flex items-center justify-center px-6 py-3 rounded-sm bg-ink text-ground text-sm font-medium transition-all duration-300 hover:shadow-md hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed w-full sm:w-auto"
               >
-                Pull my record
-              </Button>
-            </span>
-            <p className="measure mt-2.5 text-label text-ink-muted">
-              {record.phase === 'pulling' && nextRegister
-                ? `Reading ${nextRegister.spokenName}. ${record.answered.length} of ${REGISTERS.length} answered.`
-                : 'Reads your name and address from DigiLocker, your diploma and SSLC marks from DTE and KSEEB, your caste and income certificates from Nadakacheri, and your rank from KEA. Nothing is typed by hand.'}
-            </p>
-          </>
-        )}
+                <span className="relative z-10">
+                  {record.phase === 'pulling' ? 'Reading registers...' : 'Get details'}
+                </span>
+                {/* Slow, tilted shimmer sweep */}
+                <span
+                  key={shimmerKey}
+                  className="pointer-events-none absolute -inset-y-4 -left-1/3 w-2/3 -skew-x-[25deg] animate-shimmer-sweep group-hover:animate-shimmer-sweep bg-gradient-to-r from-transparent via-white/50 to-transparent ease-out"
+                />
+              </button>
+            </div>
+          )}
+
+          <p className="measure text-label text-ink-muted">
+            {record.phase === 'pulling' && nextRegister
+              ? `Reading ${nextRegister.spokenName}...`
+              : record.phase === 'pulled'
+              ? 'All 4 government registers verified.'
+              : 'Click to pull the complete verified record.'}
+          </p>
+        </div>
       </div>
 
-      <p role="status" aria-live="polite" className="sr-only">
-        {record.notice}
-      </p>
-
-      <div className="space-y-4">
-        {REGISTERS.map((register, index) => (
-          <RegisterSection
-            key={register.id}
-            register={register}
-            student={student}
-            status={statusOf(index)}
-            values={record.values}
-            onEdit={(key, value) => dispatch({ type: 'edit', key, value })}
-          />
-        ))}
-      </div>
+      {/* Verified Document Registers (Only visible once "Get details" is clicked) */}
+      {record.phase !== 'empty' && (
+        <div className="space-y-4 animate-[row-settle_var(--dur-base)_var(--ease-out-quart)]">
+          {REGISTERS.map((register, index) => (
+            <RegisterSection
+              key={register.id}
+              register={register}
+              student={student}
+              status={statusOf(index)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
