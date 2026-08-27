@@ -250,9 +250,27 @@
   }
 }
 
-/* Print: the slip and the allotment letter are real documents. */
+/* Print: Clean single-page document rendering */
 @media print {
   .no-print { display: none !important; }
-  body { background: #fff; color: #000; font-size: 11pt; }
-  .print-sheet { border: 1px solid #000; break-inside: avoid; }
+  @page {
+    size: A4 portrait;
+    margin: 1.2cm 1.5cm;
+  }
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 10pt !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  main, #stage {
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
 }

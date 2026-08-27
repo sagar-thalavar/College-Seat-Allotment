@@ -453,7 +453,7 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
         </article>
 
         {/* Single-Page Printable Slip Document (Hidden on screen, renders in Print / PDF only) */}
-        <div className="hidden print:block space-y-4 text-ink">
+        <div className="hidden print:block space-y-3 text-ink print:m-0 print:p-0">
           {/* Top Line: Application Ref & KEA */}
           <div className="border-b border-ink/30 pb-2 flex items-center justify-between text-xs">
             <span className="font-mono text-ink-muted">
@@ -463,7 +463,7 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
           </div>
 
           {/* Candidate Details */}
-          <div className="border-b border-ink/30 pb-3">
+          <div className="border-b border-ink/30 pb-2.5">
             <dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
               <div>
                 <dt className="text-ink-muted">Candidate Name</dt>
@@ -479,7 +479,7 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
           </div>
 
           {/* Single-Page Table of Entered Colleges */}
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between border-b border-ink/40 pb-1 text-xs font-semibold uppercase text-ink">
               <span className="w-12 text-center">Sl No.</span>
               <span className="flex-1 pl-2">College &amp; Branch Preference</span>
@@ -491,7 +491,7 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
                 return (
                   <li
                     key={optionKey(choice.collegeCode, choice.branchCode)}
-                    className="py-1.5 flex items-start text-xs"
+                    className="py-1 flex items-start text-xs leading-tight"
                   >
                     <span className="w-12 text-center font-mono font-medium text-ink pt-0.5 shrink-0">
                       {index + 1}
