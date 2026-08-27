@@ -742,7 +742,6 @@ export const CollegeRecommendationList: React.FC<CollegeRecommendationListProps>
         <Panel
           padded={false}
           title="Colleges that will take your diploma"
-          note={`${formatRank(all.length)} college-and-branch options accept a ${student.academic.diplomaBranch} diploma. Every closing rank below is last year's, in the category you are judged under — never the general merit rank.`}
           aside={
             <div className="text-right">
               <span className="block text-micro text-ink-muted">Your DCET rank</span>

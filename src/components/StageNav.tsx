@@ -5,25 +5,20 @@ import { clsx } from 'clsx';
 import { Check, ChevronLeft } from 'lucide-react';
 
 /**
- * The five stages of the allotment, in the order they must be walked.
- * There is no sixth, and there is no way to enter one out of turn: the rail
- * reads progress, it does not set it. You advance by finishing a stage.
+ * The 2 stages of the allotment: Record and Options.
  */
 export const STAGE_LABELS = [
   'Record',
-  'Slip',
-  'Colleges',
   'Options',
-  'Rounds',
 ] as const;
 
 export const TOTAL_STAGES = STAGE_LABELS.length;
 
-export type Stage = 1 | 2 | 3 | 4 | 5;
+export type Stage = 1 | 2;
 
 interface StageNavProps {
   currentStage: Stage;
-  /** The furthest stage the candidate has actually earned. Nothing past it is reachable. */
+  /** The furthest stage the candidate has actually earned. */
   highestStageReached: Stage;
   onSelectStage: (stage: Stage) => void;
 }
@@ -37,8 +32,6 @@ export const StageNav: React.FC<StageNavProps> = ({
   highestStageReached,
   onSelectStage,
 }) => {
-  // At 390px five words do not fit. Only the current stage is shown, plus a
-  // single chevron back to the one before it — an arrow is not a crammed word.
   const mobileBackStage = currentStage > 1 ? currentStage - 1 : 0;
 
   return (
@@ -62,7 +55,7 @@ export const StageNav: React.FC<StageNavProps> = ({
               {index > 0 && (
                 <span
                   aria-hidden
-                  className="hidden select-none px-0.5 text-rule sm:inline"
+                  className="hidden select-none px-1 text-rule sm:inline"
                 >
                   ·
                 </span>
@@ -77,7 +70,6 @@ export const StageNav: React.FC<StageNavProps> = ({
                   <span className="sr-only">
                     , stage {stage} of {TOTAL_STAGES}
                   </span>
-                  {/* The mark for "you are here": an oxide rule, not a filled pill. */}
                   <span
                     aria-hidden
                     className="absolute inset-x-2 bottom-1.5 h-0.5 rounded-xs bg-oxide sm:bottom-1"

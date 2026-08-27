@@ -386,20 +386,6 @@ const OptionRow: React.FC<OptionRowProps> = ({
 
       <div className={clsx(CELL_ACTIONS, 'flex items-center gap-0.5')}>
         <IconButton
-          icon={ArrowUp}
-          title="Move up"
-          label={`Move ${optionName} up to priority ${priority - 1}`}
-          onClick={onMoveUp}
-          disabled={index === 0}
-        />
-        <IconButton
-          icon={ArrowDown}
-          title="Move down"
-          label={`Move ${optionName} down to priority ${priority + 1}`}
-          onClick={onMoveDown}
-          disabled={index === total - 1}
-        />
-        <IconButton
           icon={Trash2}
           title="Remove"
           label={`Remove ${optionName} from priority ${priority}`}
@@ -801,11 +787,6 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
         <h2 className="text-2xl font-semibold tracking-[-0.012em] text-ink">
           Order your options
         </h2>
-        <p className="measure mt-2 text-sm text-ink-soft">
-          Round 1 walks this list from priority 1 downward and stops at the first
-          option your rank clears. Anything below that is never looked at. Once you
-          lock the order, this is what KEA reads.
-        </p>
       </header>
 
       {total === 0 ? (
@@ -851,13 +832,6 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
             </Badge>
           }
         >
-          <p className="measure border-b border-hairline px-4 py-3 text-sm text-ink-soft sm:px-5">
-            Priority 1 is your longest shot and the last line is your surest — that is
-            the right way round. A low chance at the top costs you nothing, because the
-            list keeps going. Putting a sure thing high is what costs you: the moment
-            your rank clears it, the round ends there.
-          </p>
-
           {restoreNotice}
 
           <div

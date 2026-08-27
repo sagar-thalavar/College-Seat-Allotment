@@ -581,10 +581,6 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
     <div className="space-y-6">
       <header>
         <h2 className="text-2xl font-semibold tracking-[-0.015em] text-ink">Your record</h2>
-        <p className="measure mt-1.5 text-ink-soft">
-          Four government registers already hold everything KEA needs to place you. Pull them
-          once, read what they say, and correct anything that is wrong before your slip is made.
-        </p>
       </header>
 
       {/* The instrument. One primary action, and the sentence that explains it. */}
