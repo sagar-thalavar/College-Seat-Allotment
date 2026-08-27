@@ -12,10 +12,10 @@ import {
 import { Navbar, SHELL_COLUMN } from '@/components/Navbar';
 import { type Stage } from '@/components/StageNav';
 import { IdentifierInputSection } from '@/components/IdentifierInputSection';
+import { VerificationSlip } from '@/components/VerificationSlip';
 import { OptionEntryStudio } from '@/components/OptionEntryStudio';
+import { RoundSimulator } from '@/components/RoundSimulator';
 import { calculateCollegeRecommendations } from '@/lib/recommendation';
-
-const MAX_OPTIONS = 10;
 
 const colleges = collegesData as College[];
 const candidates = studentsData as StudentProfile[];
@@ -52,18 +52,14 @@ function withPriorities(choices: OptionChoice[]): OptionChoice[] {
 export default function Home() {
   const [currentStage, setCurrentStage] = useState<Stage>(1);
   const [highestStageReached, setHighestStageReached] = useState<Stage>(1);
-  const [optionChoices, setOptionChoices] = useState<OptionChoice[]>([]);
+  
+  // Pre-load all recommended colleges by default (Hardest first)
+  const [optionChoices, setOptionChoices] = useState<OptionChoice[]>(() => {
+    const initialRecs = calculateCollegeRecommendations(student, colleges);
+    return initialRecs.map((rec, i) => toOptionChoice(rec, i + 1));
+  });
 
   const hasMounted = useRef(false);
-
-  useEffect(() => {
-    const recs = calculateCollegeRecommendations(student, colleges);
-    const sortedDreamToSafe = [...recs].sort((a, b) => a.effectiveCutoff - b.effectiveCutoff);
-    const initialChoices: OptionChoice[] = sortedDreamToSafe
-      .slice(0, MAX_OPTIONS)
-      .map((r, idx) => toOptionChoice(r, idx + 1));
-    setOptionChoices(initialChoices);
-  }, []);
 
   useEffect(() => {
     if (!hasMounted.current) {
@@ -118,11 +114,28 @@ export default function Home() {
           )}
 
           {currentStage === 2 && (
+            <VerificationSlip
+              student={student}
+              onProceedToOptions={() => goToStage(3)}
+            />
+          )}
+
+          {currentStage === 3 && (
             <OptionEntryStudio
+              student={student}
+              colleges={colleges}
               optionChoices={optionChoices}
               onReorderChoices={reorderChoices}
               onRemoveChoice={removeChoice}
-              onProceedToRounds={() => {}}
+              onProceedToRounds={() => goToStage(4)}
+            />
+          )}
+
+          {currentStage === 4 && (
+            <RoundSimulator
+              student={student}
+              optionChoices={optionChoices}
+              onResetToOptions={() => goToStage(3)}
             />
           )}
         </div>

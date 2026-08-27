@@ -5,20 +5,22 @@ import { clsx } from 'clsx';
 import { Check, ChevronLeft } from 'lucide-react';
 
 /**
- * The 2 stages of the allotment: Record and Options.
+ * The four stages of the allotment: Record, Slip, Options, Rounds.
  */
 export const STAGE_LABELS = [
   'Record',
+  'Slip',
   'Options',
+  'Rounds',
 ] as const;
 
 export const TOTAL_STAGES = STAGE_LABELS.length;
 
-export type Stage = 1 | 2;
+export type Stage = 1 | 2 | 3 | 4;
 
 interface StageNavProps {
   currentStage: Stage;
-  /** The furthest stage the candidate has actually earned. */
+  /** The furthest stage the candidate has actually earned. Nothing past it is reachable. */
   highestStageReached: Stage;
   onSelectStage: (stage: Stage) => void;
 }
@@ -55,7 +57,7 @@ export const StageNav: React.FC<StageNavProps> = ({
               {index > 0 && (
                 <span
                   aria-hidden
-                  className="hidden select-none px-1 text-rule sm:inline"
+                  className="hidden select-none px-0.5 text-rule sm:inline"
                 >
                   ·
                 </span>

@@ -683,16 +683,7 @@ export const RoundSimulator: React.FC<RoundSimulatorProps> = ({
       {/* The four choices */}
       {!outcome && (
         <Panel
-          title={
-            roundOne
-              ? 'What you do next — pick one'
-              : 'What you do next'
-          }
-          note={
-            roundOne
-              ? 'Read the four consequences before you pick. Each one is final on the real portal.'
-              : 'With no seat in hand, two of the four choices apply to you.'
-          }
+          title="Choose what happens next"
           padded={false}
           className="no-print"
         >
@@ -731,41 +722,11 @@ export const RoundSimulator: React.FC<RoundSimulatorProps> = ({
                           >
                             Choice {choice.number} · {choice.name}
                           </span>
-                          {choice.irreversible && (
-                            <Badge tone="grave">Cannot be undone</Badge>
-                          )}
                         </div>
 
                         <p className="measure mt-1 text-sm text-ink-soft">
                           {choice.summary}
                         </p>
-
-                        <dl className="mt-3 grid gap-x-8 gap-y-3 border-t border-hairline pt-3 sm:grid-cols-2">
-                          <div className="min-w-0">
-                            <dt className="text-label text-ink-muted">In Round 2</dt>
-                            <dd className="mt-0.5 text-sm text-ink">{choice.inRound2}</dd>
-                          </div>
-                          <div className="min-w-0">
-                            <dt className="text-label text-ink-muted">You keep</dt>
-                            <dd className="mt-0.5 text-sm text-ink">{choice.youKeep}</dd>
-                          </div>
-                          <div className="min-w-0">
-                            <dt className="text-label text-ink-muted">You risk</dt>
-                            <dd className="mt-0.5 text-sm text-ink">{choice.youRisk}</dd>
-                          </div>
-                          <div className="min-w-0">
-                            <dt className="text-label text-ink-muted">Fee due now</dt>
-                            <dd className="mt-0.5 text-sm text-ink">{choice.feeNow}</dd>
-                          </div>
-                          {choice.irreversible && (
-                            <div className="min-w-0 sm:col-span-2">
-                              <dt className="text-label text-ink-muted">Irreversible</dt>
-                              <dd className="mt-0.5 text-sm text-oxide-deep">
-                                {choice.irreversible}
-                              </dd>
-                            </div>
-                          )}
-                        </dl>
                       </div>
                     </label>
                   </li>
@@ -777,10 +738,8 @@ export const RoundSimulator: React.FC<RoundSimulatorProps> = ({
           <div className="flex flex-col gap-3 border-t border-hairline bg-panel px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
             <p className="measure text-label text-ink-soft" aria-live="polite">
               {selectedSpec
-                ? selectedSpec.irreversible
-                  ? `Choice ${selectedSpec.number} — ${selectedSpec.irreversible}`
-                  : `Choice ${selectedSpec.number} — ${selectedSpec.summary}`
-                : 'Pick one of the choices above to see what confirming it would do.'}
+                ? `Selected: Choice ${selectedSpec.number} · ${selectedSpec.name}`
+                : 'Select a choice to continue.'}
             </p>
             <Button
               variant={selectedSpec?.grave ? 'grave' : 'primary'}
@@ -788,14 +747,12 @@ export const RoundSimulator: React.FC<RoundSimulatorProps> = ({
               disabled={!selectedSpec}
               onClick={() => {
                 if (!selectedSpec) return;
-                // Anything that cannot be undone stops for a confirmation that
-                // names what is lost. Everything else runs straight away.
                 if (selectedSpec.irreversible) setConfirming(selectedSpec.id);
                 else commit(selectedSpec.id);
               }}
               className="shrink-0"
             >
-              {selectedSpec ? selectedSpec.actionLabel : 'Pick a choice first'}
+              {selectedSpec ? selectedSpec.actionLabel : 'Confirm choice'}
             </Button>
           </div>
         </Panel>
