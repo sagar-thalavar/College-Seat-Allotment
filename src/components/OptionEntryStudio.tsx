@@ -386,8 +386,8 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
 
     return (
       <div className="space-y-6 max-w-4xl mx-auto py-2 animate-[row-settle_var(--dur-base)_var(--ease-out-quart)]">
-        {/* Main Acknowledgement Card */}
-        <article className="overflow-hidden rounded-sm border border-rule bg-panel shadow-sm">
+        {/* Main Acknowledgement Card (On-Screen View Only) */}
+        <article className="overflow-hidden rounded-sm border border-rule bg-panel shadow-sm no-print">
           {/* Masthead */}
           <div className="border-b border-rule px-5 py-5 sm:px-8 sm:py-6 bg-ground/50">
             <span className="text-micro font-semibold uppercase tracking-[0.08em] text-pine flex items-center gap-1.5">
@@ -432,62 +432,81 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
           </div>
 
           {/* Action Bar */}
-          <div className="no-print bg-ground px-5 py-4 sm:px-8 flex items-center justify-end border-t border-hairline">
+          <div className="bg-ground px-5 py-4 sm:px-8 flex items-center justify-end border-t border-hairline">
             <Button
               variant="primary"
               size="md"
-              onClick={() => window.print()}
+              onClick={() => {
+                const prev = document.title;
+                document.title = ' ';
+                window.print();
+                setTimeout(() => {
+                  document.title = prev;
+                }, 500);
+              }}
               className="flex items-center gap-1.5"
             >
               <Printer className="size-4" />
-              Download / Print Receipt
+              Print Allotment List
             </Button>
           </div>
         </article>
 
-        {/* Submitted Allotment Probability List (10 Options) */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold text-ink">
-              Submitted Priorities &amp; Allotment Probability List
-            </h3>
-            <span className="font-mono text-micro text-pine bg-pine/10 px-2 py-0.5 rounded-sm font-medium">
-              10 Choices Locked
+        {/* Single-Page Printable Slip Document (Hidden on screen, renders in Print / PDF only) */}
+        <div className="hidden print:block space-y-4 text-ink">
+          {/* Top Line: Application Ref & KEA */}
+          <div className="border-b border-ink/30 pb-2 flex items-center justify-between text-xs">
+            <span className="font-mono text-ink-muted">
+              Application Ref: <span className="font-semibold text-ink">{submission.referenceNo}</span>
             </span>
+            <span className="font-bold text-base uppercase tracking-wider text-ink">KEA</span>
           </div>
 
-          <div className="overflow-hidden rounded-sm border border-hairline bg-panel shadow-xs">
-            <div
-              aria-hidden
-              className={clsx(
-                'hidden border-b border-hairline bg-panel px-4 py-2 text-micro font-medium text-ink-muted sm:px-5 lg:grid',
-                GRID_COLUMNS_LG,
-                'items-center gap-x-3',
-              )}
-            >
-              <span>Priority</span>
-              <span>College and branch</span>
-              <span>Category</span>
-              <span>Fee a year</span>
-              <span>Chance</span>
-              <span className="text-right">Status</span>
+          {/* Candidate Details */}
+          <div className="border-b border-ink/30 pb-3">
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+              <div>
+                <dt className="text-ink-muted">Candidate Name</dt>
+                <dd className="font-semibold text-ink text-sm mt-0.5">{candidateName}</dd>
+              </div>
+              <div>
+                <dt className="text-ink-muted">DCET Rank &amp; Roll Number</dt>
+                <dd className="font-mono font-semibold text-ink text-sm mt-0.5">
+                  Rank {rank.toLocaleString('en-IN')} · Roll {rollNo}
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          {/* Single-Page Table of Entered Colleges */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between border-b border-ink/40 pb-1 text-xs font-semibold uppercase text-ink">
+              <span className="w-12 text-center">Sl No.</span>
+              <span className="flex-1 pl-2">College &amp; Branch Preference</span>
             </div>
 
-            <ol>
-              {choices.map((choice, index) => (
-                <OptionRow
-                  key={optionKey(choice.collegeCode, choice.branchCode)}
-                  choice={choice}
-                  index={index}
-                  isDragOver={false}
-                  isLocked={true}
-                  onDragStart={() => {}}
-                  onDragOver={() => {}}
-                  onDrop={() => {}}
-                  onDragEnd={() => {}}
-                  onRemove={() => {}}
-                />
-              ))}
+            <ol className="divide-y divide-hairline">
+              {choices.map((choice, index) => {
+                const cleanName = choice.collegeName.replace(/\s*\([^)]*\)/g, '').trim();
+                return (
+                  <li
+                    key={optionKey(choice.collegeCode, choice.branchCode)}
+                    className="py-1.5 flex items-start text-xs"
+                  >
+                    <span className="w-12 text-center font-mono font-medium text-ink pt-0.5 shrink-0">
+                      {index + 1}
+                    </span>
+                    <div className="flex-1 pl-2 min-w-0">
+                      <span className="block font-semibold text-ink text-sm leading-snug">
+                        {cleanName}
+                      </span>
+                      <span className="block text-ink-soft text-xs mt-0.5">
+                        {choice.branchName} · {choice.collegeDistrict}
+                      </span>
+                    </div>
+                  </li>
+                );
+              })}
             </ol>
           </div>
         </div>

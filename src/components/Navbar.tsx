@@ -42,7 +42,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const hasPulledRecord = currentStage > 1;
 
   return (
-    <header className="sticky top-0 z-[var(--z-sticky)] border-b border-hairline bg-panel">
+    <header className="sticky top-0 z-[var(--z-sticky)] border-b border-hairline bg-panel no-print">
       <div className={SHELL_COLUMN}>
         <div className="flex items-start justify-between gap-4 pt-2.5 pb-1 sm:pt-4 sm:pb-2.5">
           <div className="min-w-0">

@@ -16,7 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'KEA — College Seat Allotment',
+  title: 'KEA',
   description:
     'Verify your record from four identifiers, read three years of real cutoffs against your rank, and order your college options before the round locks.',
 };
