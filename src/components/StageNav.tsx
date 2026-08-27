@@ -5,18 +5,17 @@ import { clsx } from 'clsx';
 import { Check, ChevronLeft } from 'lucide-react';
 
 /**
- * The four stages of the allotment: Record, Slip, Options, Rounds.
+ * The three stages of the allotment: Record, Slip, Preferences.
  */
 export const STAGE_LABELS = [
   'Record',
   'Slip',
-  'Options',
-  'Rounds',
+  'Preferences',
 ] as const;
 
 export const TOTAL_STAGES = STAGE_LABELS.length;
 
-export type Stage = 1 | 2 | 3 | 4;
+export type Stage = 1 | 2 | 3;
 
 interface StageNavProps {
   currentStage: Stage;

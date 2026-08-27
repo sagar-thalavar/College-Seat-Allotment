@@ -1,28 +1,26 @@
 'use client';
 
-import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { clsx } from 'clsx';
-import { GripVertical, SlidersHorizontal, Trash2, Undo2, X } from 'lucide-react';
+import { Check, GripVertical, Printer, Trash2, Undo2 } from 'lucide-react';
 import {
-  Badge,
   Button,
-  Dialog,
-  Panel,
   ProbabilityBar,
+  Seal,
 } from '@/components/ui';
-import { College, OptionChoice, ProbabilityTier, RecommendationResult, StudentProfile } from '@/types';
+import { College, OptionChoice, StudentProfile } from '@/types';
 import { calculateCollegeRecommendations } from '@/lib/recommendation';
 import studentsData from '@/data/students.json';
 import collegesData from '@/data/colleges.json';
 
 const CANDIDATE = (studentsData as StudentProfile[])[0];
-const CANDIDATE_RANK = CANDIDATE.exam.dcetRank;
+const STORAGE_KEY = 'kea_submitted_preferences_certificate_v1';
 
 const INDIAN_DIGITS = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
 const formatNumber = (value: number) => INDIAN_DIGITS.format(value);
 const formatRupees = (value: number) => `₹${INDIAN_DIGITS.format(value)}`;
 
-type SortKey = 'cutoff' | 'chance' | 'fee' | 'nirf';
+type SortKey = 'chance' | 'fee' | 'nirf';
 
 interface SortSpec {
   key: SortKey;
@@ -30,34 +28,12 @@ interface SortSpec {
 }
 
 const SORTS: SortSpec[] = [
-  { key: 'cutoff', label: 'Hardest first' },
   { key: 'chance', label: 'Best chance' },
-  { key: 'fee', label: 'Cheapest first' },
+  { key: 'fee', label: 'Lowest fees' },
   { key: 'nirf', label: 'NIRF rank' },
 ];
 
-interface FilterState {
-  maxFee: number | null;
-  districts: string[];
-  branchCodes: string[];
-  hostelOnly: boolean;
-}
-
-const NO_FILTERS: FilterState = {
-  maxFee: null,
-  districts: [],
-  branchCodes: [],
-  hostelOnly: false,
-};
-
-interface FacetOption {
-  value: string;
-  label: string;
-  count: number;
-}
-
 interface OptionFacts {
-  shortName: string;
   categoryCode: string;
   categoryLabel: string;
   closingRank2025: number;
@@ -83,7 +59,6 @@ const OPTION_FACTS: ReadonlyMap<string, OptionFacts> = (() => {
   for (const result of recommendations) {
     const { code, label } = splitCategory(result.applicableCategory);
     index.set(optionKey(result.college.code, result.branch.branchCode), {
-      shortName: result.college.shortName,
       categoryCode: code,
       categoryLabel: label,
       closingRank2025: result.effectiveCutoff,
@@ -119,7 +94,6 @@ const CELL_FEE = 'min-w-0 lg:col-start-4 lg:col-end-5 lg:row-start-1';
 interface OptionRowProps {
   choice: OptionChoice;
   index: number;
-  total: number;
   isDragOver: boolean;
   onDragStart: (e: React.DragEvent<HTMLLIElement>) => void;
   onDragOver: (e: React.DragEvent<HTMLLIElement>) => void;
@@ -131,7 +105,6 @@ interface OptionRowProps {
 const OptionRow: React.FC<OptionRowProps> = ({
   choice,
   index,
-  total,
   isDragOver,
   onDragStart,
   onDragOver,
@@ -150,8 +123,9 @@ const OptionRow: React.FC<OptionRowProps> = ({
       onDrop={onDrop}
       onDragEnd={onDragEnd}
       className={clsx(
-        'relative border-b border-hairline bg-panel px-4 py-3 sm:px-5 transition-colors cursor-grab active:cursor-grabbing',
-        isDragOver ? 'border-t-2 border-t-oxide bg-sunken' : 'hover:bg-ground',
+        'relative border-b border-hairline bg-panel px-4 py-3 sm:px-5 transition-all cursor-grab active:cursor-grabbing hover:bg-ground',
+        index === 0 && 'animate-row-intro-lift',
+        isDragOver && 'border-t-2 border-t-oxide bg-sunken',
       )}
     >
       <div className={ROW_GRID}>
@@ -168,11 +142,6 @@ const OptionRow: React.FC<OptionRowProps> = ({
         <div className={CELL_IDENTITY}>
           <span className="block truncate text-sm font-medium text-ink">
             {choice.collegeName}
-            {facts?.shortName && (
-              <span className="ml-1.5 text-micro font-normal text-ink-muted">
-                {facts.shortName}
-              </span>
-            )}
           </span>
           <span className="block truncate text-sm text-ink-soft">
             {choice.branchName}
@@ -240,310 +209,286 @@ const OptionRow: React.FC<OptionRowProps> = ({
   );
 };
 
-/* ------------------------------------------------------------
-   Filter Dialog
-   ------------------------------------------------------------ */
-
-interface FilterDialogProps {
-  open: boolean;
-  onClose: () => void;
-  filters: FilterState;
-  setFilters: React.Dispatch<React.SetStateAction<FilterState>>;
-  districtOptions: FacetOption[];
-  branchOptions: FacetOption[];
-  feeCeiling: number;
+function sortChoices(choices: OptionChoice[], key: SortKey): OptionChoice[] {
+  const sorted = [...choices];
+  switch (key) {
+    case 'chance':
+      sorted.sort((a, b) => b.probabilityScore - a.probabilityScore);
+      break;
+    case 'fee':
+      sorted.sort((a, b) => a.tuitionFee - b.tuitionFee);
+      break;
+    case 'nirf': {
+      const collegeMap = new Map(
+        (collegesData as College[]).map((c) => [c.code, c.nirfRank ?? 9999]),
+      );
+      sorted.sort(
+        (a, b) =>
+          (collegeMap.get(a.collegeCode) ?? 9999) -
+          (collegeMap.get(b.collegeCode) ?? 9999),
+      );
+      break;
+    }
+  }
+  return sorted.map((c, i) => ({ ...c, priority: i + 1 }));
 }
 
-const FilterDialog: React.FC<FilterDialogProps> = ({
-  open,
-  onClose,
-  filters,
-  setFilters,
-  districtOptions,
-  branchOptions,
-  feeCeiling,
-}) => {
-  const toggleDistrict = (d: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      districts: prev.districts.includes(d)
-        ? prev.districts.filter((item) => item !== d)
-        : [...prev.districts, d],
-    }));
-  };
-
-  const toggleBranch = (b: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      branchCodes: prev.branchCodes.includes(b)
-        ? prev.branchCodes.filter((item) => item !== b)
-        : [...prev.branchCodes, b],
-    }));
-  };
-
-  return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      title="Filter options"
-      footer={
-        <div className="flex items-center justify-between w-full">
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() => setFilters(NO_FILTERS)}
-          >
-            Clear all
-          </Button>
-          <Button size="sm" variant="primary" onClick={onClose}>
-            Apply filters
-          </Button>
-        </div>
-      }
-    >
-      <div className="space-y-5 text-sm">
-        {/* District */}
-        <div>
-          <h4 className="font-semibold text-ink mb-2">District</h4>
-          <div className="flex flex-wrap gap-1.5">
-            {districtOptions.map((opt) => {
-              const active = filters.districts.includes(opt.value);
-              return (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => toggleDistrict(opt.value)}
-                  className={clsx(
-                    'px-2.5 py-1 rounded-sm border text-label transition-colors',
-                    active
-                      ? 'border-ink bg-ink text-ground'
-                      : 'border-hairline bg-panel text-ink hover:border-ink',
-                  )}
-                >
-                  {opt.label} ({opt.count})
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Branch */}
-        <div>
-          <h4 className="font-semibold text-ink mb-2">Branch</h4>
-          <div className="flex flex-wrap gap-1.5">
-            {branchOptions.map((opt) => {
-              const active = filters.branchCodes.includes(opt.value);
-              return (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => toggleBranch(opt.value)}
-                  className={clsx(
-                    'px-2.5 py-1 rounded-sm border text-label transition-colors',
-                    active
-                      ? 'border-ink bg-ink text-ground'
-                      : 'border-hairline bg-panel text-ink hover:border-ink',
-                  )}
-                >
-                  {opt.label} ({opt.count})
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Campus Hostel */}
-        <div>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={filters.hostelOnly}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, hostelOnly: e.target.checked }))
-              }
-              className="size-4 accent-ink"
-            />
-            <span className="text-ink">Campus hostel available only</span>
-          </label>
-        </div>
-      </div>
-    </Dialog>
-  );
-};
-
-/* ------------------------------------------------------------
-   Main OptionEntryStudio Component
-   ------------------------------------------------------------ */
+interface SubmissionRecord {
+  isSubmitted: boolean;
+  submittedAt: string;
+  referenceNo: string;
+}
 
 interface OptionEntryStudioProps {
-  student: StudentProfile;
-  colleges: College[];
   optionChoices: OptionChoice[];
   onReorderChoices: (choices: OptionChoice[]) => void;
-  onRemoveChoice: (index: number) => void;
   onProceedToRounds: () => void;
+  student?: StudentProfile;
+  colleges?: College[];
+  onRemoveChoice?: (index: number) => void;
 }
 
 export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
-  student,
-  colleges,
   optionChoices,
   onReorderChoices,
-  onRemoveChoice,
-  onProceedToRounds,
+  student,
 }) => {
-  const [sortKey, setSortKey] = useState<SortKey>('cutoff');
-  const [filters, setFilters] = useState<FilterState>(NO_FILTERS);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const choices = optionChoices;
+  const [sortKey, setSortKey] = useState<SortKey>('chance');
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [removed, setRemoved] = useState<{ choice: OptionChoice; index: number } | null>(null);
+  const [submission, setSubmission] = useState<SubmissionRecord | null>(null);
+
+  // Load persistent submission certificate from browser localStorage
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed?.isSubmitted) {
+          setSubmission(parsed);
+        }
+      }
+    } catch {
+      // Ignore local storage error
+    }
+  }, []);
 
   const allRecs = useMemo(
-    () => calculateCollegeRecommendations(student, colleges),
-    [student, colleges],
-  );
-
-  const byName = (a: RecommendationResult, b: RecommendationResult) =>
-    a.college.name.localeCompare(b.college.name);
-
-  const sortChoices = useCallback(
-    (choicesToSort: OptionChoice[], key: SortKey) => {
-      const recMap = new Map(allRecs.map((r) => [optionKey(r.college.code, r.branch.branchCode), r]));
-      const sorted = [...choicesToSort].sort((a, b) => {
-        const recA = recMap.get(optionKey(a.collegeCode, a.branchCode));
-        const recB = recMap.get(optionKey(b.collegeCode, b.branchCode));
-        if (!recA || !recB) return 0;
-
-        if (key === 'cutoff') {
-          return recA.effectiveCutoff - recB.effectiveCutoff || byName(recA, recB);
-        }
-        if (key === 'chance') {
-          return (
-            recB.probabilityScore - recA.probabilityScore ||
-            recA.effectiveCutoff - recB.effectiveCutoff ||
-            byName(recA, recB)
-          );
-        }
-        if (key === 'fee') {
-          return recA.tuitionFee - recB.tuitionFee || byName(recA, recB);
-        }
-        if (key === 'nirf') {
-          return (
-            (recA.college.nirfRank ?? Number.MAX_SAFE_INTEGER) -
-              (recB.college.nirfRank ?? Number.MAX_SAFE_INTEGER) || byName(recA, recB)
-          );
-        }
-        return 0;
-      });
-
-      return sorted.map((c, i) => ({ ...c, priority: i + 1 }));
-    },
-    [allRecs],
+    () => calculateCollegeRecommendations(CANDIDATE, collegesData as College[]),
+    [],
   );
 
   const handleSortChange = (key: SortKey) => {
+    if (submission?.isSubmitted) return;
     setSortKey(key);
-    onReorderChoices(sortChoices(optionChoices, key));
+    onReorderChoices(sortChoices(choices, key));
   };
 
-  // Drag & Drop
   const handleDragStart = (index: number) => {
+    if (submission?.isSubmitted) return;
     setDraggedIndex(index);
   };
 
-  const handleDragOver = (e: React.DragEvent, index: number) => {
+  const handleDragOver = (e: React.DragEvent<HTMLLIElement>, index: number) => {
+    if (submission?.isSubmitted) return;
     e.preventDefault();
-    if (dragOverIndex !== index) {
-      setDragOverIndex(index);
-    }
+    if (draggedIndex === null || draggedIndex === index) return;
+    setDragOverIndex(index);
   };
 
-  const handleDrop = (dropIdx: number) => {
-    if (draggedIndex === null || draggedIndex === dropIdx) {
+  const handleDrop = (dropIndex: number) => {
+    if (submission?.isSubmitted) return;
+    if (draggedIndex === null || draggedIndex === dropIndex) {
       setDraggedIndex(null);
       setDragOverIndex(null);
       return;
     }
 
-    const updated = [...optionChoices];
-    const [moved] = updated.splice(draggedIndex, 1);
-    updated.splice(dropIdx, 0, moved);
+    const reordered = [...choices];
+    const [moved] = reordered.splice(draggedIndex, 1);
+    reordered.splice(dropIndex, 0, moved);
 
-    onReorderChoices(updated.map((item, i) => ({ ...item, priority: i + 1 })));
+    const updated = reordered.map((item, idx) => ({
+      ...item,
+      priority: idx + 1,
+    }));
+
+    onReorderChoices(updated);
     setDraggedIndex(null);
     setDragOverIndex(null);
   };
 
-  const handleRemove = (index: number) => {
-    const choice = optionChoices[index];
-    if (!choice) return;
-    setRemoved({ choice, index });
-    onRemoveChoice(index);
-  };
+  const handleRemove = useCallback(
+    (index: number) => {
+      if (submission?.isSubmitted) return;
+      const choice = choices[index];
+      if (!choice) return;
 
-  const handleRestore = () => {
-    if (!removed) return;
-    const next = [...optionChoices];
-    const at = Math.min(removed.index, next.length);
-    next.splice(at, 0, removed.choice);
+      const next = choices
+        .filter((_, i) => i !== index)
+        .map((c, i) => ({ ...c, priority: i + 1 }));
+
+      onReorderChoices(next);
+      setRemoved({ choice, index });
+    },
+    [choices, onReorderChoices, submission?.isSubmitted],
+  );
+
+  const handleRestore = useCallback(() => {
+    if (!removed || submission?.isSubmitted) return;
+    const next = [...choices];
+    next.splice(removed.index, 0, removed.choice);
     onReorderChoices(next.map((c, i) => ({ ...c, priority: i + 1 })));
     setRemoved(null);
+  }, [choices, onReorderChoices, removed, submission?.isSubmitted]);
+
+  const handleSubmit = () => {
+    const record: SubmissionRecord = {
+      isSubmitted: true,
+      submittedAt: new Date().toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+      referenceNo: `KEA/DCET26/OPT-${Math.floor(10000 + Math.random() * 90000)}`,
+    };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
+    } catch {}
+    setSubmission(record);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Filter facets
-  const districtOptions: FacetOption[] = useMemo(() => {
-    const tally = new Map<string, number>();
-    allRecs.forEach((r) => tally.set(r.college.district, (tally.get(r.college.district) ?? 0) + 1));
-    return Array.from(tally.entries()).map(([value, count]) => ({
-      value,
-      label: value,
-      count,
-    }));
-  }, [allRecs]);
+  const isLocked = Boolean(submission?.isSubmitted);
+  const total = choices.length;
 
-  const branchOptions: FacetOption[] = useMemo(() => {
-    const tally = new Map<string, FacetOption>();
-    allRecs.forEach((r) => {
-      const existing = tally.get(r.branch.branchCode);
-      tally.set(r.branch.branchCode, {
-        value: r.branch.branchCode,
-        label: r.branch.branchName,
-        count: (existing?.count ?? 0) + 1,
-      });
-    });
-    return Array.from(tally.values());
-  }, [allRecs]);
+  // -------------------------------------------------------------------------
+  // Approach A: Institutional Certificate of Submission (Permanent Lock)
+  // -------------------------------------------------------------------------
+  if (isLocked && submission) {
+    const topChoice = choices[0];
+    const candidateName = student?.name ?? CANDIDATE.name;
+    const rank = student?.exam.dcetRank ?? CANDIDATE.exam.dcetRank;
+    const rollNo = student?.exam.dcetRollNo ?? CANDIDATE.exam.dcetRollNo;
 
-  const fees = allRecs.map((rec) => rec.tuitionFee);
-  const feeCeiling = fees.length ? Math.ceil(Math.max(...fees) / 1000) * 1000 : 0;
+    return (
+      <div className="space-y-6 max-w-3xl mx-auto py-2 animate-[row-settle_var(--dur-base)_var(--ease-out-quart)]">
+        <article className="overflow-hidden rounded-sm border border-rule bg-panel shadow-sm">
+          {/* Certificate Masthead */}
+          <div className="border-b border-rule px-5 py-5 sm:px-8 sm:py-6 flex items-start justify-between gap-4 bg-ground/50">
+            <div>
+              <span className="text-micro font-semibold uppercase tracking-[0.08em] text-pine flex items-center gap-1.5">
+                <Check className="size-3.5" />
+                Application Submitted &amp; Locked
+              </span>
+              <h2 className="mt-1 text-2xl font-bold tracking-tight text-ink">
+                College Priority Acknowledgement
+              </h2>
+              <p className="mt-1 font-mono text-sm text-ink-soft">
+                Application Ref:{' '}
+                <span className="font-semibold text-ink select-all">
+                  {submission.referenceNo}
+                </span>
+              </p>
+            </div>
 
-  // Filtered visible choices
-  const visibleChoices = useMemo(() => {
-    const recMap = new Map(allRecs.map((r) => [optionKey(r.college.code, r.branch.branchCode), r]));
-    return optionChoices.filter((c) => {
-      const rec = recMap.get(optionKey(c.collegeCode, c.branchCode));
-      if (!rec) return true;
-      if (filters.districts.length > 0 && !filters.districts.includes(rec.college.district)) return false;
-      if (filters.branchCodes.length > 0 && !filters.branchCodes.includes(rec.branch.branchCode)) return false;
-      if (filters.hostelOnly && !rec.college.hasCampusHostel) return false;
-      return true;
-    });
-  }, [allRecs, filters, optionChoices]);
+            <Seal
+              mark="LOCKED"
+              date={submission.submittedAt.split('at')[0].trim()}
+              caption="DCET 2026"
+              className="shrink-0"
+            />
+          </div>
 
-  const total = optionChoices.length;
+          {/* Core Status Notice */}
+          <div className="border-b border-hairline bg-pine/5 px-5 py-4 sm:px-8 text-sm text-ink">
+            <p className="font-medium text-pine">
+              Round 1 seat allocation results will be announced on the portal within 24–48 hours.
+            </p>
+            <p className="mt-1 text-label text-ink-soft">
+              Your college options have been officially sealed for government seat allocation.
+            </p>
+          </div>
 
+          {/* Candidate & Summary Details */}
+          <div className="px-5 py-6 sm:px-8 space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.06em] text-ink-muted">
+              Candidate &amp; Submission Summary
+            </h3>
+
+            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+              <div className="border-b border-hairline/60 pb-2">
+                <dt className="text-xs text-ink-muted">Candidate Name</dt>
+                <dd className="font-medium text-ink mt-0.5">{candidateName}</dd>
+              </div>
+              <div className="border-b border-hairline/60 pb-2">
+                <dt className="text-xs text-ink-muted">DCET Rank &amp; Roll Number</dt>
+                <dd className="font-mono font-medium text-ink mt-0.5">
+                  Rank {rank.toLocaleString('en-IN')} · Roll {rollNo}
+                </dd>
+              </div>
+              <div className="border-b border-hairline/60 pb-2">
+                <dt className="text-xs text-ink-muted">Total Priorities Locked</dt>
+                <dd className="font-medium text-ink mt-0.5">{choices.length} College Choices</dd>
+              </div>
+              <div className="border-b border-hairline/60 pb-2">
+                <dt className="text-xs text-ink-muted">Submission Timestamp</dt>
+                <dd className="font-mono text-xs text-ink mt-0.5">{submission.submittedAt}</dd>
+              </div>
+              {topChoice && (
+                <div className="sm:col-span-2 border-b border-hairline/60 pb-2">
+                  <dt className="text-xs text-ink-muted">Priority #1 (Top Preference)</dt>
+                  <dd className="font-medium text-ink mt-0.5">
+                    {topChoice.collegeName} —{' '}
+                    <span className="text-ink-soft">{topChoice.branchName}</span>
+                  </dd>
+                </div>
+              )}
+            </dl>
+          </div>
+
+          {/* Action Bar */}
+          <div className="no-print bg-ground px-5 py-4 sm:px-8 flex items-center justify-between border-t border-hairline">
+            <span className="text-micro text-ink-muted">
+              Keep this acknowledgement receipt for your official records.
+            </span>
+            <Button
+              variant="primary"
+              size="md"
+              onClick={() => window.print()}
+              className="flex items-center gap-1.5"
+            >
+              <Printer className="size-4" />
+              Print / Download Receipt
+            </Button>
+          </div>
+        </article>
+      </div>
+    );
+  }
+
+  // -------------------------------------------------------------------------
+  // Normal Editable Preferences View (Before Submission)
+  // -------------------------------------------------------------------------
   return (
     <div className="space-y-6">
-      <header>
-        <h2 className="text-2xl font-semibold tracking-[-0.012em] text-ink">
-          Order your options
+      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <h2 className="text-2xl font-semibold tracking-[-0.015em] text-ink">
+          College Preferences
         </h2>
+
+        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-sunken border border-hairline text-micro font-medium text-ink-soft self-start sm:self-auto">
+          <GripVertical aria-hidden className="size-3.5 text-oxide animate-drag-hint shrink-0" />
+          <span>Reorder priorities</span>
+        </div>
       </header>
 
       {/* Filter and Sort bar */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        {/* Sort pills */}
         <div className="flex flex-wrap items-center gap-1.5">
           {SORTS.map((s) => {
             const active = sortKey === s.key;
@@ -564,32 +509,10 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
             );
           })}
         </div>
-
-        {/* Filter Trigger button */}
-        <div className="flex items-center gap-2">
-          <Button
-            size="md"
-            variant="secondary"
-            onClick={() => setIsFilterOpen(true)}
-            className="flex items-center gap-1.5"
-          >
-            <SlidersHorizontal aria-hidden className="size-3.5" />
-            Filters
-            {(filters.districts.length > 0 ||
-              filters.branchCodes.length > 0 ||
-              filters.hostelOnly) && (
-              <Badge tone="neutral" className="ml-1 px-1 py-0 text-micro">
-                {filters.districts.length +
-                  filters.branchCodes.length +
-                  (filters.hostelOnly ? 1 : 0)}
-              </Badge>
-            )}
-          </Button>
-        </div>
       </div>
 
       {total === 0 ? (
-        <Panel headingLevel="h3" title="No options entered">
+        <div className="rounded-sm border border-hairline bg-panel p-5">
           <p className="measure text-sm text-ink-soft">
             An empty list ends the season with no seat. Click below to reload the recommended options.
           </p>
@@ -597,33 +520,31 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
             size="md"
             variant="primary"
             className="mt-3"
-            onClick={() => onReorderChoices(sortChoices(allRecs.map((r, i) => ({
-              priority: i + 1,
-              collegeCode: r.college.code,
-              collegeName: r.college.name,
-              collegeDistrict: r.college.district,
-              branchCode: r.branch.branchCode,
-              branchName: r.branch.branchName,
-              tuitionFee: r.tuitionFee,
-              isSnqApplied: r.isSnqApplied,
-              probabilityTier: r.probabilityTier,
-              probabilityScore: r.probabilityScore,
-            })), sortKey))}
+            onClick={() =>
+              onReorderChoices(
+                sortChoices(
+                  allRecs.map((r, i) => ({
+                    priority: i + 1,
+                    collegeCode: r.college.code,
+                    collegeName: r.college.name,
+                    collegeDistrict: r.college.district,
+                    branchCode: r.branch.branchCode,
+                    branchName: r.branch.branchName,
+                    tuitionFee: r.tuitionFee,
+                    isSnqApplied: r.isSnqApplied,
+                    probabilityTier: r.probabilityTier,
+                    probabilityScore: r.probabilityScore,
+                  })),
+                  sortKey,
+                ),
+              )
+            }
           >
             Reload all options
           </Button>
-        </Panel>
+        </div>
       ) : (
-        <Panel
-          headingLevel="h3"
-          padded={false}
-          title="Your option list"
-          aside={
-            <Badge tone="neutral" mono>
-              {visibleChoices.length} {visibleChoices.length === 1 ? 'option' : 'options'}
-            </Badge>
-          }
-        >
+        <div className="overflow-hidden rounded-sm border border-hairline bg-panel shadow-xs">
           {removed && (
             <div className="border-b border-hairline bg-ground px-4 py-2.5 sm:px-5 flex items-center justify-between text-sm">
               <span className="text-ink-soft">
@@ -653,12 +574,11 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
           </div>
 
           <ol>
-            {visibleChoices.map((choice, index) => (
+            {choices.map((choice, index) => (
               <OptionRow
                 key={optionKey(choice.collegeCode, choice.branchCode)}
                 choice={choice}
                 index={index}
-                total={visibleChoices.length}
                 isDragOver={dragOverIndex === index}
                 onDragStart={() => handleDragStart(index)}
                 onDragOver={(e) => handleDragOver(e, index)}
@@ -671,30 +591,20 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
               />
             ))}
           </ol>
-        </Panel>
+        </div>
       )}
 
-      {/* Next Step */}
+      {/* Apply for Seat Allocation CTA Button */}
       <div className="flex justify-end pt-2">
         <Button
           variant="primary"
           size="lg"
-          onClick={onProceedToRounds}
+          onClick={handleSubmit}
           disabled={total === 0}
         >
-          Proceed to seat allotment rounds
+          Apply for Seat Allocation
         </Button>
       </div>
-
-      <FilterDialog
-        open={isFilterOpen}
-        onClose={() => setIsFilterOpen(false)}
-        filters={filters}
-        setFilters={setFilters}
-        districtOptions={districtOptions}
-        branchOptions={branchOptions}
-        feeCeiling={feeCeiling}
-      />
     </div>
   );
 };

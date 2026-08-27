@@ -14,7 +14,6 @@ import { type Stage } from '@/components/StageNav';
 import { IdentifierInputSection } from '@/components/IdentifierInputSection';
 import { VerificationSlip } from '@/components/VerificationSlip';
 import { OptionEntryStudio } from '@/components/OptionEntryStudio';
-import { RoundSimulator } from '@/components/RoundSimulator';
 import { calculateCollegeRecommendations } from '@/lib/recommendation';
 
 const colleges = collegesData as College[];
@@ -53,7 +52,7 @@ export default function Home() {
   const [currentStage, setCurrentStage] = useState<Stage>(1);
   const [highestStageReached, setHighestStageReached] = useState<Stage>(1);
   
-  // Pre-load all recommended colleges by default (Hardest first)
+  // Pre-load all recommended colleges by default
   const [optionChoices, setOptionChoices] = useState<OptionChoice[]>(() => {
     const initialRecs = calculateCollegeRecommendations(student, colleges);
     return initialRecs.map((rec, i) => toOptionChoice(rec, i + 1));
@@ -127,15 +126,7 @@ export default function Home() {
               optionChoices={optionChoices}
               onReorderChoices={reorderChoices}
               onRemoveChoice={removeChoice}
-              onProceedToRounds={() => goToStage(4)}
-            />
-          )}
-
-          {currentStage === 4 && (
-            <RoundSimulator
-              student={student}
-              optionChoices={optionChoices}
-              onResetToOptions={() => goToStage(3)}
+              onProceedToRounds={() => {}}
             />
           )}
         </div>

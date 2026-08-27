@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useReducer, useState } from 'react';
-import { Check } from 'lucide-react';
+import { Check, MousePointerClick } from 'lucide-react';
 import collegesData from '@/data/colleges.json';
 import { College, StudentProfile } from '@/types';
 import { Badge, Button, DataRow, Panel } from '@/components/ui';
@@ -468,9 +468,17 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
         <div className="border-t border-hairline pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           {record.phase === 'pulled' ? (
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-              <Button variant="primary" size="lg" onClick={onProceed} className="w-full sm:w-auto">
-                Continue to verification slip
-              </Button>
+              <button
+                type="button"
+                onClick={onProceed}
+                className="group relative overflow-hidden animate-click-nudge inline-flex items-center justify-center px-7 py-3 rounded-sm bg-ink text-ground text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+              >
+                <span className="relative z-10 tracking-wide">Continue</span>
+                {/* Continuous tilted shimmer sweep reflection with 1s pause buffer */}
+                <span
+                  className="pointer-events-none absolute -inset-y-4 -left-1/3 w-2/3 -skew-x-[25deg] animate-continuous-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent ease-out"
+                />
+              </button>
               <Button
                 variant="ghost"
                 size="lg"
@@ -486,15 +494,14 @@ export const IdentifierInputSection: React.FC<IdentifierInputSectionProps> = ({
                 type="button"
                 disabled={record.phase === 'pulling'}
                 onClick={() => dispatch({ type: 'pull' })}
-                className="group relative overflow-hidden inline-flex items-center justify-center px-6 py-3 rounded-sm bg-ink text-ground text-sm font-medium transition-all duration-300 hover:shadow-md hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed w-full sm:w-auto"
+                className="group relative overflow-hidden animate-click-nudge inline-flex items-center justify-center px-7 py-3 rounded-sm bg-ink text-ground text-sm font-medium transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed w-full sm:w-auto"
               >
-                <span className="relative z-10">
+                <span className="relative z-10 font-semibold tracking-wide">
                   {record.phase === 'pulling' ? 'Reading registers...' : 'Get details'}
                 </span>
-                {/* Slow, tilted shimmer sweep */}
+                {/* Continuous tilted shimmer sweep reflection with 1s pause buffer */}
                 <span
-                  key={shimmerKey}
-                  className="pointer-events-none absolute -inset-y-4 -left-1/3 w-2/3 -skew-x-[25deg] animate-shimmer-sweep group-hover:animate-shimmer-sweep bg-gradient-to-r from-transparent via-white/50 to-transparent ease-out"
+                  className="pointer-events-none absolute -inset-y-4 -left-1/3 w-2/3 -skew-x-[25deg] animate-continuous-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent ease-out"
                 />
               </button>
             </div>

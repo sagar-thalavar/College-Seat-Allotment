@@ -47,7 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-start justify-between gap-4 pt-2.5 pb-1 sm:pt-4 sm:pb-2.5">
           <div className="min-w-0">
             <p className="text-base font-semibold tracking-[-0.01em] text-ink sm:text-lg">
-              KEA Next
+              KEA
             </p>
             {/* The one deliberate use of `rule-draw`: the identity rule, drawn once. */}
             <span
@@ -74,8 +74,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </>
                 )}
                 <span>
-                  Rank {student.exam.dcetRank.toLocaleString('en-IN')} ·{' '}
-                  {student.reservations.casteCategory}
+                  Rank {student.exam.dcetRank.toLocaleString('en-IN')}
                 </span>
               </dd>
             </dl>
