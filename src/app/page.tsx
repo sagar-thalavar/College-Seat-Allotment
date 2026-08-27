@@ -12,7 +12,6 @@ import {
 import { Navbar, SHELL_COLUMN } from '@/components/Navbar';
 import { type Stage } from '@/components/StageNav';
 import { IdentifierInputSection } from '@/components/IdentifierInputSection';
-import { VerificationSlip } from '@/components/VerificationSlip';
 import { OptionEntryStudio } from '@/components/OptionEntryStudio';
 import { calculateCollegeRecommendations } from '@/lib/recommendation';
 
@@ -113,13 +112,6 @@ export default function Home() {
           )}
 
           {currentStage === 2 && (
-            <VerificationSlip
-              student={student}
-              onProceedToOptions={() => goToStage(3)}
-            />
-          )}
-
-          {currentStage === 3 && (
             <OptionEntryStudio
               student={student}
               colleges={colleges}
