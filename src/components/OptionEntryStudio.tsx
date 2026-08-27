@@ -2,11 +2,10 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { clsx } from 'clsx';
-import { Check, GripVertical, Printer, Trash2, Undo2 } from 'lucide-react';
+import { Check, GripVertical, Lock, Printer, Trash2, Undo2 } from 'lucide-react';
 import {
   Button,
   ProbabilityBar,
-  Seal,
 } from '@/components/ui';
 import { College, OptionChoice, StudentProfile } from '@/types';
 import { calculateCollegeRecommendations } from '@/lib/recommendation';
@@ -14,7 +13,7 @@ import studentsData from '@/data/students.json';
 import collegesData from '@/data/colleges.json';
 
 const CANDIDATE = (studentsData as StudentProfile[])[0];
-const STORAGE_KEY = 'kea_submitted_preferences_certificate_v1';
+const STORAGE_KEY = 'kea_submitted_preferences_certificate_v2';
 
 const INDIAN_DIGITS = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
 const formatNumber = (value: number) => INDIAN_DIGITS.format(value);
@@ -95,6 +94,7 @@ interface OptionRowProps {
   choice: OptionChoice;
   index: number;
   isDragOver: boolean;
+  isLocked: boolean;
   onDragStart: (e: React.DragEvent<HTMLLIElement>) => void;
   onDragOver: (e: React.DragEvent<HTMLLIElement>) => void;
   onDrop: (e: React.DragEvent<HTMLLIElement>) => void;
@@ -106,6 +106,7 @@ const OptionRow: React.FC<OptionRowProps> = ({
   choice,
   index,
   isDragOver,
+  isLocked,
   onDragStart,
   onDragOver,
   onDrop,
@@ -117,20 +118,25 @@ const OptionRow: React.FC<OptionRowProps> = ({
 
   return (
     <li
-      draggable
-      onDragStart={onDragStart}
-      onDragOver={onDragOver}
-      onDrop={onDrop}
-      onDragEnd={onDragEnd}
+      draggable={!isLocked}
+      onDragStart={isLocked ? undefined : onDragStart}
+      onDragOver={isLocked ? undefined : onDragOver}
+      onDrop={isLocked ? undefined : onDrop}
+      onDragEnd={isLocked ? undefined : onDragEnd}
       className={clsx(
-        'relative border-b border-hairline bg-panel px-4 py-3 sm:px-5 transition-all cursor-grab active:cursor-grabbing hover:bg-ground',
-        index === 0 && 'animate-row-intro-lift',
+        'relative border-b border-hairline bg-panel px-4 py-3 sm:px-5 transition-all',
+        !isLocked && 'cursor-grab active:cursor-grabbing hover:bg-ground',
+        !isLocked && index === 0 && 'animate-row-intro-lift',
         isDragOver && 'border-t-2 border-t-oxide bg-sunken',
       )}
     >
       <div className={ROW_GRID}>
         <div className={clsx(CELL_PRIORITY, 'flex items-center gap-1.5')}>
-          <GripVertical aria-hidden className="size-4 text-ink-muted shrink-0" />
+          {isLocked ? (
+            <Lock aria-hidden className="size-3.5 text-pine/80 shrink-0" />
+          ) : (
+            <GripVertical aria-hidden className="size-4 text-ink-muted shrink-0" />
+          )}
           <span
             data-numeric
             className="font-mono text-sm tabular-nums text-ink font-medium"
@@ -161,15 +167,19 @@ const OptionRow: React.FC<OptionRowProps> = ({
         </div>
 
         <div className={clsx(CELL_ACTIONS, 'flex items-center justify-end')}>
-          <button
-            type="button"
-            onClick={onRemove}
-            aria-label={`Remove option ${priority}`}
-            title="Remove option"
-            className="grid size-9 place-items-center rounded-sm text-ink-muted hover:bg-sunken hover:text-ink transition-colors"
-          >
-            <Trash2 aria-hidden className="size-4" />
-          </button>
+          {isLocked ? (
+            <span className="font-mono text-micro text-pine font-medium">Locked</span>
+          ) : (
+            <button
+              type="button"
+              onClick={onRemove}
+              aria-label={`Remove option ${priority}`}
+              title="Remove option"
+              className="grid size-9 place-items-center rounded-sm text-ink-muted hover:bg-sunken hover:text-ink transition-colors"
+            >
+              <Trash2 aria-hidden className="size-4" />
+            </button>
+          )}
         </div>
 
         <div className={CELL_META}>
@@ -367,59 +377,46 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
   const total = choices.length;
 
   // -------------------------------------------------------------------------
-  // Approach A: Institutional Certificate of Submission (Permanent Lock)
+  // Submitted Acknowledgement View (Clean Card + 10-Option Table + Print)
   // -------------------------------------------------------------------------
   if (isLocked && submission) {
-    const topChoice = choices[0];
     const candidateName = student?.name ?? CANDIDATE.name;
     const rank = student?.exam.dcetRank ?? CANDIDATE.exam.dcetRank;
     const rollNo = student?.exam.dcetRollNo ?? CANDIDATE.exam.dcetRollNo;
 
     return (
-      <div className="space-y-6 max-w-3xl mx-auto py-2 animate-[row-settle_var(--dur-base)_var(--ease-out-quart)]">
+      <div className="space-y-6 max-w-4xl mx-auto py-2 animate-[row-settle_var(--dur-base)_var(--ease-out-quart)]">
+        {/* Main Acknowledgement Card */}
         <article className="overflow-hidden rounded-sm border border-rule bg-panel shadow-sm">
-          {/* Certificate Masthead */}
-          <div className="border-b border-rule px-5 py-5 sm:px-8 sm:py-6 flex items-start justify-between gap-4 bg-ground/50">
-            <div>
-              <span className="text-micro font-semibold uppercase tracking-[0.08em] text-pine flex items-center gap-1.5">
-                <Check className="size-3.5" />
-                Application Submitted &amp; Locked
+          {/* Masthead */}
+          <div className="border-b border-rule px-5 py-5 sm:px-8 sm:py-6 bg-ground/50">
+            <span className="text-micro font-semibold uppercase tracking-[0.08em] text-pine flex items-center gap-1.5">
+              <Check className="size-3.5" />
+              Application Submitted &amp; Locked
+            </span>
+            <h2 className="mt-1 text-2xl font-bold tracking-tight text-ink">
+              College Priority Acknowledgement
+            </h2>
+            <p className="mt-1 font-mono text-sm text-ink-soft">
+              Application Ref:{' '}
+              <span className="font-semibold text-ink select-all">
+                {submission.referenceNo}
               </span>
-              <h2 className="mt-1 text-2xl font-bold tracking-tight text-ink">
-                College Priority Acknowledgement
-              </h2>
-              <p className="mt-1 font-mono text-sm text-ink-soft">
-                Application Ref:{' '}
-                <span className="font-semibold text-ink select-all">
-                  {submission.referenceNo}
-                </span>
-              </p>
-            </div>
-
-            <Seal
-              mark="LOCKED"
-              date={submission.submittedAt.split('at')[0].trim()}
-              caption="DCET 2026"
-              className="shrink-0"
-            />
+            </p>
           </div>
 
-          {/* Core Status Notice */}
+          {/* Core Notice */}
           <div className="border-b border-hairline bg-pine/5 px-5 py-4 sm:px-8 text-sm text-ink">
             <p className="font-medium text-pine">
               Round 1 seat allocation results will be announced on the portal within 24–48 hours.
             </p>
-            <p className="mt-1 text-label text-ink-soft">
-              Your college options have been officially sealed for government seat allocation.
-            </p>
           </div>
 
-          {/* Candidate & Summary Details */}
-          <div className="px-5 py-6 sm:px-8 space-y-4">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.06em] text-ink-muted">
+          {/* Candidate & Submission Summary */}
+          <div className="px-5 py-5 sm:px-8">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.06em] text-ink-muted mb-3">
               Candidate &amp; Submission Summary
             </h3>
-
             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
               <div className="border-b border-hairline/60 pb-2">
                 <dt className="text-xs text-ink-muted">Candidate Name</dt>
@@ -431,31 +428,11 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
                   Rank {rank.toLocaleString('en-IN')} · Roll {rollNo}
                 </dd>
               </div>
-              <div className="border-b border-hairline/60 pb-2">
-                <dt className="text-xs text-ink-muted">Total Priorities Locked</dt>
-                <dd className="font-medium text-ink mt-0.5">{choices.length} College Choices</dd>
-              </div>
-              <div className="border-b border-hairline/60 pb-2">
-                <dt className="text-xs text-ink-muted">Submission Timestamp</dt>
-                <dd className="font-mono text-xs text-ink mt-0.5">{submission.submittedAt}</dd>
-              </div>
-              {topChoice && (
-                <div className="sm:col-span-2 border-b border-hairline/60 pb-2">
-                  <dt className="text-xs text-ink-muted">Priority #1 (Top Preference)</dt>
-                  <dd className="font-medium text-ink mt-0.5">
-                    {topChoice.collegeName} —{' '}
-                    <span className="text-ink-soft">{topChoice.branchName}</span>
-                  </dd>
-                </div>
-              )}
             </dl>
           </div>
 
           {/* Action Bar */}
-          <div className="no-print bg-ground px-5 py-4 sm:px-8 flex items-center justify-between border-t border-hairline">
-            <span className="text-micro text-ink-muted">
-              Keep this acknowledgement receipt for your official records.
-            </span>
+          <div className="no-print bg-ground px-5 py-4 sm:px-8 flex items-center justify-end border-t border-hairline">
             <Button
               variant="primary"
               size="md"
@@ -463,10 +440,57 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
               className="flex items-center gap-1.5"
             >
               <Printer className="size-4" />
-              Print / Download Receipt
+              Download / Print Receipt
             </Button>
           </div>
         </article>
+
+        {/* Submitted Allotment Probability List (10 Options) */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between px-1">
+            <h3 className="text-sm font-semibold text-ink">
+              Submitted Priorities &amp; Allotment Probability List
+            </h3>
+            <span className="font-mono text-micro text-pine bg-pine/10 px-2 py-0.5 rounded-sm font-medium">
+              10 Choices Locked
+            </span>
+          </div>
+
+          <div className="overflow-hidden rounded-sm border border-hairline bg-panel shadow-xs">
+            <div
+              aria-hidden
+              className={clsx(
+                'hidden border-b border-hairline bg-panel px-4 py-2 text-micro font-medium text-ink-muted sm:px-5 lg:grid',
+                GRID_COLUMNS_LG,
+                'items-center gap-x-3',
+              )}
+            >
+              <span>Priority</span>
+              <span>College and branch</span>
+              <span>Category</span>
+              <span>Fee a year</span>
+              <span>Chance</span>
+              <span className="text-right">Status</span>
+            </div>
+
+            <ol>
+              {choices.map((choice, index) => (
+                <OptionRow
+                  key={optionKey(choice.collegeCode, choice.branchCode)}
+                  choice={choice}
+                  index={index}
+                  isDragOver={false}
+                  isLocked={true}
+                  onDragStart={() => {}}
+                  onDragOver={() => {}}
+                  onDrop={() => {}}
+                  onDragEnd={() => {}}
+                  onRemove={() => {}}
+                />
+              ))}
+            </ol>
+          </div>
+        </div>
       </div>
     );
   }
@@ -580,6 +604,7 @@ export const OptionEntryStudio: React.FC<OptionEntryStudioProps> = ({
                 choice={choice}
                 index={index}
                 isDragOver={dragOverIndex === index}
+                isLocked={false}
                 onDragStart={() => handleDragStart(index)}
                 onDragOver={(e) => handleDragOver(e, index)}
                 onDrop={() => handleDrop(index)}

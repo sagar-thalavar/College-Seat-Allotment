@@ -279,7 +279,7 @@
   },
   {
     "code": "E005",
-    "name": "PES University (Ring Road Campus)",
+    "name": "PES University",
     "shortName": "PES University Bengaluru",
     "district": "Bengaluru Urban",
     "city": "Bengaluru",
@@ -338,7 +338,7 @@
   },
   {
     "code": "E006",
-    "name": "Sri Jayachamarajendra College of Engineering (JSS STU)",
+    "name": "Sri Jayachamarajendra College of Engineering",
     "shortName": "SJCE Mysuru",
     "district": "Mysuru",
     "city": "Mysuru",
@@ -574,7 +574,7 @@
   },
   {
     "code": "E010",
-    "name": "KLE Technological University (BVBCET)",
+    "name": "KLE Technological University",
     "shortName": "KLE Tech (BVBCET) Hubballi",
     "district": "Dharwad",
     "city": "Hubballi",
